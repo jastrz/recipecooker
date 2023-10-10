@@ -1,0 +1,15 @@
+C:\projects\recipecooker\Infrastructure\bin\Debug\net7.0\Infrastructure.deps.json
+C:\projects\recipecooker\Infrastructure\bin\Debug\net7.0\Infrastructure.dll
+C:\projects\recipecooker\Infrastructure\bin\Debug\net7.0\Infrastructure.pdb
+C:\projects\recipecooker\Infrastructure\bin\Debug\net7.0\Core.dll
+C:\projects\recipecooker\Infrastructure\bin\Debug\net7.0\Core.pdb
+C:\projects\recipecooker\Infrastructure\obj\Debug\net7.0\Infrastructure.csproj.AssemblyReference.cache
+C:\projects\recipecooker\Infrastructure\obj\Debug\net7.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\projects\recipecooker\Infrastructure\obj\Debug\net7.0\Infrastructure.AssemblyInfoInputs.cache
+C:\projects\recipecooker\Infrastructure\obj\Debug\net7.0\Infrastructure.AssemblyInfo.cs
+C:\projects\recipecooker\Infrastructure\obj\Debug\net7.0\Infrastructure.csproj.CoreCompileInputs.cache
+C:\projects\recipecooker\Infrastructure\obj\Debug\net7.0\Infrastructure.csproj.CopyComplete
+C:\projects\recipecooker\Infrastructure\obj\Debug\net7.0\Infrastructure.dll
+C:\projects\recipecooker\Infrastructure\obj\Debug\net7.0\refint\Infrastructure.dll
+C:\projects\recipecooker\Infrastructure\obj\Debug\net7.0\Infrastructure.pdb
+C:\projects\recipecooker\Infrastructure\obj\Debug\net7.0\ref\Infrastructure.dll
