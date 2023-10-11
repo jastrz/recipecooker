@@ -1,6 +1,7 @@
+using API.Dtos;
+using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
-using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -8,15 +9,20 @@ namespace API.Controllers
     public class RecipesController : BaseApiController
     {
         private readonly IRecipeRepository _recipeRepo;
-        public RecipesController(IRecipeRepository recipeRepo)
+        private readonly IMapper _mapper;
+
+        public RecipesController(IRecipeRepository recipeRepo, IMapper mapper)
         {
             _recipeRepo = recipeRepo;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IReadOnlyList<Recipe>> GetProducts()
+        public async Task<IReadOnlyList<RecipeDto>> GetRecipes()
         {
-            return await _recipeRepo.GetRecipes();
+            var recipes = await _recipeRepo.GetRecipes();
+            var data = _mapper.Map<IReadOnlyList<Recipe>, IReadOnlyList<RecipeDto>>(recipes);
+            return data;
         }
     }
 }
