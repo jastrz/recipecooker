@@ -1,0 +1,122 @@
+[
+    {
+        "Name": "Spaghetti Carbonara",
+        "Description": "Classic Italian pasta dish with eggs, cheese, and pancetta.",
+        "PictureUrls": [
+            "https://example.com/spaghetti.jpg"
+        ],
+        "RecipeTags": [
+            { "Name": "Italy", "Type": "origin" },
+            { "Name": "Pasta", "Type": "mainIngredient" },
+            { "Name": "Simple", "Type": "character" }
+        ]
+    },
+    {
+        "Name": "Chicken Alfredo",
+        "Description": "Creamy pasta with chicken, mushrooms, and a rich Alfredo sauce.",
+        "PictureUrls": [
+            "https://example.com/chicken_alfredo.jpg"
+        ],
+        "RecipeTags": [
+            { "Name": "Italy", "Type": "origin" },
+            { "Name": "Chicken", "Type": "mainIngredient" },
+            { "Name": "Comfort Food", "Type": "character" }
+        ]
+    },
+    {
+        "Name": "Margarita Pizza",
+        "Description": "Classic pizza with tomatoes, mozzarella, and basil.",
+        "PictureUrls": [
+            "https://example.com/margarita_pizza.jpg"
+        ],
+        "RecipeTags": [
+            { "Name": "Italy", "Type": "origin" },
+            { "Name": "Dough", "Type": "mainIngredient" },
+            { "Name": "Simple", "Type": "character" }
+        ]
+    },
+    {
+        "Name": "Sushi Rolls",
+        "Description": "Fresh sushi rolls with a variety of fillings.",
+        "PictureUrls": [
+            "https://example.com/sushi.jpg"
+        ],
+        "RecipeTags": [
+            { "Name": "Japan", "Type": "origin" },
+            { "Name": "Seafood", "Type": "mainIngredient" },
+            { "Name": "Delicate", "Type": "character" }
+        ]
+    },
+    {
+        "Name": "Baked Lasagna",
+        "Description": "Homemade lasagna with layers of pasta, cheese, and sauce.",
+        "PictureUrls": [
+            "https://example.com/lasagna.jpg"
+        ],
+        "RecipeTags": [
+            { "Name": "Italy", "Type": "origin" },
+            { "Name": "Pasta", "Type": "mainIngredient" },
+            { "Name": "Hearty", "Type": "character" }
+        ]
+    },
+    {
+        "Name": "Miso Soup",
+        "Description": "Japanese soup with miso paste, tofu, seaweed, and green onions.",
+        "PictureUrls": [
+            "https://example.com/miso_soup.jpg"
+        ],
+        "RecipeTags": [
+            { "Name": "Japan", "Type": "origin" },
+            { "Name": "Tofu", "Type": "mainIngredient" },
+            { "Name": "Light", "Type": "character" }
+        ]
+    },
+    {
+        "Name": "Ratatouille",
+        "Description": "A French vegetable stew with tomatoes, eggplant, and zucchini.",
+        "PictureUrls": [
+            "https://example.com/ratatouille.jpg"
+        ],
+        "RecipeTags": [
+            { "Name": "France", "Type": "origin" },
+            { "Name": "Vegetables", "Type": "mainIngredient" },
+            { "Name": "Elegant", "Type": "character" }
+        ]
+    },
+    {
+        "Name": "BBQ Pulled Pork",
+        "Description": "Slow-cooked pulled pork with BBQ sauce, served in a bun.",
+        "PictureUrls": [
+            "https://example.com/pulled_pork.jpg"
+        ],
+        "RecipeTags": [
+            { "Name": "USA", "Type": "origin" },
+            { "Name": "Pork", "Type": "mainIngredient" },
+            { "Name": "Savory", "Type": "character" }
+        ]
+    },
+    {
+        "Name": "Chicken Shawarma",
+        "Description": "Middle Eastern dish with marinated chicken, served in a flatbread.",
+        "PictureUrls": [
+            "https://example.com/shawarma.jpg"
+        ],
+        "RecipeTags": [
+            { "Name": "Middle East", "Type": "origin" },
+            { "Name": "Chicken", "Type": "mainIngredient" },
+            { "Name": "Flavorful", "Type": "character" }
+        ]
+    },
+    {
+        "Name": "Chocolate Chip Cookies",
+        "Description": "Homemade cookies with chocolate chips and a soft center.",
+        "PictureUrls": [
+            "https://example.com/cookies.jpg"
+        ],
+        "RecipeTags": [
+            { "Name": "USA", "Type": "origin" },
+            { "Name": "Chocolate", "Type": "mainIngredient" },
+            { "Name": "Delicious", "Type": "character" }
+        ]
+    }
+]

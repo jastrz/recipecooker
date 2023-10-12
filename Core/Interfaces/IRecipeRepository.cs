@@ -5,5 +5,6 @@ namespace Core.Interfaces
     public interface IRecipeRepository
     {
         Task<IReadOnlyList<Recipe>> GetRecipes();
+        Task<IReadOnlyList<Tag>> GetTags();
     }
 }

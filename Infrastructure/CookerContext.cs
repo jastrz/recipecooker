@@ -7,6 +7,7 @@ namespace Infrastructure
     public class CookerContext : DbContext
     {
         public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
         public CookerContext(DbContextOptions<CookerContext> options) : base(options) { }
 
@@ -29,6 +30,19 @@ namespace Infrastructure
                     }
                 }
             }
+
+            modelBuilder.Entity<RecipeTag>()
+                .HasKey(rt => new { rt.RecipeId, rt.TagId });
+
+            modelBuilder.Entity<RecipeTag>()
+                .HasOne(rt => rt.Recipe)
+                .WithMany(r => r.RecipeTags)
+                .HasForeignKey(rt => rt.RecipeId);
+
+            modelBuilder.Entity<RecipeTag>()
+                .HasOne(rt => rt.Tag)
+                .WithMany(t => t.RecipeTags)
+                .HasForeignKey(rt => rt.TagId);
         }
     }
 }

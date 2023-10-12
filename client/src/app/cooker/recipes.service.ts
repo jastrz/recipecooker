@@ -1,17 +1,35 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Recipe } from '../models/recipe';
+import { map } from 'rxjs';
+import { Tag } from '../models/tag';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipesService {
   private hostUrl = "https://localhost:5002/api/"
+
   recipes: Recipe[] = [];
+  tags: Tag[] = [];
 
   constructor(private http: HttpClient) { }
 
   public getRecipes() {
-    return this.http.get<Recipe[]>(this.hostUrl + "Recipes");
+    return this.http.get<Recipe[]>(this.hostUrl + "Recipes").pipe(
+      map(response => {
+        this.recipes = response;
+        return this.recipes;
+      })
+    )
+  }
+
+  public getTags() {
+    return this.http.get<Tag[]>(this.hostUrl + "Recipes/tags").pipe(
+      map(response => {
+        this.tags = response;
+        return this.tags;
+      })
+    )
   }
 }

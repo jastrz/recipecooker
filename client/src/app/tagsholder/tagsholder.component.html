@@ -1,0 +1,10 @@
+<p class="text-center fs-4">{{type}}</p>
+<mat-chip-listbox 
+    aria-label="Meat" 
+    aria-orientation="vertical"
+    multiple="false"
+    #veggieList
+    class="mat-mdc-chip-set-stacked"
+    >
+    <mat-chip-option *ngFor="let tag of tags">{{tag}}</mat-chip-option>
+</mat-chip-listbox>

@@ -1,0 +1,92 @@
+[
+    {
+      "Id": 1,
+      "Name": "Spaghetti Carbonara",
+      "Description": "Classic Italian pasta dish made with eggs, cheese, pancetta, and black pepper.",
+      "PictureUrls": ["https://example.com/spaghetti_carbonara.jpg"],
+      "MainIngredientTags": ["Pasta", "Eggs", "Pancetta"],
+      "OriginTags": ["Italian"],
+      "CharacterTags": ["Classic"]
+    },
+    {
+      "Id": 2,
+      "Name": "Chicken Tacos",
+      "Description": "Tasty tacos filled with grilled chicken, lettuce, tomatoes, and salsa.",
+      "PictureUrls": ["https://example.com/chicken_tacos.jpg"],
+      "MainIngredientTags": ["Chicken", "Tortillas", "Lettuce", "Tomatoes"],
+      "OriginTags": ["Mexican"],
+      "CharacterTags": ["Delicious"]
+    },
+    {
+      "Id": 3,
+      "Name": "Vegetable Stir-Fry",
+      "Description": "Healthy stir-fried vegetables with tofu in a savory sauce.",
+      "PictureUrls": ["https://example.com/vegetable_stir_fry.jpg"],
+      "MainIngredientTags": ["Tofu", "Vegetables", "Soy Sauce"],
+      "OriginTags": ["Asian"],
+      "CharacterTags": ["Healthy"]
+    },
+    {
+      "Id": 4,
+      "Name": "Margherita Pizza",
+      "Description": "Simple and classic pizza with tomato sauce, mozzarella cheese, and basil leaves.",
+      "PictureUrls": ["https://example.com/margherita_pizza.jpg"],
+      "MainIngredientTags": ["Pizza Dough", "Tomato Sauce", "Mozzarella", "Basil"],
+      "OriginTags": ["Italian"],
+      "CharacterTags": ["Simple"]
+    },
+    {
+      "Id": 5,
+      "Name": "Chocolate Chip Cookies",
+      "Description": "Homemade cookies with chocolate chips, butter, and brown sugar.",
+      "PictureUrls": ["https://example.com/chocolate_chip_cookies.jpg"],
+      "MainIngredientTags": ["Chocolate Chips", "Butter", "Brown Sugar", "Flour"],
+      "OriginTags": ["American"],
+      "CharacterTags": ["Sweet"]
+    },
+    {
+      "Id": 6,
+      "Name": "Caesar Salad",
+      "Description": "Refreshing salad with romaine lettuce, croutons, Parmesan cheese, and Caesar dressing.",
+      "PictureUrls": ["https://example.com/caesar_salad.jpg"],
+      "MainIngredientTags": ["Romaine Lettuce", "Croutons", "Parmesan Cheese"],
+      "OriginTags": ["American"],
+      "CharacterTags": ["Refreshing"]
+    },
+    {
+      "Id": 7,
+      "Name": "Sushi Rolls",
+      "Description": "Assorted sushi rolls with fresh fish, rice, and seaweed.",
+      "PictureUrls": ["https://example.com/sushi_rolls.jpg"],
+      "MainIngredientTags": ["Fish", "Rice", "Seaweed"],
+      "OriginTags": ["Japanese"],
+      "CharacterTags": ["Sushi"]
+    },
+    {
+      "Id": 8,
+      "Name": "Mango Smoothie",
+      "Description": "Fruity and delicious smoothie made with ripe mangoes, yogurt, and honey.",
+      "PictureUrls": ["https://example.com/mango_smoothie.jpg"],
+      "MainIngredientTags": ["Mangoes", "Yogurt", "Honey"],
+      "OriginTags": ["International"],
+      "CharacterTags": ["Fruity"]
+    },
+    {
+      "Id": 9,
+      "Name": "Chicken Alfredo",
+      "Description": "Creamy pasta dish with chicken, Alfredo sauce, and fettuccine noodles.",
+      "PictureUrls": ["https://example.com/chicken_alfredo.jpg"],
+      "MainIngredientTags": ["Chicken", "Alfredo Sauce", "Fettuccine"],
+      "OriginTags": ["Italian"],
+      "CharacterTags": ["Creamy"]
+    },
+    {
+      "Id": 10,
+      "Name": "Greek Salad",
+      "Description": "Healthy Greek salad with cucumbers, tomatoes, olives, and feta cheese.",
+      "PictureUrls": ["https://example.com/greek_salad.jpg"],
+      "MainIngredientTags": ["Cucumbers", "Tomatoes", "Olives", "Feta Cheese"],
+      "OriginTags": ["Greek"],
+      "CharacterTags": ["Healthy"]
+    }
+  ]

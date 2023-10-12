@@ -1,70 +1,41 @@
-<div class="container">
+<div class="container mt-5" *ngIf="tags.size > 0" >
     <div class="row">
-        <div class="col justify-content-center">
-            <p class="text-center fs-4">Meat</p>
-            <mat-chip-listbox
-                [aria-orientation]="'vertical'"
-                (change)="onChange($event)"
-                multiple="false"
-                #meatList
-                class="mat-mdc-chip-set-stacked"
-                >
-                <mat-chip-option>One fish</mat-chip-option>
-                <mat-chip-option>Two fish</mat-chip-option>
-                <mat-chip-option selected>Accent fish</mat-chip-option>
-                <mat-chip-option>Warn fish</mat-chip-option>
-                <mat-chip-option>Warn fish</mat-chip-option>
-                <mat-chip-option>Warn fish</mat-chip-option>
+        <div class="col md-4" *ngFor="let mapItem of tags | keyvalue">
+            <app-tagsholder 
+                [type]="mapItem.key"
+                [tags]="mapItem.value"
+            ></app-tagsholder>
+        </div>
+    </div>
 
-            </mat-chip-listbox>
-        </div>
-        <div class="col md-4">
-            <p class="text-center fs-4">Veggie</p>
-            <mat-chip-listbox 
-                aria-label="Meat" 
-                aria-orientation="vertical"
-                (change)="onChange($event)"
-                multiple="false"
-                #veggieList
-                class="mat-mdc-chip-set-stacked"
-                >
-                <mat-chip-option>One fish</mat-chip-option>
-                <mat-chip-option>Two fish</mat-chip-option>
-                <mat-chip-option selected>Accent fish</mat-chip-option>
-                <mat-chip-option>Warn fish</mat-chip-option>
-                <mat-chip-option>Warn fish</mat-chip-option>
-            </mat-chip-listbox>
-        </div>
-        <div class="col md-4">
-            <p class="text-center fs-4">Character</p>
-            <mat-chip-listbox 
-                aria-label="Meat" 
-                aria-orientation="vertical"
-                (change)="onChange($event)"
-                multiple="false"
-                #characterList
-                class="mat-mdc-chip-set-stacked"
-                >
-                <mat-chip-option>One fish</mat-chip-option>
-                <mat-chip-option>Two fish</mat-chip-option>
-                <mat-chip-option selected>Accent fish</mat-chip-option>
-                <mat-chip-option>Warn fish</mat-chip-option>
-                <mat-chip-option>Warn fish</mat-chip-option>
-            </mat-chip-listbox>
-        </div>
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-light btn-lg" (click)="getRecipes()">Search</button>
     </div>
 </div>
 
-<div class="container mt-4">
+<div class="container mt-5" *ngIf="currentRecipe">
     <div class="row">
-        <div class="col-md-4">
-            <button class="btn btn-primary" (click)="getRecipes()">Search</button>
-          </div>
-        <div class="col-md-4">
-            <h2>Heading</h2>
-            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-            <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
-          </div>
-    </div>
+        <div class="col-md-2 d-flex">
+            <button 
+                class="btn btn-primary" 
+                style="height: 50px"
+                (click)="decrementRecipeIndex()"
+                >
+                <</button>
+        </div>
 
+        <div class="col-md-8">
+            <h2>{{currentRecipe.name}}</h2>
+            <p>{{currentRecipe.description}}</p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+        </div>
+        <div class="col-md-2 d-flex justify-content-end">
+            <button 
+                class="btn btn-primary" 
+                style="height: 50px"
+                (click)="incrementRecipeIndex()"
+                >
+                ></button>
+        </div>
+    </div>
 </div>

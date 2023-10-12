@@ -1,46 +1,76 @@
+using System.Reflection;
+using System.Text.Json;
+using AutoMapper;
 using Core.Entities;
+using Core.Interfaces;
+using Infrastructure.Dtos;
 
 namespace Infrastructure
 {
     public class CookerContextSeed
     {
-        public static async Task SeedAsync(CookerContext context)
+        private readonly IRecipeService _recipeService;
+        private readonly IMapper _mapper;
+        public CookerContextSeed(IRecipeService recipeService, IMapper mapper)
         {
+            _mapper = mapper;
+            _recipeService = recipeService;
+        }
+
+        public async Task SeedAsync(CookerContext context)
+        {
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            
             if(!context.Recipes.Any())
             {
-                var recipes = new List<Recipe>
-                {
-                    new Recipe
-                    {
-                        Name = "Spaghetti Bolognese",
-                        Description = "Classic Italian pasta dish with a rich meaty sauce."
-                    },
-                    new Recipe
-                    {
-                        Name = "Chicken Alfredo",
-                        Description = "Creamy pasta dish with tender chicken and a parmesan cheese sauce."
-                    },
-                    new Recipe
-                    {
-                        Name = "Vegetable Stir-Fry",
-                        Description = "Healthy stir-fried vegetables with a savory soy sauce."
-                    },
-                    new Recipe
-                    {
-                        Name = "Grilled Salmon",
-                        Description = "Delicious grilled salmon fillet with lemon and herbs."
-                    },
-                    new Recipe
-                    {
-                        Name = "Homemade Pizza",
-                        Description = "Make your own pizza with your favorite toppings and cheese."
-                    }
-                };
-                context.AddRange(recipes);
+                var recipesData = File.ReadAllText(path + @"/Data/SeedData/recipes.json");
+                var recipes = JsonSerializer.Deserialize<List<RecipeDto>>(recipesData);
+
+                // recipes.ForEach(async r => 
+                // {
+                //     await _recipeService.AddRecipeAsync(r);
+                //     await context.SaveChangesAsync();
+                // });
+                // var recipes = new List<Recipe>
+                // {
+                //     GetRecipe("some", "yummy"),
+                //     GetRecipe("other", "yummy too!")
+                // };
+
+                recipes.ForEach(async r => await _recipeService.AddRecipeAsync(_mapper.Map<RecipeDto, Recipe>(r)));
             }
 
             if(context.ChangeTracker.HasChanges())
                 await context.SaveChangesAsync();
-        }        
+        }
+
+        private Recipe GetRecipe(string name, string description)
+        {
+            Recipe recipe = new Recipe();
+                recipe.PictureUrls.Add(new Picture() { Url = "someurl"});
+                recipe.Name = "somename";
+                recipe.Description = "somedescription";
+                recipe.RecipeTags = new List<RecipeTag>
+                {
+                    new RecipeTag
+                    {
+                        Tag = new Tag()
+                        {
+                            Name = "tag",
+                            Type = "type"
+                        }
+                    },
+                    new RecipeTag
+                    {
+                        Tag = new Tag()
+                        {
+                            Name = "tag2",
+                            Type = "type2"
+                        }
+                    }
+                };
+
+                return recipe;
+        }       
     }
 }

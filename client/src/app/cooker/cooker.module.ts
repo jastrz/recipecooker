@@ -3,6 +3,7 @@ import { CookerRoutingModule } from './cooker-routing.module';
 import { CookerComponent } from './cooker.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
+import { TagsholderComponent } from '../tagsholder/tagsholder.component';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     CookerRoutingModule,
-    MatChipsModule
+    MatChipsModule,
+    TagsholderComponent
   ]
 })
 export class CookerModule { }
