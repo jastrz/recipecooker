@@ -55,13 +55,12 @@ export class CookerComponent implements OnInit {
   getTags() {
     this.recipesService.getTags().subscribe({
       next: result => {
-        console.log("got tags", result);
         const tags = result;
         this.tags = tags.reduce((grouped, tag) => {
-          if (!grouped.has(tag.type)) {
-            grouped.set(tag.type, []);
+          if (!grouped.has(tag.category)) {
+            grouped.set(tag.category, []);
           }
-          grouped.get(tag.type)?.push(tag.name);
+          grouped.get(tag.category)?.push(tag.name);
           return grouped;
         }, new Map<string, string[]>());
         console.log(this.tags);
