@@ -1,4 +1,3 @@
-using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +19,7 @@ namespace Infrastructure
                 .Include(r => r.PictureUrls)
                 .Include(r => r.RecipeTags)
                     .ThenInclude(rt => rt.Tag)
+                        .ThenInclude(t => t.Category)
                 .ToListAsync();
 
             return recipes;
@@ -27,7 +27,11 @@ namespace Infrastructure
 
         public async Task<IReadOnlyList<Tag>> GetTags()
         {
-            return await _context.Tags.ToListAsync();
+            var tags = await _context.Tags
+                .Include(t => t.Category)
+                .ToListAsync();
+
+            return tags;
         }
     }
 }
