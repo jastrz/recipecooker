@@ -7,6 +7,12 @@ namespace Infrastructure.Dtos
         public string Name { get; set; }
         public string Description { get; set; }
         public List<string> PictureUrls { get; set; }
-        public List<Tag> RecipeTags { get; set; }
+        public List<TagDto> RecipeTags { get; set; }
+    }
+
+    public class TagDto 
+    {
+        public string Name { get; set; }
+        public string Category { get; set; }
     }
 }

@@ -19,16 +19,26 @@ namespace API.Helpers
                     Tag = new Tag() 
                     {
                         Name = tag.Name,
-                        Type = tag.Type
+                        Category = new() 
+                        {
+                            Name = tag.Name
+                        }
                     }
                 })));
 
-            CreateMap<Tag, TagDto>();
+            CreateMap<Tag, TagDto>()
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
 
             // Used for seeding.
             CreateMap<Infrastructure.Dtos.RecipeDto, Recipe>()
                 .ForMember(dest => dest.PictureUrls, opt => opt.MapFrom(src => src.PictureUrls.Select(url => new Picture { Url = url })))
-                .ForMember(dest => dest.RecipeTags, opt => opt.MapFrom(src => src.RecipeTags.Select(tag => new RecipeTag { Tag = tag })));
+                .ForMember(dest => dest.RecipeTags, opt => opt.MapFrom(src => src.RecipeTags.Select(tag => new RecipeTag { Tag = new Tag() {
+                    Name = tag.Name,
+                    Category = new() 
+                    {
+                        Name = tag.Category
+                    }
+                } })));
         }
     }
 }

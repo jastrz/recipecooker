@@ -8,6 +8,7 @@ namespace Infrastructure
     {
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public CookerContext(DbContextOptions<CookerContext> options) : base(options) { }
 

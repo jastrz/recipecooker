@@ -57,7 +57,7 @@ namespace Infrastructure
                         Tag = new Tag()
                         {
                             Name = "tag",
-                            Type = "type"
+                            //Type = "type"
                         }
                     },
                     new RecipeTag
@@ -65,7 +65,7 @@ namespace Infrastructure
                         Tag = new Tag()
                         {
                             Name = "tag2",
-                            Type = "type2"
+                            //Type = "type2"
                         }
                     }
                 };

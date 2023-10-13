@@ -6,9 +6,9 @@
             "https://example.com/spaghetti.jpg"
         ],
         "RecipeTags": [
-            { "Name": "Italy", "Type": "origin" },
-            { "Name": "Pasta", "Type": "mainIngredient" },
-            { "Name": "Simple", "Type": "character" }
+            { "Name": "Italy", "Category": "origin" },
+            { "Name": "Pasta", "Category": "mainIngredient" },
+            { "Name": "Simple", "Category": "character" }
         ]
     },
     {
@@ -18,9 +18,9 @@
             "https://example.com/chicken_alfredo.jpg"
         ],
         "RecipeTags": [
-            { "Name": "Italy", "Type": "origin" },
-            { "Name": "Chicken", "Type": "mainIngredient" },
-            { "Name": "Comfort Food", "Type": "character" }
+            { "Name": "Italy", "Category": "origin" },
+            { "Name": "Chicken", "Category": "mainIngredient" },
+            { "Name": "Comfort Food", "Category": "character" }
         ]
     },
     {
@@ -30,9 +30,9 @@
             "https://example.com/margarita_pizza.jpg"
         ],
         "RecipeTags": [
-            { "Name": "Italy", "Type": "origin" },
-            { "Name": "Dough", "Type": "mainIngredient" },
-            { "Name": "Simple", "Type": "character" }
+            { "Name": "Italy", "Category": "origin" },
+            { "Name": "Dough", "Category": "mainIngredient" },
+            { "Name": "Simple", "Category": "character" }
         ]
     },
     {
@@ -42,9 +42,9 @@
             "https://example.com/sushi.jpg"
         ],
         "RecipeTags": [
-            { "Name": "Japan", "Type": "origin" },
-            { "Name": "Seafood", "Type": "mainIngredient" },
-            { "Name": "Delicate", "Type": "character" }
+            { "Name": "Japan", "Category": "origin" },
+            { "Name": "Seafood", "Category": "mainIngredient" },
+            { "Name": "Delicate", "Category": "character" }
         ]
     },
     {
@@ -54,9 +54,9 @@
             "https://example.com/lasagna.jpg"
         ],
         "RecipeTags": [
-            { "Name": "Italy", "Type": "origin" },
-            { "Name": "Pasta", "Type": "mainIngredient" },
-            { "Name": "Hearty", "Type": "character" }
+            { "Name": "Italy", "Category": "origin" },
+            { "Name": "Pasta", "Category": "mainIngredient" },
+            { "Name": "Hearty", "Category": "character" }
         ]
     },
     {
@@ -66,9 +66,9 @@
             "https://example.com/miso_soup.jpg"
         ],
         "RecipeTags": [
-            { "Name": "Japan", "Type": "origin" },
-            { "Name": "Tofu", "Type": "mainIngredient" },
-            { "Name": "Light", "Type": "character" }
+            { "Name": "Japan", "Category": "origin" },
+            { "Name": "Tofu", "Category": "mainIngredient" },
+            { "Name": "Light", "Category": "character" }
         ]
     },
     {
@@ -78,9 +78,9 @@
             "https://example.com/ratatouille.jpg"
         ],
         "RecipeTags": [
-            { "Name": "France", "Type": "origin" },
-            { "Name": "Vegetables", "Type": "mainIngredient" },
-            { "Name": "Elegant", "Type": "character" }
+            { "Name": "France", "Category": "origin" },
+            { "Name": "Vegetables", "Category": "mainIngredient" },
+            { "Name": "Elegant", "Category": "character" }
         ]
     },
     {
@@ -90,9 +90,9 @@
             "https://example.com/pulled_pork.jpg"
         ],
         "RecipeTags": [
-            { "Name": "USA", "Type": "origin" },
-            { "Name": "Pork", "Type": "mainIngredient" },
-            { "Name": "Savory", "Type": "character" }
+            { "Name": "USA", "Category": "origin" },
+            { "Name": "Pork", "Category": "mainIngredient" },
+            { "Name": "Savory", "Category": "character" }
         ]
     },
     {
@@ -102,9 +102,9 @@
             "https://example.com/shawarma.jpg"
         ],
         "RecipeTags": [
-            { "Name": "Middle East", "Type": "origin" },
-            { "Name": "Chicken", "Type": "mainIngredient" },
-            { "Name": "Flavorful", "Type": "character" }
+            { "Name": "Middle East", "Category": "origin" },
+            { "Name": "Chicken", "Category": "mainIngredient" },
+            { "Name": "Flavorful", "Category": "character" }
         ]
     },
     {
@@ -114,9 +114,9 @@
             "https://example.com/cookies.jpg"
         ],
         "RecipeTags": [
-            { "Name": "USA", "Type": "origin" },
-            { "Name": "Chocolate", "Type": "mainIngredient" },
-            { "Name": "Delicious", "Type": "character" }
+            { "Name": "USA", "Category": "origin" },
+            { "Name": "Chocolate", "Category": "mainIngredient" },
+            { "Name": "Delicious", "Category": "character" }
         ]
     }
 ]

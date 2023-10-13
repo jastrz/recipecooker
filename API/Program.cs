@@ -1,7 +1,6 @@
 using Core.Interfaces;
 using Infrastructure;
 using Infrastructure.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
