@@ -32,5 +32,13 @@ namespace API.Controllers
             var data = _mapper.Map<IReadOnlyList<Tag>, IReadOnlyList<TagDto>>(tags);
             return data;
         }
+
+        [HttpGet("{id}")]
+        public async Task<IReadOnlyList<RecipeStepDto>> GetRecipeSteps(int id)
+        {
+            var steps = await _recipeRepo.GetRecipeSteps(id);
+            var data = _mapper.Map<IReadOnlyList<RecipeStep>, IReadOnlyList<RecipeStepDto>>(steps);
+            return data;
+        }
     }
 }

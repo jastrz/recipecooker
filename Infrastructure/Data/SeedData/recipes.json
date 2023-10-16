@@ -1,122 +1,342 @@
 [
     {
-        "Name": "Spaghetti Carbonara",
-        "Description": "Classic Italian pasta dish with eggs, cheese, and pancetta.",
-        "PictureUrls": [
+        "name": "Spaghetti Carbonara",
+        "description": "Classic Italian pasta dish with eggs, cheese, and pancetta.",
+        "pictureUrls": [
             "https://example.com/spaghetti.jpg"
         ],
-        "RecipeTags": [
-            { "Name": "Italy", "Category": "origin" },
-            { "Name": "Pasta", "Category": "mainIngredient" },
-            { "Name": "Simple", "Category": "character" }
-        ]
+        "recipeTags": [
+            { "name": "Italy", "category": "origin" },
+            { "name": "Pasta", "category": "mainIngredient" },
+            { "name": "Simple", "category": "character" }
+        ],
+        "steps": [
+            {
+              "sequence": 1,
+              "name": "Boil water for pasta",
+              "description": "Bring a large pot of water to a boil."
+            },
+            {
+              "sequence": 2,
+              "name": "Cook ground beef",
+              "description": "In a skillet, brown the ground beef over medium heat."
+            },
+            {
+              "sequence": 3,
+              "name": "Prepare tomato sauce",
+              "description": "In a separate saucepan, prepare the tomato sauce."
+            },
+            {
+              "sequence": 4,
+              "name": "Boil pasta",
+              "description": "Add the pasta to the boiling water and cook until al dente."
+            }
+          ]
     },
     {
-        "Name": "Chicken Alfredo",
-        "Description": "Creamy pasta with chicken, mushrooms, and a rich Alfredo sauce.",
-        "PictureUrls": [
+        "name": "Chicken Alfredo",
+        "description": "Creamy pasta with chicken, mushrooms, and a rich Alfredo sauce.",
+        "pictureUrls": [
             "https://example.com/chicken_alfredo.jpg"
         ],
-        "RecipeTags": [
-            { "Name": "Italy", "Category": "origin" },
-            { "Name": "Chicken", "Category": "mainIngredient" },
-            { "Name": "Comfort Food", "Category": "character" }
-        ]
+        "recipeTags": [
+            { "name": "Italy", "category": "origin" },
+            { "name": "Chicken", "category": "mainIngredient" },
+            { "name": "Comfort Food", "category": "character" }
+        ],
+        "steps": [
+            {
+              "sequence": 1,
+              "name": "Boil water for pasta",
+              "description": "Bring a large pot of water to a boil."
+            },
+            {
+              "sequence": 2,
+              "name": "Cook ground beef",
+              "description": "In a skillet, brown the ground beef over medium heat."
+            },
+            {
+              "sequence": 3,
+              "name": "Prepare tomato sauce",
+              "description": "In a separate saucepan, prepare the tomato sauce."
+            },
+            {
+              "sequence": 4,
+              "name": "Boil pasta",
+              "description": "Add the pasta to the boiling water and cook until al dente."
+            }
+          ]
     },
     {
-        "Name": "Margarita Pizza",
-        "Description": "Classic pizza with tomatoes, mozzarella, and basil.",
-        "PictureUrls": [
+        "name": "Margarita Pizza",
+        "description": "Classic pizza with tomatoes, mozzarella, and basil.",
+        "pictureUrls": [
             "https://example.com/margarita_pizza.jpg"
         ],
-        "RecipeTags": [
-            { "Name": "Italy", "Category": "origin" },
-            { "Name": "Dough", "Category": "mainIngredient" },
-            { "Name": "Simple", "Category": "character" }
-        ]
+        "recipeTags": [
+            { "name": "Italy", "category": "origin" },
+            { "name": "Dough", "category": "mainIngredient" },
+            { "name": "Simple", "category": "character" }
+        ],
+        "steps": [
+            {
+              "sequence": 1,
+              "name": "Boil water for pasta",
+              "description": "Bring a large pot of water to a boil."
+            },
+            {
+              "sequence": 2,
+              "name": "Cook ground beef",
+              "description": "In a skillet, brown the ground beef over medium heat."
+            },
+            {
+              "sequence": 3,
+              "name": "Prepare tomato sauce",
+              "description": "In a separate saucepan, prepare the tomato sauce."
+            },
+            {
+              "sequence": 4,
+              "name": "Boil pasta",
+              "description": "Add the pasta to the boiling water and cook until al dente."
+            }
+          ]
     },
     {
-        "Name": "Sushi Rolls",
-        "Description": "Fresh sushi rolls with a variety of fillings.",
-        "PictureUrls": [
+        "name": "Sushi Rolls",
+        "description": "Fresh sushi rolls with a variety of fillings.",
+        "pictureUrls": [
             "https://example.com/sushi.jpg"
         ],
-        "RecipeTags": [
-            { "Name": "Japan", "Category": "origin" },
-            { "Name": "Seafood", "Category": "mainIngredient" },
-            { "Name": "Delicate", "Category": "character" }
-        ]
+        "recipeTags": [
+            { "name": "Japan", "category": "origin" },
+            { "name": "Seafood", "category": "mainIngredient" },
+            { "name": "Delicate", "category": "character" }
+        ],
+        "steps": [
+            {
+              "sequence": 1,
+              "name": "Boil water for pasta",
+              "description": "Bring a large pot of water to a boil."
+            },
+            {
+              "sequence": 2,
+              "name": "Cook ground beef",
+              "description": "In a skillet, brown the ground beef over medium heat."
+            },
+            {
+              "sequence": 3,
+              "name": "Prepare tomato sauce",
+              "description": "In a separate saucepan, prepare the tomato sauce."
+            },
+            {
+              "sequence": 4,
+              "name": "Boil pasta",
+              "description": "Add the pasta to the boiling water and cook until al dente."
+            }
+          ]
     },
     {
-        "Name": "Baked Lasagna",
-        "Description": "Homemade lasagna with layers of pasta, cheese, and sauce.",
-        "PictureUrls": [
+        "name": "Baked Lasagna",
+        "description": "Homemade lasagna with layers of pasta, cheese, and sauce.",
+        "pictureUrls": [
             "https://example.com/lasagna.jpg"
         ],
-        "RecipeTags": [
-            { "Name": "Italy", "Category": "origin" },
-            { "Name": "Pasta", "Category": "mainIngredient" },
-            { "Name": "Hearty", "Category": "character" }
-        ]
+        "recipeTags": [
+            { "name": "Italy", "category": "origin" },
+            { "name": "Pasta", "category": "mainIngredient" },
+            { "name": "Hearty", "category": "character" }
+        ],
+        "steps": [
+            {
+              "sequence": 1,
+              "name": "Boil water for pasta",
+              "description": "Bring a large pot of water to a boil."
+            },
+            {
+              "sequence": 2,
+              "name": "Cook ground beef",
+              "description": "In a skillet, brown the ground beef over medium heat."
+            },
+            {
+              "sequence": 3,
+              "name": "Prepare tomato sauce",
+              "description": "In a separate saucepan, prepare the tomato sauce."
+            },
+            {
+              "sequence": 4,
+              "name": "Boil pasta",
+              "description": "Add the pasta to the boiling water and cook until al dente."
+            }
+          ]
     },
     {
-        "Name": "Miso Soup",
-        "Description": "Japanese soup with miso paste, tofu, seaweed, and green onions.",
-        "PictureUrls": [
+        "name": "Miso Soup",
+        "description": "Japanese soup with miso paste, tofu, seaweed, and green onions.",
+        "pictureUrls": [
             "https://example.com/miso_soup.jpg"
         ],
-        "RecipeTags": [
-            { "Name": "Japan", "Category": "origin" },
-            { "Name": "Tofu", "Category": "mainIngredient" },
-            { "Name": "Light", "Category": "character" }
-        ]
+        "recipeTags": [
+            { "name": "Japan", "category": "origin" },
+            { "name": "Tofu", "category": "mainIngredient" },
+            { "name": "Light", "category": "character" }
+        ],
+        "steps": [
+            {
+              "sequence": 1,
+              "name": "Boil water for pasta",
+              "description": "Bring a large pot of water to a boil."
+            },
+            {
+              "sequence": 2,
+              "name": "Cook ground beef",
+              "description": "In a skillet, brown the ground beef over medium heat."
+            },
+            {
+              "sequence": 3,
+              "name": "Prepare tomato sauce",
+              "description": "In a separate saucepan, prepare the tomato sauce."
+            },
+            {
+              "sequence": 4,
+              "name": "Boil pasta",
+              "description": "Add the pasta to the boiling water and cook until al dente."
+            }
+          ]
     },
     {
-        "Name": "Ratatouille",
-        "Description": "A French vegetable stew with tomatoes, eggplant, and zucchini.",
-        "PictureUrls": [
+        "name": "Ratatouille",
+        "description": "A French vegetable stew with tomatoes, eggplant, and zucchini.",
+        "pictureUrls": [
             "https://example.com/ratatouille.jpg"
         ],
-        "RecipeTags": [
-            { "Name": "France", "Category": "origin" },
-            { "Name": "Vegetables", "Category": "mainIngredient" },
-            { "Name": "Elegant", "Category": "character" }
-        ]
+        "recipeTags": [
+            { "name": "France", "category": "origin" },
+            { "name": "Vegetables", "category": "mainIngredient" },
+            { "name": "Elegant", "category": "character" }
+        ],
+        "steps": [
+            {
+              "sequence": 1,
+              "name": "Boil water for pasta",
+              "description": "Bring a large pot of water to a boil."
+            },
+            {
+              "sequence": 2,
+              "name": "Cook ground beef",
+              "description": "In a skillet, brown the ground beef over medium heat."
+            },
+            {
+              "sequence": 3,
+              "name": "Prepare tomato sauce",
+              "description": "In a separate saucepan, prepare the tomato sauce."
+            },
+            {
+              "sequence": 4,
+              "name": "Boil pasta",
+              "description": "Add the pasta to the boiling water and cook until al dente."
+            }
+          ]
     },
     {
-        "Name": "BBQ Pulled Pork",
-        "Description": "Slow-cooked pulled pork with BBQ sauce, served in a bun.",
-        "PictureUrls": [
+        "name": "BBQ Pulled Pork",
+        "description": "Slow-cooked pulled pork with BBQ sauce, served in a bun.",
+        "pictureUrls": [
             "https://example.com/pulled_pork.jpg"
         ],
-        "RecipeTags": [
-            { "Name": "USA", "Category": "origin" },
-            { "Name": "Pork", "Category": "mainIngredient" },
-            { "Name": "Savory", "Category": "character" }
-        ]
+        "recipeTags": [
+            { "name": "USA", "category": "origin" },
+            { "name": "Pork", "category": "mainIngredient" },
+            { "name": "Savory", "category": "character" }
+        ],
+        "steps": [
+            {
+              "sequence": 1,
+              "name": "Boil water for pasta",
+              "description": "Bring a large pot of water to a boil."
+            },
+            {
+              "sequence": 2,
+              "name": "Cook ground beef",
+              "description": "In a skillet, brown the ground beef over medium heat."
+            },
+            {
+              "sequence": 3,
+              "name": "Prepare tomato sauce",
+              "description": "In a separate saucepan, prepare the tomato sauce."
+            },
+            {
+              "sequence": 4,
+              "name": "Boil pasta",
+              "description": "Add the pasta to the boiling water and cook until al dente."
+            }
+          ]
     },
     {
-        "Name": "Chicken Shawarma",
-        "Description": "Middle Eastern dish with marinated chicken, served in a flatbread.",
-        "PictureUrls": [
+        "name": "Chicken Shawarma",
+        "description": "Middle Eastern dish with marinated chicken, served in a flatbread.",
+        "pictureUrls": [
             "https://example.com/shawarma.jpg"
         ],
-        "RecipeTags": [
-            { "Name": "Middle East", "Category": "origin" },
-            { "Name": "Chicken", "Category": "mainIngredient" },
-            { "Name": "Flavorful", "Category": "character" }
-        ]
+        "recipeTags": [
+            { "name": "Middle East", "category": "origin" },
+            { "name": "Chicken", "category": "mainIngredient" },
+            { "name": "Flavorful", "category": "character" }
+        ],
+        "steps": [
+            {
+              "sequence": 1,
+              "name": "Boil water for pasta",
+              "description": "Bring a large pot of water to a boil."
+            },
+            {
+              "sequence": 2,
+              "name": "Cook ground beef",
+              "description": "In a skillet, brown the ground beef over medium heat."
+            },
+            {
+              "sequence": 3,
+              "name": "Prepare tomato sauce",
+              "description": "In a separate saucepan, prepare the tomato sauce."
+            },
+            {
+              "sequence": 4,
+              "name": "Boil pasta",
+              "description": "Add the pasta to the boiling water and cook until al dente."
+            }
+          ]
     },
     {
-        "Name": "Chocolate Chip Cookies",
-        "Description": "Homemade cookies with chocolate chips and a soft center.",
-        "PictureUrls": [
+        "name": "Chocolate Chip Cookies",
+        "description": "Homemade cookies with chocolate chips and a soft center.",
+        "pictureUrls": [
             "https://example.com/cookies.jpg"
         ],
-        "RecipeTags": [
-            { "Name": "USA", "Category": "origin" },
-            { "Name": "Chocolate", "Category": "mainIngredient" },
-            { "Name": "Delicious", "Category": "character" }
-        ]
+        "recipeTags": [
+            { "name": "USA", "category": "origin" },
+            { "name": "Chocolate", "category": "mainIngredient" },
+            { "name": "Delicious", "category": "character" }
+        ],
+        "steps": [
+            {
+              "sequence": 1,
+              "name": "Boil water for pasta",
+              "description": "Bring a large pot of water to a boil."
+            },
+            {
+              "sequence": 2,
+              "name": "Cook ground beef",
+              "description": "In a skillet, brown the ground beef over medium heat."
+            },
+            {
+              "sequence": 3,
+              "name": "Prepare tomato sauce",
+              "description": "In a separate saucepan, prepare the tomato sauce."
+            },
+            {
+              "sequence": 4,
+              "name": "Boil pasta",
+              "description": "Add the pasta to the boiling water and cook until al dente."
+            }
+          ]
     }
 ]

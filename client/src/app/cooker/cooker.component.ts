@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatChipListbox, MatChipListboxChange } from '@angular/material/chips';
+import { MatChipListbox } from '@angular/material/chips';
 import { RecipesService } from './recipes.service';
 import { Recipe } from '../models/recipe';
 

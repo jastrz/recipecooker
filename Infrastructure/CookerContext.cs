@@ -9,6 +9,7 @@ namespace Infrastructure
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<RecipeStep> Steps { get; set; }
 
         public CookerContext(DbContextOptions<CookerContext> options) : base(options) { }
 
@@ -44,6 +45,9 @@ namespace Infrastructure
                 .HasOne(rt => rt.Tag)
                 .WithMany(t => t.RecipeTags)
                 .HasForeignKey(rt => rt.TagId);
+
+            modelBuilder.Entity<RecipeStep>()
+                .HasKey(rs => new { rs.RecipeId, rs.Sequence });
         }
     }
 }

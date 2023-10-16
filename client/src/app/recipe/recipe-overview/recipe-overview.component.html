@@ -1,0 +1,7 @@
+<ng-container *ngIf="recipe">
+    <h2>{{recipe.name}}</h2>
+    <p>{{recipe.description}}</p>
+    <p><a class="btn btn-secondary" role="button" (click)="viewDetailsClicked()">View details »</a></p>
+
+    <app-recipe-details *ngIf="detailsActive" [recipeId]="recipe.id"></app-recipe-details>
+</ng-container>

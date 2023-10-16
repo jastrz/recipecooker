@@ -8,7 +8,6 @@ import { NavComponent } from './core/nav/nav.component';
 import { AboutComponent } from './about/about.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { TagsholderComponent } from './tagsholder/tagsholder.component';
 
 @NgModule({
   declarations: [

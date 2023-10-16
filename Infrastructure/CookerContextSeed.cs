@@ -24,7 +24,7 @@ namespace Infrastructure
             if(!context.Recipes.Any())
             {
                 var recipesData = File.ReadAllText(path + @"/Data/SeedData/recipes.json");
-                var recipes = JsonSerializer.Deserialize<List<RecipeDto>>(recipesData);
+                var recipes = JsonSerializer.Deserialize<List<RecipeDto>>(recipesData, new JsonSerializerOptions{ PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
 
                 // recipes.ForEach(async r => 
                 // {
@@ -37,7 +37,12 @@ namespace Infrastructure
                 //     GetRecipe("other", "yummy too!")
                 // };
 
-                recipes.ForEach(async r => await _recipeService.AddRecipeAsync(_mapper.Map<RecipeDto, Recipe>(r)));
+                foreach(var recipeDto in recipes)
+                {
+                    var recipe = _mapper.Map<RecipeDto, Recipe>(recipeDto);
+                    var steps = recipeDto.Steps;
+                    await _recipeService.AddRecipeAsync(recipe, steps);
+                }
             }
 
             if(context.ChangeTracker.HasChanges())

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Recipe } from '../models/recipe';
 import { map } from 'rxjs';
 import { Tag } from '../models/tag';
+import { RecipeStep } from '../models/recipeStep';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class RecipesService {
 
   recipes: Recipe[] = [];
   tags: Tag[] = [];
+  steps: RecipeStep[] = [];
 
   constructor(private http: HttpClient) { }
 
@@ -29,6 +31,15 @@ export class RecipesService {
       map(response => {
         this.tags = response;
         return this.tags;
+      })
+    )
+  }
+
+  public getRecipeSteps(recipeId: number) {
+    return this.http.get<RecipeStep[]>(this.hostUrl + "recipes/" + recipeId).pipe(
+      map(response => {
+        this.steps = response;
+        return this.steps;
       })
     )
   }

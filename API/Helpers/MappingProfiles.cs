@@ -39,6 +39,8 @@ namespace API.Helpers
                         Name = tag.Category
                     }
                 } })));
+
+            CreateMap<RecipeStep, RecipeStepDto>();
         }
     }
 }
