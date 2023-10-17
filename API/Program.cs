@@ -48,7 +48,6 @@ app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-//app.MapFallbackToController("Index", "Fallback");
 
 app.UseRouting();
 
@@ -56,8 +55,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}"
 );
-
-// app.MapFallbackToFile("index.html"); ;
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

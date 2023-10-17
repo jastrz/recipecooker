@@ -3,8 +3,8 @@
     aria-label="Meat" 
     aria-orientation="vertical"
     multiple="false"
-    #veggieList
     class="mat-mdc-chip-set-stacked"
+    (change)="onChange($event)"
     >
     <mat-chip-option *ngFor="let tag of tags">{{tag}}</mat-chip-option>
 </mat-chip-listbox>

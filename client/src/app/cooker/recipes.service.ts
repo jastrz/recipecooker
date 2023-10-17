@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Recipe } from '../models/recipe';
 import { map } from 'rxjs';
 import { Tag } from '../models/tag';
@@ -17,8 +17,22 @@ export class RecipesService {
 
   constructor(private http: HttpClient) { }
 
-  public getRecipes() {
-    return this.http.get<Recipe[]>(this.hostUrl + "Recipes").pipe(
+  public getRecipes(tags?: Tag[]) {
+
+    let params = new HttpParams();
+    if(tags)
+    {
+      tags.forEach((tag) => {
+        if(tag.name)
+        {
+          params = params.append(tag.category, tag.name);
+        }
+      });
+    }
+
+    console.log(params);
+
+    return this.http.get<Recipe[]>(this.hostUrl + "recipes", {params}).pipe(
       map(response => {
         this.recipes = response;
         return this.recipes;
@@ -27,7 +41,7 @@ export class RecipesService {
   }
 
   public getTags() {
-    return this.http.get<Tag[]>(this.hostUrl + "Recipes/tags").pipe(
+    return this.http.get<Tag[]>(this.hostUrl + "recipes/tags").pipe(
       map(response => {
         this.tags = response;
         return this.tags;

@@ -4,6 +4,7 @@
             <app-tagsholder 
                 [type]="mapItem.key"
                 [tags]="mapItem.value"
+                (updatedTag)="setTagForSearch($event)"
             ></app-tagsholder>
         </div>
     </div>

@@ -25,6 +25,15 @@ namespace Infrastructure
             return recipes;
         }
 
+        public async Task<IReadOnlyList<RecipeStep>> GetRecipeSteps(int recipeId)
+        {
+            var recipeSteps = await _context.Steps.Where(s => s.RecipeId == recipeId)
+                .ToListAsync();
+            
+            return recipeSteps;
+
+        }
+
         public async Task<IReadOnlyList<Tag>> GetTags()
         {
             var tags = await _context.Tags

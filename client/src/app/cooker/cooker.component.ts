@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatChipListbox } from '@angular/material/chips';
 import { RecipesService } from './recipes.service';
 import { Recipe } from '../models/recipe';
+import { Tag } from '../models/tag';
 
 @Component({
   selector: 'app-cooker',
@@ -16,6 +17,7 @@ export class CookerComponent implements OnInit {
   tags: Map<string, string[]> = new Map();
   currentRecipeIndex: number = 0;
   currentRecipe: Recipe | undefined;
+  tagsSelectedForSearch: Tag[] = [];
 
   constructor(private recipesService: RecipesService) {}
 
@@ -43,9 +45,10 @@ export class CookerComponent implements OnInit {
   }
 
   getRecipes() {
-    this.recipesService.getRecipes().subscribe({
+    this.recipesService.getRecipes(this.tagsSelectedForSearch).subscribe({
       next: result => {
         this.recipes = result;
+        this.currentRecipeIndex = 0;
         this.getCurrentRecipe();
       },
       error: error => console.log(error)
@@ -60,11 +63,22 @@ export class CookerComponent implements OnInit {
           if (!grouped.has(tag.category)) {
             grouped.set(tag.category, []);
           }
-          grouped.get(tag.category)?.push(tag.name);
+          if(tag.name) grouped.get(tag.category)?.push(tag.name);
           return grouped;
         }, new Map<string, string[]>());
         console.log(this.tags);
       }
     })
+  }
+
+  setTagForSearch($event : Tag) {
+    const tagForSearch = this.tagsSelectedForSearch.find(tag => tag.category == $event.category);
+
+    if(tagForSearch) 
+      tagForSearch.name = $event.name;
+    else
+      this.tagsSelectedForSearch.push($event);
+
+    console.log(this.tagsSelectedForSearch);
   }
 }
