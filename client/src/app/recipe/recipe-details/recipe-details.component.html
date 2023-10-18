@@ -1,5 +1,5 @@
-<div class="container" *ngIf="steps.length > 0">
-    <div class="card">
+<div class="container" *ngIf="steps.length > 0" [@openClose]="active ? 'open' : 'closed'" >
+    <div class="card" >
       <div class="card-body">
         <h3 class="card-title text-primary">Steps</h3>
         <ul class="list-group">

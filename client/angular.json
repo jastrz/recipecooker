@@ -30,7 +30,9 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/scss/bootstrap.scss",
               "@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "node_modules/bootswatch/dist/materia/bootstrap.min.css",
               "src/styles.scss"
             ],
             "scripts": []

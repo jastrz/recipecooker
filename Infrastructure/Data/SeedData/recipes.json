@@ -3,7 +3,7 @@
         "name": "Spaghetti Carbonara",
         "description": "Classic Italian pasta dish with eggs, cheese, and pancetta.",
         "pictureUrls": [
-            "https://example.com/spaghetti.jpg"
+            "images/recipes/spaghetti.jpg"
         ],
         "recipeTags": [
             { "name": "Italy", "category": "origin" },
@@ -37,7 +37,7 @@
         "name": "Chicken Alfredo",
         "description": "Creamy pasta with chicken, mushrooms, and a rich Alfredo sauce.",
         "pictureUrls": [
-            "https://example.com/chicken_alfredo.jpg"
+            "images/recipes/chicken_alfredo.jpg"
         ],
         "recipeTags": [
             { "name": "Italy", "category": "origin" },
@@ -71,7 +71,7 @@
         "name": "Margarita Pizza",
         "description": "Classic pizza with tomatoes, mozzarella, and basil.",
         "pictureUrls": [
-            "https://example.com/margarita_pizza.jpg"
+            "images/recipes/margarita_pizza.jpg"
         ],
         "recipeTags": [
             { "name": "Italy", "category": "origin" },
@@ -105,7 +105,7 @@
         "name": "Sushi Rolls",
         "description": "Fresh sushi rolls with a variety of fillings.",
         "pictureUrls": [
-            "https://example.com/sushi.jpg"
+            "images/recipes/sushi.jpg"
         ],
         "recipeTags": [
             { "name": "Japan", "category": "origin" },
@@ -139,7 +139,7 @@
         "name": "Baked Lasagna",
         "description": "Homemade lasagna with layers of pasta, cheese, and sauce.",
         "pictureUrls": [
-            "https://example.com/lasagna.jpg"
+            "images/recipes/lasagna.jpg"
         ],
         "recipeTags": [
             { "name": "Italy", "category": "origin" },
@@ -173,7 +173,7 @@
         "name": "Miso Soup",
         "description": "Japanese soup with miso paste, tofu, seaweed, and green onions.",
         "pictureUrls": [
-            "https://example.com/miso_soup.jpg"
+            "images/recipes/miso_soup.jpg"
         ],
         "recipeTags": [
             { "name": "Japan", "category": "origin" },
@@ -207,7 +207,7 @@
         "name": "Ratatouille",
         "description": "A French vegetable stew with tomatoes, eggplant, and zucchini.",
         "pictureUrls": [
-            "https://example.com/ratatouille.jpg"
+            "images/recipes/ratatouille.jpg"
         ],
         "recipeTags": [
             { "name": "France", "category": "origin" },
@@ -241,7 +241,7 @@
         "name": "BBQ Pulled Pork",
         "description": "Slow-cooked pulled pork with BBQ sauce, served in a bun.",
         "pictureUrls": [
-            "https://example.com/pulled_pork.jpg"
+            "images/recipes/pulled_pork.jpg"
         ],
         "recipeTags": [
             { "name": "USA", "category": "origin" },
@@ -275,7 +275,7 @@
         "name": "Chicken Shawarma",
         "description": "Middle Eastern dish with marinated chicken, served in a flatbread.",
         "pictureUrls": [
-            "https://example.com/shawarma.jpg"
+            "images/recipes/shawarma.jpg"
         ],
         "recipeTags": [
             { "name": "Middle East", "category": "origin" },
@@ -309,7 +309,7 @@
         "name": "Chocolate Chip Cookies",
         "description": "Homemade cookies with chocolate chips and a soft center.",
         "pictureUrls": [
-            "https://example.com/cookies.jpg"
+            "images/recipes/cookies.jpg"
         ],
         "recipeTags": [
             { "name": "USA", "category": "origin" },

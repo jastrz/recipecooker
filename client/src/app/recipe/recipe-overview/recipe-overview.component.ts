@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Recipe } from 'src/app/models/recipe';
 import { RecipeDetailsComponent } from '../recipe-details/recipe-details.component';
 
@@ -12,10 +12,12 @@ import { RecipeDetailsComponent } from '../recipe-details/recipe-details.compone
 })
 export class RecipeOverviewComponent {
   @Input() recipe?: Recipe;
+  @ViewChild(RecipeDetailsComponent) private details?: RecipeDetailsComponent;
 
-  detailsActive: boolean = false;
+  // detailsActive: boolean = false;
 
   public viewDetailsClicked() {
-    this.detailsActive = !this.detailsActive;
+    // this.detailsActive = !this.detailsActive;
+    this.details?.toggle();
   }
 }

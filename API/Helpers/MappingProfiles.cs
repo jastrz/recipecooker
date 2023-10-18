@@ -10,7 +10,8 @@ namespace API.Helpers
         {
             CreateMap<Recipe, RecipeDto>()
                 .ForMember(dest => dest.PictureUrls, opt => opt.MapFrom(src => src.PictureUrls.Select(p => p.Url)))
-                .ForMember(dest => dest.RecipeTags, opt => opt.MapFrom(src => src.RecipeTags.Select(rt => rt.Tag)));
+                .ForMember(dest => dest.RecipeTags, opt => opt.MapFrom(src => src.RecipeTags.Select(rt => rt.Tag)))
+                .ForMember(dest => dest.PictureUrls, opt => opt.MapFrom<RecipeUrlResolver>());
 
             CreateMap<API.Dtos.RecipeDto, Recipe>()
                 .ForMember(dest => dest.PictureUrls, opt => opt.MapFrom(src => src.PictureUrls.Select(url => new Picture { Url = url })))
