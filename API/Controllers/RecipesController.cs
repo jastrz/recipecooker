@@ -39,6 +39,7 @@ namespace API.Controllers
         {
             var tags = await _recipeRepo.GetTags();
             var data = _mapper.Map<IReadOnlyList<Tag>, IReadOnlyList<TagDto>>(tags);
+            
             return data;
         }
 

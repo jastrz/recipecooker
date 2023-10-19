@@ -1,8 +1,24 @@
 <ng-container *ngIf="recipe">
-    <h2>{{recipe.name}}</h2>
-    <p>{{recipe.description}}</p>
-    <img *ngFor="let pictureUrl of recipe.pictureUrls" src="{{pictureUrl}}" alt="{{recipe.name}}" class="img-fluid">
-    <p><a class="btn btn-secondary" role="button" (click)="viewDetailsClicked()">View details »</a></p>
+    <mat-card>
+        <mat-card-header>
+          <div mat-card-avatar style="margin-top: 20px;"></div>
+          <mat-card-title>{{recipe.name}}</mat-card-title>
+          <mat-card-subtitle>{{recipe.description}}</mat-card-subtitle>
+        </mat-card-header>
+        <ng-container *ngFor="let pictureUrl of recipe.pictureUrls" [@pictureAnimation]>
+            <img mat-card-image [src]="pictureUrl" [alt]="recipe.name" class="img-fluid sized" [@pictureAnimation]>
+        </ng-container>
+        <mat-card-content style="margin-top: 40px;">
+          <p>
+            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+            bred for hunting.
+          </p>
+        </mat-card-content>
+        <mat-card-actions style="justify-content: end; margin-top: 20px;">
+            <button mat-button (click)="viewDetailsClicked()">View details »</button>
+        </mat-card-actions>
+      </mat-card>
 
     <app-recipe-details [recipeId]="recipe.id" #details></app-recipe-details>
 </ng-container>

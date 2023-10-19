@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { TagsholderComponent } from '../tagsholder/tagsholder.component';
 import { RecipeOverviewComponent } from '../recipe/recipe-overview/recipe-overview.component';
 import { RecipeDetailsComponent } from '../recipe/recipe-details/recipe-details.component';
-
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,8 @@ import { RecipeDetailsComponent } from '../recipe/recipe-details/recipe-details.
     MatChipsModule,
     TagsholderComponent,
     RecipeOverviewComponent,
-    RecipeDetailsComponent
+    RecipeDetailsComponent,
+    MatExpansionModule
   ]
 })
 export class CookerModule { }

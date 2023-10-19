@@ -1,17 +1,33 @@
-<div class="container mt-5" *ngIf="tags.size > 0" >
-    <div class="row">
-        <div class="col md-4" *ngFor="let mapItem of tags | keyvalue">
-            <app-tagsholder 
-                [type]="mapItem.key"
-                [tags]="mapItem.value"
-                (updatedTag)="setTagForSearch($event)"
-            ></app-tagsholder>
-        </div>
-    </div>
+<div class="container mt-5">
 
-    <div class="d-flex justify-content-end">
-        <button class="btn btn-primary" (click)="getRecipes()">Search</button>
-    </div>
+    <mat-accordion class="example-headers-align" multi>
+        <mat-expansion-panel expanded="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Find recipes
+                </mat-panel-title>
+
+                <mat-panel-description>  
+                    
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="row">
+                <div class="col md-4" *ngFor="let mapItem of tags | keyvalue">
+                    <app-tagsholder 
+                        [type]="splitCamelCase(mapItem.key)"
+                        [tags]="mapItem.value"
+                        (updatedTag)="setTagForSearch($event)"
+                    ></app-tagsholder>
+                </div>
+            </div>
+        
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" (click)="getRecipes()">Search</button>
+            </div>
+        
+        </mat-expansion-panel>
+    </mat-accordion>
 </div>
 
 <div class="container mt-5" *ngIf="currentRecipe">

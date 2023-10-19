@@ -3,6 +3,7 @@ import { MatChipListbox } from '@angular/material/chips';
 import { RecipesService } from './recipes.service';
 import { Recipe } from '../models/recipe';
 import { Tag } from '../models/tag';
+import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-cooker',
@@ -13,6 +14,8 @@ import { Tag } from '../models/tag';
 export class CookerComponent implements OnInit {
 
   @ViewChild('meatList') meatList?: MatChipListbox;
+  @ViewChild(MatAccordion) accordion?: MatAccordion;
+
   recipes: Recipe[] = [];
   tags: Map<string, string[]> = new Map();
   currentRecipeIndex: number = 0;
@@ -50,6 +53,7 @@ export class CookerComponent implements OnInit {
         this.recipes = result;
         this.currentRecipeIndex = 0;
         this.getCurrentRecipe();
+        this.accordion?.closeAll();
       },
       error: error => console.log(error)
     });
@@ -80,5 +84,14 @@ export class CookerComponent implements OnInit {
       this.tagsSelectedForSearch.push($event);
 
     console.log(this.tagsSelectedForSearch);
+  }
+
+  splitCamelCase(input: string): string {
+    return input
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   }
 }
