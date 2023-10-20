@@ -1,0 +1,43 @@
+<div class="mt-4" *ngIf="recipeForm" [formGroup]="recipeForm">
+  <div class="row">
+    <div class="col-lg-6 form-group" style="float:none; margin:auto; margin-top: 50px">
+
+      <mat-form-field class="field mt-4">
+        <mat-label>Recipe name</mat-label>
+        <input matInput placeholder="..." formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field class="description-field mt-4">
+        <mat-label>Description</mat-label>
+        <textarea matInput cdkTextareaAutosize placeholder="..." formControlName="description"></textarea>
+      </mat-form-field>
+
+      <mat-form-field class="field mt-4">
+        <mat-label>Main ingredient</mat-label>
+        <input matInput placeholder="..." formControlName="ingredientTags">
+      </mat-form-field>
+
+      <mat-form-field class="field mt-4">
+        <mat-label>Origin</mat-label>
+        <input matInput placeholder="..." formControlName="originTags">
+      </mat-form-field>
+
+      <mat-form-field class="field mt-4">
+        <mat-label>Character</mat-label>
+        <input matInput placeholder="..." formControlName="characterTags">
+      </mat-form-field>
+
+      <div class="row mt-4" style="height: 160px;">
+        <div class="col-4">
+          <input type="file" class="form-control-file" style="display: none" accept=".jpg" multiple (change)="onFileSelected($event)"  #hiddenfileinput>
+          <button (click)="hiddenfileinput.click()" class="btn btn-primary">Select image</button>
+        </div>
+        <div class="col-8">
+          <img *ngIf="imageData" [src]="imageData" alt="Thumbnail" style="max-height: 150px;">
+          <p *ngIf="selectedFile">{{selectedFile.name}}</p>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</div>
