@@ -8,8 +8,16 @@
         </mat-step>
         <mat-step>
         <ng-template matStepLabel>Recipe steps</ng-template>
-            <app-recipe-add-steps [recipeForm]="recipeForm"></app-recipe-add-steps>
-            <button type="submit" class="btn btn-primary mt-4" (click)="stepper.next()">Continue</button>
+        <div class="row" style="margin-top: 50px;">
+          <div class="col-lg-6" *ngIf="recipeSteps.length > 0">
+            <app-recipe-steps-list [recipeSteps]="recipeSteps"></app-recipe-steps-list>
+          </div>
+          <div class="col-lg-6 form-group" style="margin:auto; vertical-align: top;" >
+            <app-recipe-add-steps [recipeStepForm]="recipeStepForm" [stepAdd]="addRecipeStep"></app-recipe-add-steps>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4" (click)="stepper.next()">Continue</button>
+            
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Done</ng-template>

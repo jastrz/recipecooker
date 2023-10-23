@@ -1,0 +1,12 @@
+<ng-container *ngFor="let recipeStep of recipeSteps; let i = index">
+    <div class="row recipe-step">
+        <div class="col-10 recipe-step-content">
+            <p class="name">Name: {{ recipeStep.name }}</p>
+            <p class="description">Description: {{ recipeStep.description }}</p>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-danger" (click)="removeRecipeStep(i)">X</button>
+        </div>
+      
+    </div>
+</ng-container>

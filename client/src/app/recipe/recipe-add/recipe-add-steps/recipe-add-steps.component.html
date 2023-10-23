@@ -1,1 +1,13 @@
-<p>recipe-add-steps works!</p>
+<div *ngIf="recipeStepForm" [formGroup]="recipeStepForm">
+    <mat-form-field class="field mt-4">
+        <mat-label>Step name</mat-label>
+        <input id="recipe-step-name" matInput placeholder="..." formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field class="description-field mt-4">
+        <mat-label>Description</mat-label>
+        <textarea id="recipe-step-description" matInput cdkTextareaAutosize placeholder="..." formControlName="description"></textarea>
+    </mat-form-field>
+    <button (click)="addRecipeStep()" class="btn btn-primary" style="float: right;">Add</button>
+</div>
+
