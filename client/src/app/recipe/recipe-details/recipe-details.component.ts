@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { RecipesService } from 'src/app/cooker/recipes.service';
 import { RecipeStep } from 'src/app/models/recipeStep';
 
@@ -28,16 +29,17 @@ export class RecipeDetailsComponent implements OnInit {
   steps : RecipeStep[] = [];
   active : boolean = false;
 
-  constructor(private recipeService: RecipesService) {}
+  constructor(private recipeService: RecipesService, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    console.log(this.recipeId);
-    this.recipeId && this.recipeService.getRecipeSteps(this.recipeId).subscribe({
-      next: data => this.steps = data
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    console.log(id);
+    id && this.recipeService.getRecipeSteps(+id).subscribe({
+      next: data => {
+        this.steps = data;
+        console.log(data);
+      }
     })
-
-    console.log(this.steps);
-    
   }
 
   toggle() {

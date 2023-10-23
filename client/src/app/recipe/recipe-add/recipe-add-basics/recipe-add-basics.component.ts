@@ -16,39 +16,30 @@ import { MatIconModule } from '@angular/material/icon';
 export class RecipeAddBasicsComponent {
   @Input() recipeForm?: FormGroup;
 
-  //selectedFiles: FileList = new FileList();
   fileNames: string[] = [];
   selectedFile: File | null = null;
   imageData: string | ArrayBuffer | null = null;
 
-  //selectedFile?: File;
-
   onFileSelected(event: any) {
     const fileList: FileList = event.target.files;
-    //this.selectedFiles = [...event.target.files];
 
     if(event.target.files.length > 0) {
       this.selectedFile = event.target.files[0];
-
-      // Create a FileReader to read the selected file
       const reader = new FileReader();
+
       reader.onload = (e) => {
-        // Set the imageData to the data URL of the selected image
         if(e.target) this.imageData = e.target.result;
       };
+
       if(this.selectedFile) reader.readAsDataURL(this.selectedFile);
     } else {
       this.selectedFile = null;
       this.imageData = null;
     }
-
-    console.log(this.selectedFile);
   }
 
   onSubmit() {
-    
     const formData = this.recipeForm?.value;
     console.log(formData);
-    
   }
 }

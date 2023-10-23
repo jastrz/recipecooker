@@ -30,7 +30,15 @@
     </mat-accordion>
 </div>
 
-<div class="container mt-5" *ngIf="currentRecipe">
+<div class="container mt-5" *ngIf="recipes.length > 0">
+    <div class="row">
+        <div class="col-md-4 mt-4" *ngFor="let recipe of recipes">
+            <app-recipe-overview [recipe]="recipe"></app-recipe-overview>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="container mt-5" *ngIf="currentRecipe">
     <div class="row">
         <div class="col-md-2 d-flex">
             <button 
@@ -52,4 +60,4 @@
                 ></button>
         </div>
     </div>
-</div>
+</div> -->
