@@ -11,9 +11,16 @@ namespace API.Controllers
     {
         private readonly IRecipeRepository _recipeRepo;
         private readonly IMapper _mapper;
+        private readonly ILogger<RecipesController> _logger;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IRecipeService _recipeService;
 
-        public RecipesController(IRecipeRepository recipeRepo, IMapper mapper)
+        public RecipesController(IRecipeRepository recipeRepo, IMapper mapper, ILogger<RecipesController> logger, 
+        IWebHostEnvironment webHostEnvironment, IRecipeService recipeService)
         {
+            _recipeService = recipeService;
+            _webHostEnvironment = webHostEnvironment;
+            _logger = logger;
             _recipeRepo = recipeRepo;
             _mapper = mapper;
         }
@@ -31,6 +38,7 @@ namespace API.Controllers
                 recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Origin)).ToList();
 
             var data = _mapper.Map<IReadOnlyList<Recipe>, IReadOnlyList<RecipeDto>>(recipes);
+
             return data;
         }
 
@@ -48,7 +56,54 @@ namespace API.Controllers
         {
             var steps = await _recipeRepo.GetRecipeSteps(id);
             var data = _mapper.Map<IReadOnlyList<RecipeStep>, IReadOnlyList<RecipeStepDto>>(steps);
+
             return data;
+        }
+
+        [HttpPost]
+        [Route("post/image")]
+        public async Task<IActionResult> PostRecipeImagesAsync([FromForm] List<IFormFile> files) 
+        {
+            try
+            {
+                var pictureUrls = new List<string>();
+                if (files == null || files.Count == 0)
+                {
+                    return BadRequest("No files were sent for upload.");
+                }
+
+                foreach (var file in files)
+                {
+                    if (file.Length > 0)
+                    {
+                        var path = _webHostEnvironment.ContentRootPath;
+                        var filePath = Path.Combine(path + @"/Content/images/recipes", file.FileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        pictureUrls.Add(string.Format("images/recipes/{0}", file.FileName));
+                    }
+                }
+
+                return Ok(pictureUrls);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        [Route("post")]
+        public async Task<IActionResult> PostRecipe([FromBody] RecipePostRequest request)
+        {
+            var recipe = _mapper.Map<RecipeDto, Recipe>(request.Recipe);
+            await _recipeService.AddRecipeAsync(recipe, request.RecipeSteps);
+
+            return Ok();
         }
     }
 }

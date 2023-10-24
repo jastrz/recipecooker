@@ -22,7 +22,7 @@ namespace API.Helpers
                         Name = tag.Name,
                         Category = new() 
                         {
-                            Name = tag.Name
+                            Name = tag.Category
                         }
                     }
                 })));
@@ -33,13 +33,17 @@ namespace API.Helpers
             // Used for seeding.
             CreateMap<Infrastructure.Dtos.RecipeDto, Recipe>()
                 .ForMember(dest => dest.PictureUrls, opt => opt.MapFrom(src => src.PictureUrls.Select(url => new Picture { Url = url })))
-                .ForMember(dest => dest.RecipeTags, opt => opt.MapFrom(src => src.RecipeTags.Select(tag => new RecipeTag { Tag = new Tag() {
-                    Name = tag.Name,
-                    Category = new() 
+                .ForMember(dest => dest.RecipeTags, opt => opt.MapFrom(src => src.RecipeTags.Select(tag => new RecipeTag 
+                { 
+                    Tag = new Tag() 
                     {
-                        Name = tag.Category
+                        Name = tag.Name,
+                        Category = new() 
+                        {
+                            Name = tag.Category
+                        }
                     }
-                } })));
+                })));
 
             CreateMap<RecipeStep, RecipeStepDto>();
         }

@@ -8,6 +8,10 @@ import { RecipeAddStepsComponent } from './recipe-add-steps/recipe-add-steps.com
 import { RecipeStep } from 'src/app/models/recipeStep';
 import { RecipeDetailsComponent } from '../recipe-details/recipe-details.component';
 import { RecipeStepsListComponent } from './recipe-add-steps/recipe-steps-list/recipe-steps-list.component';
+import { Recipe } from 'src/app/models/recipe';
+import { RecipesService } from 'src/app/cooker/recipes.service';
+import { FileUploadService } from 'src/app/services/file-upload.service';
+import { map, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-recipe-add',
@@ -19,11 +23,12 @@ import { RecipeStepsListComponent } from './recipe-add-steps/recipe-steps-list/r
 export class RecipeAddComponent {
 
   recipeSteps: RecipeStep[] = [];
+  selectedFile: File | null = null;
+  private pictureUrls : string[] = [];
 
   recipeForm = this.fb.group({
     name: [''],
     description: [''],
-    pictureUrls: [''],
     ingredientTags: [''],
     originTags: [''],
     characterTags: ['']
@@ -34,7 +39,11 @@ export class RecipeAddComponent {
     description: ['', Validators.required]
   });
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private recipeService: RecipesService, private fileUploadService : FileUploadService) { }
+
+  setFile(file: File) {
+    this.selectedFile = file;
+  }
 
   addRecipeStep = () => {
 
@@ -49,5 +58,76 @@ export class RecipeAddComponent {
       this.recipeSteps.push(step);
       this.recipeStepForm.reset();
     } 
+
+    console.log(this.getRecipeData());
+  }
+
+  private getRecipeData() : {recipe: Recipe, recipeSteps: RecipeStep[]} {
+    return { 
+      recipe: this.mapFormToRecipe(),
+      recipeSteps: this.recipeSteps,
+    };
+  }
+
+  postRecipe() {
+    if(!this.selectedFile) return;
+    // this.fileUploadService.uploadMultipleFiles([this.selectedFile], "recipes/post/image").subscribe({
+    //   next: response => {
+    //     this.urls = response;
+    //     const recipeData = this.getRecipeData();
+    //     this.recipeService.postRecipe(recipeData.recipe, recipeData.recipeSteps).subscribe({
+    //       next: response => console.log(response),
+    //       error: error => console.log(error)
+    //     })
+    //   }
+    // })
+
+    this.fileUploadService.uploadMultipleFiles([this.selectedFile], "recipes/post/image").pipe(
+      map(response => {
+        this.pictureUrls = response;
+        const recipeData = this.getRecipeData();
+        return recipeData;
+      }),
+      mergeMap(recipeData => {
+        return this.recipeService.postRecipe(recipeData.recipe, recipeData.recipeSteps);
+      })
+    ).subscribe({
+      next: response => console.log(response),
+      error: error => console.error(error)
+    });
+  }
+
+  private mapFormToRecipe(): Recipe {
+
+    const formValue = this.recipeForm.value;
+
+    const recipe: Recipe = {
+      name: formValue.name as string,
+      description: formValue.description as string,
+      pictureUrls: this.pictureUrls,
+      recipeTags: [],
+    };
+
+    
+    // Map ingredientTags
+    if (formValue.ingredientTags) {
+      const ingredients = formValue.ingredientTags.split(',').map(tag => ({ name: tag.trim(), category: 'mainIngredient' }));
+      recipe.recipeTags.push(...ingredients);
+    }
+    
+    // Map originTags
+    if (formValue.originTags) {
+      const origins = formValue.originTags.split(',').map(tag => ({ name: tag.trim(), category: 'origin' }));
+      recipe.recipeTags.push(...origins);
+    }
+    
+    // Map characterTags
+    if (formValue.characterTags) {
+      const characters = formValue.characterTags.split(',').map(tag => ({ name: tag.trim(), category: 'character' }));
+      recipe.recipeTags.push(...characters);
+    }
+    
+    console.log(recipe);
+    return recipe;
   }
 }

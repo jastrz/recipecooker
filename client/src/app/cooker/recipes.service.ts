@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Recipe } from '../models/recipe';
 import { map } from 'rxjs';
 import { Tag } from '../models/tag';
@@ -9,7 +9,7 @@ import { RecipeStep } from '../models/recipeStep';
   providedIn: 'root'
 })
 export class RecipesService {
-  private hostUrl = "https://localhost:5002/api/"
+  private hostUrl = "https://localhost:5002/api/";
 
   recipes: Recipe[] = [];
   tags: Tag[] = [];
@@ -57,5 +57,17 @@ export class RecipesService {
         return this.steps;
       })
     )
+  }
+
+  public postRecipe(recipe: Recipe, steps: RecipeStep[]) {
+
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    const data = {
+      recipe: recipe,
+      recipeSteps: steps
+    }
+
+    return this.http.post<any>(this.hostUrl + "recipes/post", data);
   }
 }

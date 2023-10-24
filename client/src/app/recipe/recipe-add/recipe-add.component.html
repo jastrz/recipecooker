@@ -3,7 +3,7 @@
     <mat-stepper #stepper>
         <mat-step >
         <ng-template matStepLabel>Basic info</ng-template>
-          <app-recipe-add-basics [recipeForm]="recipeForm"></app-recipe-add-basics>
+          <app-recipe-add-basics [recipeForm]="recipeForm" (selectedFileEvent)="setFile($event)"></app-recipe-add-basics>
           <button type="submit" class="btn btn-primary mt-4" (click)="stepper.next()">Continue</button>
         </mat-step>
         <mat-step>
@@ -25,6 +25,7 @@
           <div>
             <button mat-button matStepperPrevious>Back</button>
             <button mat-button (click)="stepper.reset()">Reset</button>
+            <button mat-button (click)="postRecipe()">Post</button>
           </div>
         </mat-step>
     </mat-stepper>
