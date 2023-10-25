@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { MatChipListbox, MatChipsModule } from '@angular/material/chips';
 import { Tag } from '../models/tag';
 
 @Component({
@@ -11,13 +11,16 @@ import { Tag } from '../models/tag';
   imports: [MatChipsModule, CommonModule]
 })
 export class TagsholderComponent {
+  @ViewChild('chipList') chipList?: MatChipListbox;
+
+  @Input() tags: Tag[] = [];
   @Input() type?: string;
-  @Input() tags?: string[];
 
-  @Output() updatedTag = new EventEmitter<Tag>();
+  @Output() onTagSelectionChanged = new EventEmitter<Tag>();
 
-  onChange(event : MatChipListboxChange) {
-    const selectedTag : Tag = { name: event.value, category: this.type as string};
-    this.updatedTag.emit(selectedTag);
+  selectTag(tag: Tag) {
+    var chip = this.chipList?._chips.find(c => c.value == tag.name);
+    tag.active = chip?.selected as boolean;
+    this.onTagSelectionChanged.emit(tag);
   }
 }

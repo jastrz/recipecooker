@@ -1,7 +1,7 @@
 <div class="container mt-5">
 
-    <mat-accordion class="example-headers-align" multi *ngIf="tags.size>0">
-        <mat-expansion-panel expanded="true">
+    <mat-accordion class="example-headers-align" multi *ngIf="groupedTags.size>0" >
+        <mat-expansion-panel expanded="true" (opened)="onCookerOpened()">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Find recipes
@@ -13,51 +13,27 @@
             </mat-expansion-panel-header>
 
             <div class="row">
-                <div class="col md-4" *ngFor="let mapItem of tags | keyvalue">
+                <div class="col md-4" *ngFor="let mapItem of groupedTags | keyvalue">
                     <app-tagsholder 
                         [type]="splitCamelCase(mapItem.key)"
                         [tags]="mapItem.value"
-                        (updatedTag)="setTagForSearch($event)"
+                        (onTagSelectionChanged)="selectTag($event)"
                     ></app-tagsholder>
                 </div>
             </div>
         
             <div class="d-flex justify-content-end">
-                <button class="btn btn-primary" (click)="getRecipes()">Search</button>
+                <button class="btn btn-primary" (click)="toggleRecipes()">Cook</button>
             </div>
         
         </mat-expansion-panel>
     </mat-accordion>
 </div>
 
-<div class="container mt-5" *ngIf="recipes.length > 0">
+<div class="container mt-5" *ngIf="showRecipes">
     <div class="row">
         <div class="col-md-4 mt-4" *ngFor="let recipe of recipes">
             <app-recipe-overview [recipe]="recipe"></app-recipe-overview>
         </div>
     </div>
 </div>
-
-<!-- <div class="container mt-5" *ngIf="currentRecipe">
-    <div class="row">
-        <div class="col-md-2 d-flex">
-            <button 
-                class="btn btn-primary" 
-                style="height: 50px"
-                (click)="decrementRecipeIndex()"
-                >
-                <</button>
-        </div>
-        <div class="col-md-8">
-            <app-recipe-overview [recipe]="currentRecipe"></app-recipe-overview>
-        </div>
-        <div class="col-md-2 d-flex justify-content-end">
-            <button 
-                class="btn btn-primary" 
-                style="height: 50px"
-                (click)="incrementRecipeIndex()"
-                >
-                ></button>
-        </div>
-    </div>
-</div> -->

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Recipe } from '../models/recipe';
 import { map } from 'rxjs';
-import { Tag } from '../models/tag';
+import { ITag } from '../models/tag';
 import { RecipeStep } from '../models/recipeStep';
 
 @Injectable({
@@ -12,12 +12,12 @@ export class RecipesService {
   private hostUrl = "https://localhost:5002/api/";
 
   recipes: Recipe[] = [];
-  tags: Tag[] = [];
+  tags: ITag[] = [];
   steps: RecipeStep[] = [];
 
   constructor(private http: HttpClient) { }
 
-  public getRecipes(tags?: Tag[]) {
+  public getRecipes(tags?: ITag[]) {
 
     let params = new HttpParams();
     if(tags)
@@ -41,7 +41,7 @@ export class RecipesService {
   }
 
   public getTags() {
-    return this.http.get<Tag[]>(this.hostUrl + "recipes/tags").pipe(
+    return this.http.get<ITag[]>(this.hostUrl + "recipes/tags").pipe(
       map(response => {
         this.tags = response;
         return this.tags;

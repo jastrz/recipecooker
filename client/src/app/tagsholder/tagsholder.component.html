@@ -1,10 +1,9 @@
 <p class="text-center fs-4">{{type}}</p>
 <mat-chip-listbox 
-    aria-label="Meat" 
+    #chipList
     aria-orientation="vertical"
     multiple="false"
     class="mat-mdc-chip-set-stacked"
-    (change)="onChange($event)"
     >
-    <mat-chip-option *ngFor="let tag of tags">{{tag}}</mat-chip-option>
+    <mat-chip-option (click)="selectTag(tag)" *ngFor="let tag of tags" [disabled]="!tag.active">{{tag.name}}</mat-chip-option>
 </mat-chip-listbox>

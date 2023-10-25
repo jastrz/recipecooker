@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatChipListbox } from '@angular/material/chips';
 import { RecipesService } from './recipes.service';
 import { Recipe } from '../models/recipe';
-import { Tag } from '../models/tag';
+import { ITag, Tag } from '../models/tag';
 import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
@@ -17,10 +17,10 @@ export class CookerComponent implements OnInit {
   @ViewChild(MatAccordion) accordion?: MatAccordion;
 
   recipes: Recipe[] = [];
-  tags: Map<string, string[]> = new Map();
-  currentRecipeIndex: number = 0;
-  currentRecipe: Recipe | undefined;
-  tagsSelectedForSearch: Tag[] = [];
+  groupedTags: Map<string, Tag[]> = new Map();
+  tagsSelectedForSearch: ITag[] = [];
+  showRecipes: boolean = false;
+  activeTags: Tag[] = [];
 
   constructor(private recipesService: RecipesService) {}
 
@@ -28,32 +28,24 @@ export class CookerComponent implements OnInit {
     this.getTags();
   }
 
-  getCurrentRecipe(): Recipe | undefined {
-    this.currentRecipe = this.recipes[this.currentRecipeIndex]; 
-    return this.currentRecipe;
+  toggleRecipes() {
+    this.showRecipes = !this.showRecipes;
+
+    if(this.showRecipes) 
+      this.accordion?.closeAll();
+    else
+      this.accordion?.openAll();
   }
 
-  incrementRecipeIndex() {
-    if (this.currentRecipeIndex < this.recipes.length - 1) {
-      this.currentRecipeIndex++;
-      this.getCurrentRecipe();
-    }
-  }
-
-  decrementRecipeIndex() {
-    if (this.currentRecipeIndex > 0) {
-      this.currentRecipeIndex--;
-      this.getCurrentRecipe();
-    }
+  onCookerOpened() {
+    this.showRecipes = false;
   }
 
   getRecipes() {
     this.recipesService.getRecipes(this.tagsSelectedForSearch).subscribe({
       next: result => {
         this.recipes = result;
-        this.currentRecipeIndex = 0;
-        this.getCurrentRecipe();
-        this.accordion?.closeAll();
+        this.updateTags();
       },
       error: error => console.log(error)
     });
@@ -62,27 +54,27 @@ export class CookerComponent implements OnInit {
   getTags() {
     this.recipesService.getTags().subscribe({
       next: result => {
-        const tags = result;
-        this.tags = tags.reduce((grouped, tag) => {
+        const tags = result.map(tag => new Tag(tag, true));
+        this.groupedTags = tags.reduce((grouped, tag) => {
           if (!grouped.has(tag.category)) {
             grouped.set(tag.category, []);
           }
-          if(tag.name) grouped.get(tag.category)?.push(tag.name);
+          if(tag.name) grouped.get(tag.category)?.push(tag);
           return grouped;
-        }, new Map<string, string[]>());
-        console.log(this.tags);
+        }, new Map<string, Tag[]>());
       }
     })
   }
 
-  setTagForSearch($event : Tag) {
-    const tagForSearch = this.tagsSelectedForSearch.find(tag => tag.category == $event.category);
+  selectTag(tag: Tag) {
+    if(tag.active) {
+      this.tagsSelectedForSearch.push(tag);
+    } 
+    else {
+      this.tagsSelectedForSearch = this.tagsSelectedForSearch.filter(t => t.name !== tag.name);
+    }
 
-    if(tagForSearch) 
-      tagForSearch.name = $event.name;
-    else
-      this.tagsSelectedForSearch.push($event);
-
+    this.getRecipes();
     console.log(this.tagsSelectedForSearch);
   }
 
@@ -93,5 +85,16 @@ export class CookerComponent implements OnInit {
       .split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
+  }
+
+  private updateTags() {
+    const tagsInRecipes = new Set(this.recipes.map(o => o.recipeTags.map(o => o.name)).flat());
+    console.log(tagsInRecipes);
+
+    for (const [category, tags] of this.groupedTags) {
+      for (const tag of tags) {
+        tag.active = tagsInRecipes.has(tag.name);
+      }
+    }
   }
 }
