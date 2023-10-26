@@ -52,6 +52,15 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
+        public async Task<RecipeDto> GetRecipe(int id) 
+        {
+            var recipe = await _recipeRepo.GetRecipe(id);
+            var data = _mapper.Map<Recipe, RecipeDto>(recipe);
+
+            return data;
+        }
+
+        [HttpGet("steps/{id}")]
         public async Task<IReadOnlyList<RecipeStepDto>> GetRecipeSteps(int id)
         {
             var steps = await _recipeRepo.GetRecipeSteps(id);

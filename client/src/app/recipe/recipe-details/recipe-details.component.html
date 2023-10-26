@@ -1,6 +1,19 @@
-<!-- <div class="container" *ngIf="steps.length > 0" [@openClose]="active ? 'open' : 'closed'" > -->
-<div class="container" *ngIf="steps.length > 0">
-  <div class="card" >
+<div class="container">
+  
+  <button class="btn btn-primary mb-4" (click)="onClickBackButton()"> < </button>
+
+  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" *ngIf="recipe">
+    <div class="col p-4 d-flex flex-column position-static">
+      <strong class="d-inline-block mb-2 text-primary-emphasis">World</strong>
+      <h3 class="mb-0">{{recipe.name}}</h3>
+      <p class="card-text mt-4">{{recipe.description}}</p>
+    </div>
+    <div class="col-auto d-none d-lg-block">
+      <img class="bd-placeholder-img" [src]="recipe.pictureUrls[0]" width="auto" height="250" alt="Recipe Image">
+    </div>
+  </div>
+
+  <div class="card" *ngIf="steps.length > 0">
     <div class="card-body">
       <h3 class="card-title text-primary">Steps</h3>
       <ul class="list-group">

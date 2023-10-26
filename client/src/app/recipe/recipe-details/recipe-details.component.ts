@@ -1,8 +1,9 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RecipesService } from 'src/app/cooker/recipes.service';
+import { Recipe } from 'src/app/models/recipe';
 import { RecipeStep } from 'src/app/models/recipeStep';
 
 @Component({
@@ -24,20 +25,25 @@ import { RecipeStep } from 'src/app/models/recipeStep';
   ]
 })
 export class RecipeDetailsComponent implements OnInit {
-  @Input() recipeId?: number;
-
   steps : RecipeStep[] = [];
   active : boolean = false;
+  recipe?: Recipe;
 
-  constructor(private recipeService: RecipesService, private activatedRoute: ActivatedRoute) {}
+  constructor(private recipeService: RecipesService, private activatedRoute: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log(id);
-    id && this.recipeService.getRecipeSteps(+id).subscribe({
+    if(!id) return;
+
+    this.recipeService.getRecipe(+id).subscribe({
+      next: data => {
+        this.recipe = data;
+      }
+    })
+
+    this.recipeService.getRecipeSteps(+id).subscribe({
       next: data => {
         this.steps = data;
-        console.log(data);
       }
     })
   }
@@ -45,5 +51,9 @@ export class RecipeDetailsComponent implements OnInit {
   toggle() {
     this.active = !this.active;
     console.log(this.active);
+  }
+
+  onClickBackButton() {
+    this.router.navigateByUrl("/cook");
   }
 }

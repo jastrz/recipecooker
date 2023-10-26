@@ -27,6 +27,6 @@ export class RecipeOverviewComponent {
   constructor(private router: Router) {}
 
   public viewDetailsClicked() {
-    this.router.navigateByUrl('/recipe/' + this.recipe?.id);
+    this.router.navigateByUrl('cook/recipe/' + this.recipe?.id);
   }
 }

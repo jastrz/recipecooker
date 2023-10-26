@@ -13,6 +13,19 @@ namespace Infrastructure
             _context = context;
         }
 
+        public async Task<Recipe> GetRecipe(int id)
+        {
+            var recipe = await _context.Recipes
+                .Where(r => r.Id == id)
+                .Include(r => r.PictureUrls)
+                .Include(r => r.RecipeTags)
+                    .ThenInclude(r => r.Tag)
+                        .ThenInclude(r => r.Category)
+                .FirstOrDefaultAsync();
+
+                return recipe;
+        }
+
         public async Task<IReadOnlyList<Recipe>> GetRecipes()
         {
             var recipes = await _context.Recipes
@@ -31,7 +44,6 @@ namespace Infrastructure
                 .ToListAsync();
             
             return recipeSteps;
-
         }
 
         public async Task<IReadOnlyList<Tag>> GetTags()
@@ -40,7 +52,18 @@ namespace Infrastructure
                 .Include(t => t.Category)
                 .ToListAsync();
 
-            return tags;
+            var sortedTags = tags.AsEnumerable()
+                .OrderBy(t => t.Category.Name switch
+                {
+                    "mainIngredient" => 1,
+                    "origin" => 2,
+                    "character" => 3,
+                    _ => 4
+                })
+                .ThenBy(t => t.Category.Name)
+                .ToList();
+
+            return sortedTags;
         }
     }
 }

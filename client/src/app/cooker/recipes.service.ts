@@ -40,6 +40,10 @@ export class RecipesService {
     )
   }
 
+  public getRecipe(recipeId: number) {
+    return this.http.get<Recipe>(this.hostUrl + "recipes/" + recipeId);
+  }
+
   public getTags() {
     return this.http.get<ITag[]>(this.hostUrl + "recipes/tags").pipe(
       map(response => {
@@ -50,8 +54,7 @@ export class RecipesService {
   }
 
   public getRecipeSteps(recipeId: number) {
-    console.log(recipeId);
-    return this.http.get<RecipeStep[]>(this.hostUrl + "recipes/" + recipeId).pipe(
+    return this.http.get<RecipeStep[]>(this.hostUrl + "recipes/steps/" + recipeId).pipe(
       map(response => {
         this.steps = response;
         return this.steps;
