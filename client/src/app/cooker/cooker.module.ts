@@ -7,6 +7,7 @@ import { TagsholderComponent } from '../tagsholder/tagsholder.component';
 import { RecipeOverviewComponent } from '../recipe/recipe-overview/recipe-overview.component';
 import { RecipeDetailsComponent } from '../recipe/recipe-details/recipe-details.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     TagsholderComponent,
     RecipeOverviewComponent,
     RecipeDetailsComponent,
-    MatExpansionModule
+    MatExpansionModule,
+    NgbPaginationModule
   ]
 })
 export class CookerModule { }

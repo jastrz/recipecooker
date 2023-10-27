@@ -15,29 +15,40 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class RecipeAddBasicsComponent {
   @Input() recipeForm?: FormGroup;
-  @Output() selectedFileEvent = new EventEmitter<File>();
+  @Output() selectedFileEvent = new EventEmitter<File[]>();
 
-  selectedFile? : File;
-  imageData: string | ArrayBuffer | null = null;
+  selectedFiles : File[] = [];
+  imagesData: (string | ArrayBuffer | null)[] = [];
 
   onFileSelected(event: any) {
     const fileList: FileList = event.target.files;
 
-    if(event.target.files.length > 0) {
-      this.selectedFile = event.target.files[0];
-      this.selectedFileEvent.emit(this.selectedFile);
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        if(e.target) this.imageData = e.target.result;
-      };
-      
-      if(this.selectedFile) {
-        reader.readAsDataURL(this.selectedFile);
+    
+    if (fileList.length > 0) {
+      for (let i = 0; i < fileList.length; i++) {
+        const file: File = fileList[i];
+        this.selectedFiles.push(file);
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target) {
+            this.imagesData.push(e.target.result);
+          }
+        };
+        
+        reader.readAsDataURL(file);
       }
+      
+      this.selectedFileEvent.emit(this.selectedFiles);
     } else {
-      this.imageData = null;
+      this.imagesData = [];
     }
+    console.log(this.selectedFiles);
+  }
+
+  removeImage(id : number) {
+    this.selectedFiles.splice(id, 1);
+    this.imagesData.splice(id, 1);
   }
 
   onSubmit() {

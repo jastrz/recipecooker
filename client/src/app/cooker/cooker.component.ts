@@ -4,6 +4,7 @@ import { RecipesService } from './recipes.service';
 import { Recipe } from '../models/recipe';
 import { ITag, Tag } from '../models/tag';
 import { MatAccordion } from '@angular/material/expansion';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-cooker',
@@ -21,6 +22,9 @@ export class CookerComponent implements OnInit {
   tagsSelectedForSearch: ITag[] = [];
   showRecipes: boolean = false;
   activeTags: Tag[] = [];
+
+  currentPage = 1;
+  pageSize = 6;
 
   constructor(private recipesService: RecipesService) {}
 
@@ -64,6 +68,12 @@ export class CookerComponent implements OnInit {
         }, new Map<string, Tag[]>());
       }
     })
+  }
+
+  getCurrentPageRecipes(): Recipe[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.recipes.slice(startIndex, endIndex);
   }
 
   selectTag(tag: Tag) {

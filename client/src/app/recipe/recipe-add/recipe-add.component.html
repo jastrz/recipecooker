@@ -3,8 +3,13 @@
     <mat-stepper #stepper>
         <mat-step >
         <ng-template matStepLabel>Basic info</ng-template>
-          <app-recipe-add-basics [recipeForm]="recipeForm" (selectedFileEvent)="setFile($event)"></app-recipe-add-basics>
-          <button type="submit" class="btn btn-primary mt-4" (click)="stepper.next()">Continue</button>
+          <app-recipe-add-basics [recipeForm]="recipeForm" (selectedFileEvent)="setFiles($event)"></app-recipe-add-basics>
+          <button type="submit" 
+            class="btn btn-primary mt-4" 
+            (click)="stepper.next()" 
+            [disabled]="recipeForm.invalid || selectedFiles.length == 0"
+            >Continue
+          </button>
         </mat-step>
         <mat-step>
         <ng-template matStepLabel>Recipe steps</ng-template>
@@ -16,7 +21,7 @@
             <app-recipe-add-steps [recipeStepForm]="recipeStepForm" [stepAdd]="addRecipeStep"></app-recipe-add-steps>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary mt-4" (click)="stepper.next()">Continue</button>
+        <button type="submit" class="btn btn-primary mt-4" (click)="stepper.next()" [disabled]="recipeSteps.length == 0">Continue</button>
             
         </mat-step>
         <mat-step>

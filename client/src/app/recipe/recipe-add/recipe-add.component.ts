@@ -23,15 +23,15 @@ import { map, mergeMap } from 'rxjs';
 export class RecipeAddComponent {
 
   recipeSteps: RecipeStep[] = [];
-  selectedFile: File | null = null;
+  selectedFiles: File[] = [];
   private pictureUrls : string[] = [];
 
   recipeForm = this.fb.group({
-    name: [''],
-    description: [''],
-    ingredientTags: [''],
-    originTags: [''],
-    characterTags: ['']
+    name: ['', Validators.required],
+    description: ['', Validators.required],
+    ingredientTags: ['', Validators.required],
+    originTags: ['', Validators.required],
+    characterTags: ['', Validators.required]
   });
 
   recipeStepForm = this.fb.group({
@@ -41,8 +41,8 @@ export class RecipeAddComponent {
 
   constructor(private fb: FormBuilder, private recipeService: RecipesService, private fileUploadService : FileUploadService) { }
 
-  setFile(file: File) {
-    this.selectedFile = file;
+  setFiles(files: File[]) {
+    this.selectedFiles = files;
   }
 
   addRecipeStep = () => {
@@ -70,19 +70,9 @@ export class RecipeAddComponent {
   }
 
   postRecipe() {
-    if(!this.selectedFile) return;
-    // this.fileUploadService.uploadMultipleFiles([this.selectedFile], "recipes/post/image").subscribe({
-    //   next: response => {
-    //     this.urls = response;
-    //     const recipeData = this.getRecipeData();
-    //     this.recipeService.postRecipe(recipeData.recipe, recipeData.recipeSteps).subscribe({
-    //       next: response => console.log(response),
-    //       error: error => console.log(error)
-    //     })
-    //   }
-    // })
+    if(this.selectedFiles.length == 0) return;
 
-    this.fileUploadService.uploadMultipleFiles([this.selectedFile], "recipes/post/image").pipe(
+    this.fileUploadService.uploadMultipleFiles(this.selectedFiles, "recipes/post/image").pipe(
       map(response => {
         this.pictureUrls = response;
         const recipeData = this.getRecipeData();
