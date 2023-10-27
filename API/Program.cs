@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Core.Interfaces;
 using Infrastructure;
+using Infrastructure.Interfaces;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -25,6 +26,7 @@ builder.Services.AddDbContext<CookerContext>(opt =>
 });
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 builder.Services.AddScoped<IRecipeService, RecipeService>();
+builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 builder.Services.AddScoped<CookerContextSeed>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

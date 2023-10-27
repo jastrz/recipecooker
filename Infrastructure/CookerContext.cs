@@ -38,7 +38,7 @@ namespace Infrastructure
 
             modelBuilder.Entity<RecipeTag>()
                 .HasOne(rt => rt.Recipe)
-                .WithMany(r => r.RecipeTags)
+                .WithMany(r => r.Tags)
                 .HasForeignKey(rt => rt.RecipeId);
 
             modelBuilder.Entity<RecipeTag>()

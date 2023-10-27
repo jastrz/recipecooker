@@ -1,3 +1,5 @@
+using Core.Entities;
+
 namespace API.Dtos
 {
     public class RecipeDto
@@ -7,5 +9,6 @@ namespace API.Dtos
         public string Description { get; set; }
         public List<string> PictureUrls { get; set; }
         public List<TagDto> RecipeTags { get; set; }
+        public List<RecipeStep> Steps { get; set; }
     }
 }

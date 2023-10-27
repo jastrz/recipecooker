@@ -3,6 +3,7 @@ using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
+using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -12,14 +13,14 @@ namespace API.Controllers
         private readonly IRecipeRepository _recipeRepo;
         private readonly IMapper _mapper;
         private readonly ILogger<RecipesController> _logger;
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IRecipeService _recipeService;
+        private readonly IFileUploadService _fileUploadService;
 
-        public RecipesController(IRecipeRepository recipeRepo, IMapper mapper, ILogger<RecipesController> logger, 
-        IWebHostEnvironment webHostEnvironment, IRecipeService recipeService)
+        public RecipesController(IRecipeRepository recipeRepo, IMapper mapper, ILogger<RecipesController> logger,
+         IRecipeService recipeService, IFileUploadService fileUploadService)
         {
+            _fileUploadService = fileUploadService;
             _recipeService = recipeService;
-            _webHostEnvironment = webHostEnvironment;
             _logger = logger;
             _recipeRepo = recipeRepo;
             _mapper = mapper;
@@ -31,11 +32,11 @@ namespace API.Controllers
             var recipes = await _recipeRepo.GetRecipes();
 
             if(!string.IsNullOrEmpty(@params.Character))
-                recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Character)).ToList();
+                recipes = recipes.Where(recipe => recipe.Tags.Any(rt => rt.Tag.Name == @params.Character)).ToList();
             if(!string.IsNullOrEmpty(@params.MainIngredient))
-                recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.MainIngredient)).ToList();
+                recipes = recipes.Where(recipe => recipe.Tags.Any(rt => rt.Tag.Name == @params.MainIngredient)).ToList();
             if(!string.IsNullOrEmpty(@params.Origin))
-                recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Origin)).ToList();
+                recipes = recipes.Where(recipe => recipe.Tags.Any(rt => rt.Tag.Name == @params.Origin)).ToList();
 
             var data = _mapper.Map<IReadOnlyList<Recipe>, IReadOnlyList<RecipeDto>>(recipes);
 
@@ -75,28 +76,7 @@ namespace API.Controllers
         {
             try
             {
-                var pictureUrls = new List<string>();
-                if (files == null || files.Count == 0)
-                {
-                    return BadRequest("No files were sent for upload.");
-                }
-
-                foreach (var file in files)
-                {
-                    if (file.Length > 0)
-                    {
-                        var path = _webHostEnvironment.ContentRootPath;
-                        var filePath = Path.Combine(path + @"/Content/images/recipes", file.FileName);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
-
-                        pictureUrls.Add(string.Format("images/recipes/{0}", file.FileName));
-                    }
-                }
-
+                var pictureUrls = await _fileUploadService.UploadFiles(files, "images/recipes");
                 return Ok(pictureUrls);
             }
             catch (Exception ex)

@@ -18,7 +18,7 @@ namespace Infrastructure
             var recipe = await _context.Recipes
                 .Where(r => r.Id == id)
                 .Include(r => r.PictureUrls)
-                .Include(r => r.RecipeTags)
+                .Include(r => r.Tags)
                     .ThenInclude(r => r.Tag)
                         .ThenInclude(r => r.Category)
                 .FirstOrDefaultAsync();
@@ -30,7 +30,8 @@ namespace Infrastructure
         {
             var recipes = await _context.Recipes
                 .Include(r => r.PictureUrls)
-                .Include(r => r.RecipeTags)
+                .Include(r => r.Steps)
+                .Include(r => r.Tags)
                     .ThenInclude(rt => rt.Tag)
                         .ThenInclude(t => t.Category)
                 .ToListAsync();

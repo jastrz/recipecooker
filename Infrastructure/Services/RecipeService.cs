@@ -14,7 +14,7 @@ namespace Infrastructure.Services
 
         public async Task AddRecipeAsync(Recipe recipe, List<RecipeStep> recipeSteps)
         {
-            foreach (var recipeTag in recipe.RecipeTags)
+            foreach (var recipeTag in recipe.Tags)
             {
                 HandleTagCategory(recipeTag);
                 HandleTag(recipeTag);

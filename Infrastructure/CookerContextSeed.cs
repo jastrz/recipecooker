@@ -55,7 +55,7 @@ namespace Infrastructure
                 recipe.PictureUrls.Add(new Picture() { Url = "someurl"});
                 recipe.Name = "somename";
                 recipe.Description = "somedescription";
-                recipe.RecipeTags = new List<RecipeTag>
+                recipe.Tags = new List<RecipeTag>
                 {
                     new RecipeTag
                     {
