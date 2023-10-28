@@ -58,15 +58,10 @@ export class RecipeAddComponent {
       this.recipeSteps.push(step);
       this.recipeStepForm.reset();
     } 
-
-    console.log(this.getRecipeData());
   }
 
-  private getRecipeData() : {recipe: Recipe, recipeSteps: RecipeStep[]} {
-    return { 
-      recipe: this.mapFormToRecipe(),
-      recipeSteps: this.recipeSteps,
-    };
+  private getRecipe() : Recipe {
+    return this.mapFormToRecipe();
   }
 
   postRecipe() {
@@ -75,11 +70,11 @@ export class RecipeAddComponent {
     this.fileUploadService.uploadMultipleFiles(this.selectedFiles, "recipes/post/image").pipe(
       map(response => {
         this.pictureUrls = response;
-        const recipeData = this.getRecipeData();
-        return recipeData;
+        const recipe = this.getRecipe();
+        return recipe;
       }),
-      mergeMap(recipeData => {
-        return this.recipeService.postRecipe(recipeData.recipe, recipeData.recipeSteps);
+      mergeMap(recipe => {
+        return this.recipeService.postRecipe(recipe);
       })
     ).subscribe({
       next: response => console.log(response),
@@ -95,6 +90,7 @@ export class RecipeAddComponent {
       name: formValue.name as string,
       description: formValue.description as string,
       pictureUrls: this.pictureUrls,
+      steps: this.recipeSteps,
       recipeTags: [],
     };
 

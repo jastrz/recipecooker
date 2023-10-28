@@ -12,21 +12,36 @@ namespace Infrastructure.Services
             _context = context;
         }
 
-        public async Task AddRecipeAsync(Recipe recipe, List<RecipeStep> recipeSteps)
+        public async Task AddRecipeAsync(Recipe recipe)
         {
-            foreach (var recipeTag in recipe.Tags)
+            foreach (var recipeTag in recipe.RecipeTags)
             {
                 HandleTagCategory(recipeTag);
                 HandleTag(recipeTag);
             }
 
+            foreach(var recipeIngredient in recipe.RecipeIngredients)
+            {
+                HandleIngredient(recipeIngredient);
+            }
+
             await _context.Recipes.AddAsync(recipe);
             await _context.SaveChangesAsync();
+        }
 
-            recipeSteps.ForEach(step => step.RecipeId = recipe.Id);
+        private void HandleIngredient(RecipeIngredient recipeIngredient)
+        {
+            var existingIngredient = _context.Ingredients.FirstOrDefault(i => i.Name == recipeIngredient.Ingredient.Name);
 
-            await _context.Steps.AddRangeAsync(recipeSteps);
-            await _context.SaveChangesAsync();
+            if(existingIngredient == null)
+            {
+                _context.Ingredients.Add(recipeIngredient.Ingredient);
+            }
+            else
+            {
+                recipeIngredient.IngredientId = existingIngredient.Id;
+                recipeIngredient.Ingredient = existingIngredient;
+            }
         }
 
         private void HandleTagCategory(RecipeTag recipeTag)

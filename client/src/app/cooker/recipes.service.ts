@@ -62,15 +62,7 @@ export class RecipesService {
     )
   }
 
-  public postRecipe(recipe: Recipe, steps: RecipeStep[]) {
-
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
-    const data = {
-      recipe: recipe,
-      recipeSteps: steps
-    }
-
-    return this.http.post<any>(this.hostUrl + "recipes/post", data);
+  public postRecipe(recipe: Recipe) {
+    return this.http.post<any>(this.hostUrl + "recipes/post", recipe);
   }
 }

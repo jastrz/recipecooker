@@ -25,7 +25,6 @@ import { RecipeStep } from 'src/app/models/recipeStep';
   ]
 })
 export class RecipeDetailsComponent implements OnInit {
-  steps : RecipeStep[] = [];
   active : boolean = false;
   recipe?: Recipe;
 
@@ -40,17 +39,6 @@ export class RecipeDetailsComponent implements OnInit {
         this.recipe = data;
       }
     })
-
-    this.recipeService.getRecipeSteps(+id).subscribe({
-      next: data => {
-        this.steps = data;
-      }
-    })
-  }
-
-  toggle() {
-    this.active = !this.active;
-    console.log(this.active);
   }
 
   onClickBackButton() {

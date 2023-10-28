@@ -5,7 +5,7 @@
         "pictureUrls": [
             "images/recipes/spaghetti.jpg"
         ],
-        "recipeTags": [
+        "tags": [
             { "name": "Italy", "category": "origin" },
             { "name": "Pasta", "category": "mainIngredient" },
             { "name": "Simple", "category": "character" }
@@ -31,7 +31,19 @@
               "name": "Boil pasta",
               "description": "Add the pasta to the boiling water and cook until al dente."
             }
-          ]
+          ],
+          "ingredients": [
+            {
+                "name": "Spaghetti",
+                "unit": "grams",
+                "quantity": 250
+            },
+            {
+                "name": "Egg",
+                "unit": "units",
+                "quantity": 4
+            }
+        ]
     },
     {
         "name": "Chicken Alfredo",
@@ -39,7 +51,7 @@
         "pictureUrls": [
             "images/recipes/chicken_alfredo.jpg"
         ],
-        "recipeTags": [
+        "tags": [
             { "name": "Italy", "category": "origin" },
             { "name": "Chicken", "category": "mainIngredient" },
             { "name": "Comfort Food", "category": "character" }
@@ -65,7 +77,19 @@
               "name": "Boil pasta",
               "description": "Add the pasta to the boiling water and cook until al dente."
             }
-          ]
+          ],
+          "ingredients": [
+            {
+                "name": "Chicken breast",
+                "unit": "grams",
+                "quantity": 500
+            },
+            {
+                "name": "Mushrooms",
+                "unit": "grams",
+                "quantity": 200
+            }
+        ]
     },
     {
         "name": "Margarita Pizza",
@@ -73,7 +97,7 @@
         "pictureUrls": [
             "images/recipes/margarita_pizza.jpg"
         ],
-        "recipeTags": [
+        "tags": [
             { "name": "Italy", "category": "origin" },
             { "name": "Dough", "category": "mainIngredient" },
             { "name": "Simple", "category": "character" }
@@ -99,7 +123,19 @@
               "name": "Boil pasta",
               "description": "Add the pasta to the boiling water and cook until al dente."
             }
-          ]
+          ],
+          "ingredients": [
+            {
+                "name": "Chicken breast",
+                "unit": "grams",
+                "quantity": 500
+            },
+            {
+                "name": "Mushrooms",
+                "unit": "grams",
+                "quantity": 200
+            }
+        ]
     },
     {
         "name": "Sushi Rolls",
@@ -107,7 +143,7 @@
         "pictureUrls": [
             "images/recipes/sushi.jpg"
         ],
-        "recipeTags": [
+        "tags": [
             { "name": "Japan", "category": "origin" },
             { "name": "Seafood", "category": "mainIngredient" },
             { "name": "Delicate", "category": "character" }
@@ -133,7 +169,19 @@
               "name": "Boil pasta",
               "description": "Add the pasta to the boiling water and cook until al dente."
             }
-          ]
+          ],
+          "ingredients": [
+            {
+                "name": "Chicken breast",
+                "unit": "grams",
+                "quantity": 500
+            },
+            {
+                "name": "Mushrooms",
+                "unit": "grams",
+                "quantity": 200
+            }
+        ]
     },
     {
         "name": "Baked Lasagna",
@@ -141,7 +189,7 @@
         "pictureUrls": [
             "images/recipes/lasagna.jpg"
         ],
-        "recipeTags": [
+        "tags": [
             { "name": "Italy", "category": "origin" },
             { "name": "Pasta", "category": "mainIngredient" },
             { "name": "Hearty", "category": "character" }
@@ -167,7 +215,19 @@
               "name": "Boil pasta",
               "description": "Add the pasta to the boiling water and cook until al dente."
             }
-          ]
+          ],
+          "ingredients": [
+            {
+                "name": "Chicken breast",
+                "unit": "grams",
+                "quantity": 500
+            },
+            {
+                "name": "Mushrooms",
+                "unit": "grams",
+                "quantity": 200
+            }
+        ]
     },
     {
         "name": "Miso Soup",
@@ -175,7 +235,7 @@
         "pictureUrls": [
             "images/recipes/miso_soup.jpg"
         ],
-        "recipeTags": [
+        "tags": [
             { "name": "Japan", "category": "origin" },
             { "name": "Tofu", "category": "mainIngredient" },
             { "name": "Light", "category": "character" }
@@ -201,7 +261,19 @@
               "name": "Boil pasta",
               "description": "Add the pasta to the boiling water and cook until al dente."
             }
-          ]
+          ],
+          "ingredients": [
+            {
+                "name": "Chicken breast",
+                "unit": "grams",
+                "quantity": 500
+            },
+            {
+                "name": "Mushrooms",
+                "unit": "grams",
+                "quantity": 200
+            }
+        ]
     },
     {
         "name": "Ratatouille",
@@ -209,7 +281,7 @@
         "pictureUrls": [
             "images/recipes/ratatouille.jpg"
         ],
-        "recipeTags": [
+        "tags": [
             { "name": "France", "category": "origin" },
             { "name": "Vegetables", "category": "mainIngredient" },
             { "name": "Elegant", "category": "character" }
@@ -235,7 +307,19 @@
               "name": "Boil pasta",
               "description": "Add the pasta to the boiling water and cook until al dente."
             }
-          ]
+          ],
+          "ingredients": [
+            {
+                "name": "Chicken breast",
+                "unit": "grams",
+                "quantity": 500
+            },
+            {
+                "name": "Mushrooms",
+                "unit": "grams",
+                "quantity": 200
+            }
+        ]
     },
     {
         "name": "BBQ Pulled Pork",
@@ -243,7 +327,7 @@
         "pictureUrls": [
             "images/recipes/pulled_pork.jpg"
         ],
-        "recipeTags": [
+        "tags": [
             { "name": "USA", "category": "origin" },
             { "name": "Pork", "category": "mainIngredient" },
             { "name": "Savory", "category": "character" }
@@ -269,7 +353,19 @@
               "name": "Boil pasta",
               "description": "Add the pasta to the boiling water and cook until al dente."
             }
-          ]
+          ],
+          "ingredients": [
+            {
+                "name": "Chicken breast",
+                "unit": "grams",
+                "quantity": 500
+            },
+            {
+                "name": "Mushrooms",
+                "unit": "grams",
+                "quantity": 200
+            }
+        ]
     },
     {
         "name": "Chicken Shawarma",
@@ -277,7 +373,7 @@
         "pictureUrls": [
             "images/recipes/shawarma.jpg"
         ],
-        "recipeTags": [
+        "tags": [
             { "name": "Middle East", "category": "origin" },
             { "name": "Chicken", "category": "mainIngredient" },
             { "name": "Flavorful", "category": "character" }
@@ -303,7 +399,19 @@
               "name": "Boil pasta",
               "description": "Add the pasta to the boiling water and cook until al dente."
             }
-          ]
+          ],
+          "ingredients": [
+            {
+                "name": "Chicken breast",
+                "unit": "grams",
+                "quantity": 500
+            },
+            {
+                "name": "Mushrooms",
+                "unit": "grams",
+                "quantity": 200
+            }
+        ]
     },
     {
         "name": "Chocolate Chip Cookies",
@@ -311,7 +419,7 @@
         "pictureUrls": [
             "images/recipes/cookies.jpg"
         ],
-        "recipeTags": [
+        "tags": [
             { "name": "USA", "category": "origin" },
             { "name": "Chocolate", "category": "mainIngredient" },
             { "name": "Delicious", "category": "character" }
@@ -337,6 +445,18 @@
               "name": "Boil pasta",
               "description": "Add the pasta to the boiling water and cook until al dente."
             }
-          ]
+          ],
+          "ingredients": [
+            {
+                "name": "Chicken breast",
+                "unit": "grams",
+                "quantity": 500
+            },
+            {
+                "name": "Mushrooms",
+                "unit": "grams",
+                "quantity": 200
+            }
+        ]
     }
 ]

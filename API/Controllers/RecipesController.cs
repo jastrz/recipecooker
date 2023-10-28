@@ -32,11 +32,11 @@ namespace API.Controllers
             var recipes = await _recipeRepo.GetRecipes();
 
             if(!string.IsNullOrEmpty(@params.Character))
-                recipes = recipes.Where(recipe => recipe.Tags.Any(rt => rt.Tag.Name == @params.Character)).ToList();
+                recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Character)).ToList();
             if(!string.IsNullOrEmpty(@params.MainIngredient))
-                recipes = recipes.Where(recipe => recipe.Tags.Any(rt => rt.Tag.Name == @params.MainIngredient)).ToList();
+                recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.MainIngredient)).ToList();
             if(!string.IsNullOrEmpty(@params.Origin))
-                recipes = recipes.Where(recipe => recipe.Tags.Any(rt => rt.Tag.Name == @params.Origin)).ToList();
+                recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Origin)).ToList();
 
             var data = _mapper.Map<IReadOnlyList<Recipe>, IReadOnlyList<RecipeDto>>(recipes);
 
@@ -87,10 +87,10 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("post")]
-        public async Task<IActionResult> PostRecipe([FromBody] RecipePostRequest request)
+        public async Task<IActionResult> PostRecipe([FromBody] RecipeDto recipeDto)
         {
-            var recipe = _mapper.Map<RecipeDto, Recipe>(request.Recipe);
-            await _recipeService.AddRecipeAsync(recipe, request.RecipeSteps);
+            var recipe = _mapper.Map<RecipeDto, Recipe>(recipeDto);
+            await _recipeService.AddRecipeAsync(recipe);
 
             return Ok();
         }

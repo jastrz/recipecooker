@@ -1,6 +1,10 @@
 namespace Core.Entities
 {
-    public record RecipeStep(int Sequence, string Name, string Description) {
+    public class RecipeStep 
+    {
+        public int Sequence { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public int RecipeId { get; set; }
     }
 }

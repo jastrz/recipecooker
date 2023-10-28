@@ -40,8 +40,7 @@ namespace Infrastructure
                 foreach(var recipeDto in recipes)
                 {
                     var recipe = _mapper.Map<RecipeDto, Recipe>(recipeDto);
-                    var steps = recipeDto.Steps;
-                    await _recipeService.AddRecipeAsync(recipe, steps);
+                    await _recipeService.AddRecipeAsync(recipe);
                 }
             }
 
@@ -55,7 +54,7 @@ namespace Infrastructure
                 recipe.PictureUrls.Add(new Picture() { Url = "someurl"});
                 recipe.Name = "somename";
                 recipe.Description = "somedescription";
-                recipe.Tags = new List<RecipeTag>
+                recipe.RecipeTags = new List<RecipeTag>
                 {
                     new RecipeTag
                     {

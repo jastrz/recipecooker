@@ -1,4 +1,5 @@
 using Core.Entities;
+using Infrastructure.Dtos;
 
 namespace API.Dtos
 {
@@ -10,5 +11,6 @@ namespace API.Dtos
         public List<string> PictureUrls { get; set; }
         public List<TagDto> RecipeTags { get; set; }
         public List<RecipeStep> Steps { get; set; }
+        public List<IngredientDto> Ingredients { get; set; }
     }
 }

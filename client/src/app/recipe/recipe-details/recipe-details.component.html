@@ -13,11 +13,37 @@
     </div>
   </div>
 
-  <div class="card" *ngIf="steps.length > 0">
+  <div class="row">
+    <div class="col-6 offset-6">
+      <div class="card" *ngIf="recipe">
+        <div class="card-body">
+          <h3 class="card-title text-primary">Ingredients</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ingredient of recipe.ingredients">
+                <td>{{ ingredient.name }}</td>
+                <td>{{ ingredient.quantity }}</td>
+                <td>{{ ingredient.unit }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 card" *ngIf="recipe && recipe.steps.length > 0">
     <div class="card-body">
       <h3 class="card-title text-primary">Steps</h3>
       <ul class="list-group">
-        <li class="list-group-item" *ngFor="let step of steps">
+        <li class="list-group-item" *ngFor="let step of recipe.steps">
           <h5>{{step.name}}</h5>
           <p>{{step.description}}</p>
         </li>
