@@ -26,6 +26,7 @@ builder.Services.AddDbContext<CookerContext>(opt =>
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<IFileUploadService, FileUploadService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<CookerContextSeed>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -99,6 +100,9 @@ app.MapControllers();
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 var cookerContext = services.GetRequiredService<CookerContext>();
+var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+var userManager = services.GetRequiredService<UserManager<AppUser>>();
+
 var logger = services.GetRequiredService<ILogger<Program>>();
 
 try 
@@ -109,6 +113,9 @@ try
         var cookerContextSeed = services.GetRequiredService<CookerContextSeed>();
         await cookerContextSeed.SeedAsync(cookerContext);
     }
+    
+    await identityContext.Database.MigrateAsync();
+    await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
 }
 catch(Exception ex)
 {
