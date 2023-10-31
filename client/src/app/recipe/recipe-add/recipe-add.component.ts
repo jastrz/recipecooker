@@ -16,6 +16,7 @@ import { Ingredient } from 'src/app/models/ingredient';
 import { RecipeAddIngredientsComponent } from './recipe-add-ingredients/recipe-add-ingredients.component';
 import { IngredientListComponent } from './recipe-add-ingredients/ingredient-list/ingredient-list.component';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-recipe-add',
@@ -51,7 +52,7 @@ export class RecipeAddComponent {
   })
 
   constructor(private fb: FormBuilder, private recipeService: RecipesService, 
-    private fileUploadService : FileUploadService, private router: Router) { }
+    private fileUploadService : FileUploadService, private router: Router, private toastr: ToastrService) { }
 
   setFiles(files: File[]) {
     this.selectedFiles = files;
@@ -101,8 +102,14 @@ export class RecipeAddComponent {
         return this.recipeService.postRecipe(recipe);
       })
     ).subscribe({
-      next: id => this.router.navigateByUrl("cook/recipe/" + id),
-      error: error => console.error(error)
+      next: id => {
+        this.toastr.success("Recipe added!");
+        this.router.navigateByUrl("cook/recipe/" + id);
+      },
+      error: error => {
+        this.toastr.error(error);
+        console.error(error)
+      }
     });
   }
 
@@ -118,7 +125,6 @@ export class RecipeAddComponent {
       ingredients: this.ingredients,
       recipeTags: [],
     };
-
     
     // Map ingredientTags
     if (formValue.ingredientTags) {
