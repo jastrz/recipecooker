@@ -91,9 +91,9 @@ namespace API.Controllers
         public async Task<IActionResult> PostRecipe([FromBody] RecipeDto recipeDto)
         {
             var recipe = _mapper.Map<RecipeDto, Recipe>(recipeDto);
-            await _recipeService.AddRecipeAsync(recipe);
+            var savedRecipe = await _recipeService.AddRecipeAsync(recipe);
 
-            return Ok();
+            return Ok(savedRecipe.Id);
         }
     }
 }

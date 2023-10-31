@@ -12,17 +12,22 @@ import { Recipe } from 'src/app/models/recipe';
 import { RecipesService } from 'src/app/cooker/recipes.service';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { map, mergeMap } from 'rxjs';
+import { Ingredient } from 'src/app/models/ingredient';
+import { RecipeAddIngredientsComponent } from './recipe-add-ingredients/recipe-add-ingredients.component';
+import { IngredientListComponent } from './recipe-add-ingredients/ingredient-list/ingredient-list.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-add',
   templateUrl: './recipe-add.component.html',
   styleUrls: ['./recipe-add.component.scss'],
   standalone: true,
-  imports: [RecipeStepsListComponent, RecipeDetailsComponent, CommonModule, FormsModule, ReactiveFormsModule, MatInputModule, MatStepperModule, RecipeAddBasicsComponent, RecipeAddStepsComponent]
+  imports: [ RecipeStepsListComponent, RecipeDetailsComponent, CommonModule, FormsModule, ReactiveFormsModule, MatInputModule, MatStepperModule, RecipeAddBasicsComponent, RecipeAddStepsComponent, RecipeAddIngredientsComponent, IngredientListComponent]
 })
 export class RecipeAddComponent {
 
   recipeSteps: RecipeStep[] = [];
+  ingredients: Ingredient[] = [];
   selectedFiles: File[] = [];
   private pictureUrls : string[] = [];
 
@@ -39,10 +44,29 @@ export class RecipeAddComponent {
     description: ['', Validators.required]
   });
 
-  constructor(private fb: FormBuilder, private recipeService: RecipesService, private fileUploadService : FileUploadService) { }
+  ingredientsForm = this.fb.group({
+    name: ['', Validators.required],
+    quantity: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+    unit: ['', Validators.required]
+  })
+
+  constructor(private fb: FormBuilder, private recipeService: RecipesService, 
+    private fileUploadService : FileUploadService, private router: Router) { }
 
   setFiles(files: File[]) {
     this.selectedFiles = files;
+  }
+
+  addIngredient = () => {
+
+    const formValue = this.ingredientsForm.value;
+    const ingredient: Ingredient = {
+      name: formValue.name ?? '',
+      quantity: formValue.quantity ? +formValue.quantity : 0,
+      unit: formValue.unit ?? '',
+    };
+    this.ingredients.push(ingredient);
+    this.ingredientsForm.reset();
   }
 
   addRecipeStep = () => {
@@ -77,7 +101,7 @@ export class RecipeAddComponent {
         return this.recipeService.postRecipe(recipe);
       })
     ).subscribe({
-      next: response => console.log(response),
+      next: id => this.router.navigateByUrl("cook/recipe/" + id),
       error: error => console.error(error)
     });
   }
@@ -91,6 +115,7 @@ export class RecipeAddComponent {
       description: formValue.description as string,
       pictureUrls: this.pictureUrls,
       steps: this.recipeSteps,
+      ingredients: this.ingredients,
       recipeTags: [],
     };
 

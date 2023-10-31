@@ -30,8 +30,6 @@ export class RecipesService {
       });
     }
 
-    console.log(params);
-
     return this.http.get<Recipe[]>(this.hostUrl + "recipes", {params}).pipe(
       map(response => {
         this.recipes = response;

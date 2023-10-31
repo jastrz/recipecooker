@@ -11,6 +11,21 @@
             >Continue
           </button>
         </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>Ingredient list</ng-template>
+          <div class="row" style="margin-top: 50px;">
+            <div class="col-lg-6" *ngIf="ingredients.length > 0">
+              <app-ingredient-list [ingredients]="ingredients"></app-ingredient-list>
+            </div>
+            <div class="col-lg-6 form-group" style="margin:auto; vertical-align: top;" >
+              <app-recipe-add-ingredients [ingriedientsForm]="ingredientsForm" (addIngredientEvent)="addIngredient()"></app-recipe-add-ingredients>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-4" (click)="stepper.next()" [disabled]="ingredients.length == 0">Continue</button>
+              
+          </mat-step>
+
         <mat-step>
         <ng-template matStepLabel>Recipe steps</ng-template>
         <div class="row" style="margin-top: 50px;">
@@ -18,7 +33,7 @@
             <app-recipe-steps-list [recipeSteps]="recipeSteps"></app-recipe-steps-list>
           </div>
           <div class="col-lg-6 form-group" style="margin:auto; vertical-align: top;" >
-            <app-recipe-add-steps [recipeStepForm]="recipeStepForm" [stepAdd]="addRecipeStep"></app-recipe-add-steps>
+            <app-recipe-add-steps [recipeStepForm]="recipeStepForm" (addStepEvent)="addRecipeStep()"></app-recipe-add-steps>
           </div>
         </div>
         <button type="submit" class="btn btn-primary mt-4" (click)="stepper.next()" [disabled]="recipeSteps.length == 0">Continue</button>

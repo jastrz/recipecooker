@@ -1,0 +1,22 @@
+<div *ngIf="ingriedientsForm" [formGroup]="ingriedientsForm">
+
+    <mat-form-field class="field mt-4">
+        <mat-label>Ingredient</mat-label>
+        <input id="ingredient-name" matInput placeholder="..." formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field class="field mt-4">
+        <mat-label>Quantity</mat-label>
+        <input id="ingredient-quantity" matInput placeholder="..." formControlName="quantity">
+    </mat-form-field>
+
+    <mat-form-field class="field mt-4">
+        <mat-label>Unit</mat-label>
+        <mat-select formControlName="unit">
+          <mat-option *ngFor="let unitOption of unitOptions" [value]="unitOption">{{ unitOption }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    <button (click)="addIngredient()" class="btn btn-primary" style="float: right;">Add</button>
+</div>
+

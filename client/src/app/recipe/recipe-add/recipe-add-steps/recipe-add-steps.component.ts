@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -15,9 +15,9 @@ import { MatSelectModule } from '@angular/material/select';
 })
 export class RecipeAddStepsComponent {
   @Input() recipeStepForm?: FormGroup;
-  @Input() stepAdd? : () => void;
+  @Output() addStepEvent: EventEmitter<void> = new EventEmitter<void>();
 
   public addRecipeStep() {
-    this.stepAdd?.();
+    this.addStepEvent.emit();
   }
 }

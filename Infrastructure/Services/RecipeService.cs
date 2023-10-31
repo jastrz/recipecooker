@@ -12,7 +12,7 @@ namespace Infrastructure.Services
             _context = context;
         }
 
-        public async Task AddRecipeAsync(Recipe recipe)
+        public async Task<Recipe> AddRecipeAsync(Recipe recipe)
         {
             foreach (var recipeTag in recipe.RecipeTags)
             {
@@ -27,6 +27,8 @@ namespace Infrastructure.Services
 
             await _context.Recipes.AddAsync(recipe);
             await _context.SaveChangesAsync();
+
+            return recipe;
         }
 
         private void HandleIngredient(RecipeIngredient recipeIngredient)
