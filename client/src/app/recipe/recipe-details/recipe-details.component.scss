@@ -1,0 +1,8 @@
+.lightbox-img {
+    border: 4px solid transparent; 
+    transition: border 0.25s;
+  
+    &:hover {
+      border: 4px solid #000000; 
+    }
+  }
