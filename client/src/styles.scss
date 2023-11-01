@@ -1,7 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Importing Bootstrap SCSS file. */
-// @import 'bootstrap/scss/bootstrap';
+@import 'bootstrap/scss/bootstrap';
 
-// html, body { height: 100%; }
-// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+// body, input {
+//     font-family: 'Raleway';
+// }
+
+  
+// @font-face {
+//     font-family: 'Raleway';
+//     src: url('assets/Raleway-VariableFont_wght.ttf') format('truetype');
+//     font-weight: normal;
+//     font-style: normal;
+// }
