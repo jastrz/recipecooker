@@ -36,5 +36,5 @@
             <app-recipe-overview [recipe]="recipe"></app-recipe-overview>
         </div>
     </div>
-    <ngb-pagination *ngIf="recipes.length > pageSize" [collectionSize]="recipes.length" [(page)]="currentPage" class="d-flex justify-content-center mt-4"></ngb-pagination>
+    <ngb-pagination [pageSize]="pageSize" *ngIf="recipes.length > pageSize" [collectionSize]="recipes.length" [(page)]="currentPage" class="d-flex justify-content-center mt-4"></ngb-pagination>
 </div>

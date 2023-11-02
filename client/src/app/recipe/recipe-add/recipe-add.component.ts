@@ -130,25 +130,25 @@ export class RecipeAddComponent {
       pictureUrls: this.pictureUrls,
       steps: this.recipeSteps,
       ingredients: this.ingredients,
-      recipeTags: [],
+      tags: [],
     };
     
     // Map ingredientTags
     if (formValue.ingredientTags) {
       const ingredients = formValue.ingredientTags.split(',').map(tag => ({ name: tag.trim(), category: 'mainIngredient' }));
-      recipe.recipeTags.push(...ingredients);
+      recipe.tags.push(...ingredients);
     }
     
     // Map originTags
     if (formValue.originTags) {
       const origins = formValue.originTags.split(',').map(tag => ({ name: tag.trim(), category: 'origin' }));
-      recipe.recipeTags.push(...origins);
+      recipe.tags.push(...origins);
     }
     
     // Map characterTags
     if (formValue.characterTags) {
       const characters = formValue.characterTags.split(',').map(tag => ({ name: tag.trim(), category: 'character' }));
-      recipe.recipeTags.push(...characters);
+      recipe.tags.push(...characters);
     }
     
     console.log(recipe);

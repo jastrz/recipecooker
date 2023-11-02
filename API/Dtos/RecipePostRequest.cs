@@ -1,4 +1,5 @@
 using Core.Entities;
+using Shared.Dtos;
 
 namespace API.Dtos
 {

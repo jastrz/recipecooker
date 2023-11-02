@@ -1,7 +1,4 @@
-using Core.Entities;
-using Infrastructure.Dtos;
-
-namespace API.Dtos
+namespace Shared.Dtos
 {
     public class RecipeDto
     {
@@ -9,8 +6,8 @@ namespace API.Dtos
         public string Name { get; set; }
         public string Description { get; set; }
         public List<string> PictureUrls { get; set; }
-        public List<TagDto> RecipeTags { get; set; }
-        public List<RecipeStep> Steps { get; set; }
+        public List<TagDto> Tags { get; set; }
+        public List<RecipeStepDto> Steps { get; set; }
         public List<IngredientDto> Ingredients { get; set; }
     }
 }

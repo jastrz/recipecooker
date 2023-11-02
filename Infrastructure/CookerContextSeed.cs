@@ -3,7 +3,7 @@ using System.Text.Json;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
-using Infrastructure.Dtos;
+using Shared.Dtos;
 
 namespace Infrastructure
 {

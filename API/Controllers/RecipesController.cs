@@ -1,4 +1,3 @@
-using API.Dtos;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -6,6 +5,7 @@ using Core.Specifications;
 using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Dtos;
 
 namespace API.Controllers
 {
@@ -71,6 +71,7 @@ namespace API.Controllers
             return data;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("post/image")]
         public async Task<IActionResult> PostRecipeImagesAsync([FromForm] List<IFormFile> files) 
@@ -86,6 +87,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         [Route("post")]
         public async Task<IActionResult> PostRecipe([FromBody] RecipeDto recipeDto)

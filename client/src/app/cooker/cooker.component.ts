@@ -100,7 +100,7 @@ export class CookerComponent implements OnInit {
   }
 
   private updateTags() {
-    const tagsInRecipes = new Set(this.recipes.map(o => o.recipeTags.map(o => o.name)).flat());
+    const tagsInRecipes = new Set(this.recipes.map(o => o.tags.map(o => o.name)).flat());
     console.log(tagsInRecipes);
 
     for (const [category, tags] of this.groupedTags) {
