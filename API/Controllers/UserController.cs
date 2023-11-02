@@ -1,9 +1,12 @@
+using System.Security.Claims;
 using API.Dtos;
 using API.Errors;
 using Core.Entities.Identity;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -30,11 +33,8 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
-
             if(user == null) return Unauthorized(new ApiResponse(401));
-
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-
             if(!result.Succeeded) return Unauthorized(new ApiResponse(401));
 
             return new UserDto {
@@ -66,13 +66,27 @@ namespace API.Controllers
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
-
             if(!result.Succeeded) return BadRequest(new ApiResponse(400));
 
             return new UserDto {
                 Email = user.Email,
                 Token = _tokenService.CreateToken(user),
                 DisplayName = user.UserName
+            };
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<UserDto>> GetCurrentUser()
+        {
+            var user = await _userManager.Users
+                .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+
+            return new UserDto 
+            {
+                Email = user.Email,
+                Token = _tokenService.CreateToken(user),
+                DisplayName = user.DisplayName
             };
         }
     }
