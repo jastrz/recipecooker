@@ -4,8 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { RecipeDetailsComponent } from '../recipe/recipe-details/recipe-details.component';
 
 const routes: Routes = [
-  { path: '', component: CookerComponent},
-  { path: 'recipe/:id', component: RecipeDetailsComponent}
+  { path: '', component: CookerComponent },
+  { path: 'recipe/:id', component: RecipeDetailsComponent, data: { breadcrumb: { alias: 'recipe'} }}
 ];
 
 @NgModule({

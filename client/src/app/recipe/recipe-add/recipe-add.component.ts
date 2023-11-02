@@ -11,12 +11,13 @@ import { RecipeStepsListComponent } from './recipe-add-steps/recipe-steps-list/r
 import { Recipe } from 'src/app/models/recipe';
 import { RecipesService } from 'src/app/cooker/recipes.service';
 import { FileUploadService } from 'src/app/services/file-upload.service';
-import { map, mergeMap } from 'rxjs';
+import { map, mergeMap, of } from 'rxjs';
 import { Ingredient } from 'src/app/models/ingredient';
 import { RecipeAddIngredientsComponent } from './recipe-add-ingredients/recipe-add-ingredients.component';
 import { IngredientListComponent } from './recipe-add-ingredients/ingredient-list/ingredient-list.component';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-recipe-add',
@@ -52,7 +53,8 @@ export class RecipeAddComponent {
   })
 
   constructor(private fb: FormBuilder, private recipeService: RecipesService, 
-    private fileUploadService : FileUploadService, private router: Router, private toastr: ToastrService) { }
+    private fileUploadService : FileUploadService, private router: Router, private toastr: ToastrService,
+    private accountService: AccountService) { }
 
   setFiles(files: File[]) {
     this.selectedFiles = files;
@@ -89,7 +91,12 @@ export class RecipeAddComponent {
     return this.mapFormToRecipe();
   }
 
-  postRecipe() {
+  async postRecipe() {
+
+    const authenticated = await this.accountService.isAuthenticated();
+    console.log(`Authenticated: ${authenticated}`);
+    if(!authenticated) this.router.navigateByUrl('account');
+
     if(this.selectedFiles.length == 0) return;
 
     this.fileUploadService.uploadMultipleFiles(this.selectedFiles, "recipes/post/image").pipe(

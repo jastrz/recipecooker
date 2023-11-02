@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { ReplaySubject, map, of } from 'rxjs';
+import { ReplaySubject, firstValueFrom, map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +34,12 @@ export class AccountService {
         }
       })
     );
+  }
+
+  async isAuthenticated(): Promise<boolean> {
+    // await new Promise(resolve => setTimeout(resolve, 2000));
+    const user = await firstValueFrom(this.user$);
+    return !!user;
   }
 
   register(values: any) {

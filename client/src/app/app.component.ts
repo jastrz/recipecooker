@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from './services/account.service';
+import { BreadcrumbService } from 'xng-breadcrumb';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ export class AppComponent implements OnInit {
 
   title = 'recipecooker';
 
-  constructor(private accountService: AccountService) {}
+  constructor(private accountService: AccountService, public bcService: BreadcrumbService) {}
 
   ngOnInit(): void {
     this.loadUser();

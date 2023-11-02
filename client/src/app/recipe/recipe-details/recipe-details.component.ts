@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RecipesService } from 'src/app/cooker/recipes.service';
 import { Recipe } from 'src/app/models/recipe';
 import { IAlbum, Lightbox, LightboxConfig, LightboxModule } from 'ngx-lightbox';
+import { BreadcrumbService } from 'xng-breadcrumb';
 
 @Component({
   selector: 'app-recipe-details',
@@ -30,9 +31,13 @@ export class RecipeDetailsComponent implements OnInit {
   albums: IAlbum[] = [];
 
   constructor(private recipeService: RecipesService, private activatedRoute: ActivatedRoute, 
-    private router: Router, private lightbox : Lightbox, private lightboxConfig : LightboxConfig) {
+    private router: Router, private lightbox : Lightbox, private lightboxConfig : LightboxConfig,
+    private breadcrumbService : BreadcrumbService) {
       lightboxConfig.resizeDuration = .35;
       lightboxConfig.fadeDuration = .35;
+      lightboxConfig.fitImageInViewPort = true;
+
+      this.breadcrumbService.set('@recipe', ' ');
   }
 
   ngOnInit(): void {
@@ -42,6 +47,7 @@ export class RecipeDetailsComponent implements OnInit {
     this.recipeService.getRecipe(+id).subscribe({
       next: data => {
         this.recipe = data;
+        this.breadcrumbService.set('@recipe', this.recipe.name);
         this.generateAlbums();
       }
     });

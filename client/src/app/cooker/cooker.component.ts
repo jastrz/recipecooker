@@ -4,7 +4,7 @@ import { RecipesService } from './recipes.service';
 import { Recipe } from '../models/recipe';
 import { ITag, Tag } from '../models/tag';
 import { MatAccordion } from '@angular/material/expansion';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { BreadcrumbService } from 'xng-breadcrumb';
 
 @Component({
   selector: 'app-cooker',
@@ -26,7 +26,9 @@ export class CookerComponent implements OnInit {
   currentPage = 1;
   pageSize = 6;
 
-  constructor(private recipesService: RecipesService) {}
+  constructor(private recipesService: RecipesService, private bcService : BreadcrumbService) {
+    bcService.set('cook/', 'find recipe')
+  }
 
   ngOnInit(): void {
     this.getTags();

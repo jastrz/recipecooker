@@ -14,6 +14,7 @@ import { LoadingInterceptor } from './common/interceptors/loading.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { BreadcrumbModule } from 'xng-breadcrumb';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
     HttpClientModule,
     MatIconModule,
     ToastrModule.forRoot(),
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    BreadcrumbModule
   ],
   providers: [   
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
