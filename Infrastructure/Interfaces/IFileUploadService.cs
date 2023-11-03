@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Interfaces
 {
-    public interface IFileUploadService
+    public interface IFileService
     {
-        Task<List<string>> UploadFiles(List<IFormFile> files, string relativePath);
+        Task<List<string>> SaveFiles(List<IFormFile> files, string relativePath);
     }
 }

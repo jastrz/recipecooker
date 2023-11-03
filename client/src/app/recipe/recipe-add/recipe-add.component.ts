@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { RecipeAddBasicsComponent } from './recipe-add-basics/recipe-add-basics.component';
 import { RecipeAddStepsComponent } from './recipe-add-steps/recipe-add-steps.component';
 import { RecipeStep } from 'src/app/models/recipeStep';
@@ -11,7 +11,7 @@ import { RecipeStepsListComponent } from './recipe-add-steps/recipe-steps-list/r
 import { Recipe } from 'src/app/models/recipe';
 import { RecipesService } from 'src/app/cooker/recipes.service';
 import { FileUploadService } from 'src/app/services/file-upload.service';
-import { map, mergeMap, of } from 'rxjs';
+import { mergeMap } from 'rxjs';
 import { Ingredient } from 'src/app/models/ingredient';
 import { RecipeAddIngredientsComponent } from './recipe-add-ingredients/recipe-add-ingredients.component';
 import { IngredientListComponent } from './recipe-add-ingredients/ingredient-list/ingredient-list.component';
@@ -27,11 +27,15 @@ import { AccountService } from 'src/app/services/account.service';
   imports: [ RecipeStepsListComponent, RecipeDetailsComponent, CommonModule, FormsModule, ReactiveFormsModule, MatInputModule, MatStepperModule, RecipeAddBasicsComponent, RecipeAddStepsComponent, RecipeAddIngredientsComponent, IngredientListComponent]
 })
 export class RecipeAddComponent {
+  @ViewChild('stepper') stepper?: MatStepper;
 
   recipeSteps: RecipeStep[] = [];
   ingredients: Ingredient[] = [];
-  selectedFiles: File[] = [];
+  recipeImages: File[] = [];
+  stepImages: File[] = [];
   private pictureUrls : string[] = [];
+  private stepsImagesUrls: string[] = [];
+  private recipeFormValues : any;
 
   recipeForm = this.fb.group({
     name: ['', Validators.required],
@@ -41,50 +45,44 @@ export class RecipeAddComponent {
     characterTags: ['', Validators.required]
   });
 
-  recipeStepForm = this.fb.group({
-    name: ['', Validators.required],
-    description: ['', Validators.required]
-  });
-
   ingredientsForm = this.fb.group({
     name: ['', Validators.required],
     quantity: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
     unit: ['', Validators.required]
   })
 
+  recipeStepForm = this.fb.group({
+    name: ['', Validators.required],
+    description: ['', Validators.required]
+    // imageFile: File
+  });
+
   constructor(private fb: FormBuilder, private recipeService: RecipesService, 
     private fileUploadService : FileUploadService, private router: Router, private toastr: ToastrService,
     private accountService: AccountService) { }
 
   setFiles(files: File[]) {
-    this.selectedFiles = files;
+    this.recipeImages = files;
   }
 
-  addIngredient = () => {
-
-    const formValue = this.ingredientsForm.value;
-    const ingredient: Ingredient = {
-      name: formValue.name ?? '',
-      quantity: formValue.quantity ? +formValue.quantity : 0,
-      unit: formValue.unit ?? '',
-    };
-    this.ingredients.push(ingredient);
-    this.ingredientsForm.reset();
+  onBasicsStepSubmit() {
+    console.log("submitted basics");
+    console.log(this.recipeImages);
+    this.stepper?.next();
   }
 
-  addRecipeStep = () => {
+  onIngredientsStepSubmitted(ingredients: Ingredient[]) {
+    // this.ingredients = ingredients;
+    console.log("submitted ingredients");
+    console.log(this.ingredients);
+    this.stepper?.next();
+  }
 
-    const name = this.recipeStepForm.get('name')?.value;
-    const description = this.recipeStepForm.get('description')?.value;
-
-    if(name && description) {
-      const step: RecipeStep = {
-        name: name,
-        description: description
-      };
-      this.recipeSteps.push(step);
-      this.recipeStepForm.reset();
-    } 
+  onStepsStepSubmitted(steps: RecipeStep[]) {
+    // this.recipeSteps = steps;
+    console.log("submitted steps.");
+    console.log(this.recipeSteps);
+    this.stepper?.next();
   }
 
   private getRecipe() : Recipe {
@@ -97,15 +95,16 @@ export class RecipeAddComponent {
     console.log(`Authenticated: ${authenticated}`);
     if(!authenticated) this.router.navigateByUrl('account');
 
-    if(this.selectedFiles.length == 0) return;
+    if(this.recipeImages.length == 0) return;
 
-    this.fileUploadService.uploadMultipleFiles(this.selectedFiles, "recipes/post/image").pipe(
-      map(response => {
+    this.fileUploadService.uploadFiles(this.recipeImages, "recipes/post/image").pipe(
+      mergeMap(response => {
         this.pictureUrls = response;
-        const recipe = this.getRecipe();
-        return recipe;
+        return this.fileUploadService.uploadFiles(this.stepImages, "recipes/post/step-images");
       }),
-      mergeMap(recipe => {
+      mergeMap(response => {
+        this.stepsImagesUrls = response;
+        const recipe = this.getRecipe();
         return this.recipeService.postRecipe(recipe);
       })
     ).subscribe({

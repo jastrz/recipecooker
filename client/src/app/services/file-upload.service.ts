@@ -17,7 +17,7 @@ export class FileUploadService {
         return this.http.post(this.hostUrl + endpoint, formData);
     }
 
-    uploadMultipleFiles(files: File[], endpoint: string): Observable<any> {
+    uploadFiles(files: File[], endpoint: string): Observable<any> {
         const formData = new FormData();
         for (const file of files) {
             formData.append('files', file);

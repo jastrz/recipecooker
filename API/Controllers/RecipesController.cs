@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -15,12 +17,12 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger<RecipesController> _logger;
         private readonly IRecipeService _recipeService;
-        private readonly IFileUploadService _fileUploadService;
+        private readonly IFileService _fileService;
 
         public RecipesController(IRecipeRepository recipeRepo, IMapper mapper, ILogger<RecipesController> logger,
-         IRecipeService recipeService, IFileUploadService fileUploadService)
+         IRecipeService recipeService, IFileService fileUploadService)
         {
-            _fileUploadService = fileUploadService;
+            _fileService = fileUploadService;
             _recipeService = recipeService;
             _logger = logger;
             _recipeRepo = recipeRepo;
@@ -78,7 +80,23 @@ namespace API.Controllers
         {
             try
             {
-                var pictureUrls = await _fileUploadService.UploadFiles(files, "images/recipes");
+                var pictureUrls = await _fileService.SaveFiles(files, "images/recipes");
+                return Ok(pictureUrls);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("post/step-images")]
+        public async Task<IActionResult> PostStepImagesAsync([FromForm] List<IFormFile> files) 
+        {
+            try
+            {
+                var pictureUrls = await _fileService.SaveFiles(files, "images/steps");
                 return Ok(pictureUrls);
             }
             catch (Exception ex)

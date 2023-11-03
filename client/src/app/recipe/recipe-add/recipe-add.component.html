@@ -3,40 +3,29 @@
     <mat-stepper #stepper>
         <mat-step >
         <ng-template matStepLabel>Basic info</ng-template>
-          <app-recipe-add-basics [recipeForm]="recipeForm" (selectedFileEvent)="setFiles($event)"></app-recipe-add-basics>
-          <button type="submit" 
-            class="btn btn-primary mt-4" 
-            (click)="stepper.next()" 
-            [disabled]="recipeForm.invalid || selectedFiles.length == 0"
-            >Continue
-          </button>
+          <app-recipe-add-basics 
+            [recipeForm]="recipeForm" 
+            [recipeImages]="recipeImages"
+            (formSubmitted)="onBasicsStepSubmit()">
+          </app-recipe-add-basics>
         </mat-step>
 
         <mat-step>
           <ng-template matStepLabel>Ingredient list</ng-template>
-          <div class="row" style="margin-top: 50px;">
-            <div class="col-lg-6" *ngIf="ingredients.length > 0">
-              <app-ingredient-list [ingredients]="ingredients"></app-ingredient-list>
-            </div>
-            <div class="col-lg-6 form-group" style="margin:auto; vertical-align: top;" >
-              <app-recipe-add-ingredients [ingriedientsForm]="ingredientsForm" (addIngredientEvent)="addIngredient()"></app-recipe-add-ingredients>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary mt-4" (click)="stepper.next()" [disabled]="ingredients.length == 0">Continue</button>
-              
-          </mat-step>
+              <app-recipe-add-ingredients 
+                [ingredientsForm]="ingredientsForm"
+                [ingredients]="ingredients"
+                (formSubmitted)="onIngredientsStepSubmitted($event)">
+              </app-recipe-add-ingredients>
+        </mat-step>
 
         <mat-step>
         <ng-template matStepLabel>Recipe steps</ng-template>
-        <div class="row" style="margin-top: 50px;">
-          <div class="col-lg-6" *ngIf="recipeSteps.length > 0">
-            <app-recipe-steps-list [recipeSteps]="recipeSteps"></app-recipe-steps-list>
-          </div>
-          <div class="col-lg-6 form-group" style="margin:auto; vertical-align: top;" >
-            <app-recipe-add-steps [recipeStepForm]="recipeStepForm" (addStepEvent)="addRecipeStep()"></app-recipe-add-steps>
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary mt-4" (click)="stepper.next()" [disabled]="recipeSteps.length == 0">Continue</button>
+          <app-recipe-add-steps 
+            (formSubmitted)="onStepsStepSubmitted($event)"
+            [recipeStepForm]="recipeStepForm"
+            [recipeSteps]="recipeSteps">
+          </app-recipe-add-steps>
             
         </mat-step>
         <mat-step>
@@ -50,5 +39,3 @@
         </mat-step>
     </mat-stepper>
 </div>
-
-

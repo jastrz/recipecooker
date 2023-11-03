@@ -25,7 +25,7 @@ builder.Services.AddDbContext<CookerContext>(opt =>
 });
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 builder.Services.AddScoped<IRecipeService, RecipeService>();
-builder.Services.AddScoped<IFileUploadService, FileUploadService>();
+builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<CookerContextSeed>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

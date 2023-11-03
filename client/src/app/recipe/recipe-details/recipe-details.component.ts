@@ -36,6 +36,8 @@ export class RecipeDetailsComponent implements OnInit {
       lightboxConfig.resizeDuration = .35;
       lightboxConfig.fadeDuration = .35;
       lightboxConfig.fitImageInViewPort = true;
+      lightboxConfig.centerVertically = true;
+      lightboxConfig.disableScrolling = true;
 
       this.breadcrumbService.set('@recipe', ' ');
   }

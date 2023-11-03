@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
+import { ImageLoaderComponent } from 'src/app/common/image-loader/image-loader.component';
 
 
 @Component({
@@ -11,48 +12,23 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './recipe-add-basics.component.html',
   styleUrls: ['./recipe-add-basics.component.scss'],
   standalone: true,
-  imports: [MatIconModule, FormsModule, ReactiveFormsModule, CommonModule, MatInputModule, MatSelectModule]
+  imports: [MatIconModule, FormsModule, ReactiveFormsModule, CommonModule, MatInputModule, MatSelectModule, ImageLoaderComponent]
 })
 export class RecipeAddBasicsComponent {
-  @Input() recipeForm?: FormGroup;
-  @Output() selectedFileEvent = new EventEmitter<File[]>();
+  @Input() recipeForm? : FormGroup;
+  @Input() recipeImages: File[] = [];
+  // @Output() selectedFileEvent = new EventEmitter<File[]>();
+  @Output() formSubmitted = new EventEmitter<null>();
 
-  selectedFiles : File[] = [];
-  imagesData: (string | ArrayBuffer | null)[] = [];
 
-  onFileSelected(event: any) {
-    const fileList: FileList = event.target.files;
-
-    
-    if (fileList.length > 0) {
-      for (let i = 0; i < fileList.length; i++) {
-        const file: File = fileList[i];
-        this.selectedFiles.push(file);
-        
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          if (e.target) {
-            this.imagesData.push(e.target.result);
-          }
-        };
-        
-        reader.readAsDataURL(file);
-      }
-      
-      this.selectedFileEvent.emit(this.selectedFiles);
-    } else {
-      this.imagesData = [];
-    }
-    console.log(this.selectedFiles);
-  }
-
-  removeImage(id : number) {
-    this.selectedFiles.splice(id, 1);
-    this.imagesData.splice(id, 1);
-  }
+  
+  constructor(private fb: FormBuilder) {}
 
   onSubmit() {
     const formData = this.recipeForm?.value;
     console.log(formData);
+    this.formSubmitted.emit();
   }
+
+  
 }

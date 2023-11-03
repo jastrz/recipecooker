@@ -4,16 +4,16 @@ using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Services
 {
-    public class FileUploadService : IFileUploadService
+    public class FileService : IFileService
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public FileUploadService(IWebHostEnvironment webHostEnvironment)
+        public FileService(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<List<string>> UploadFiles(List<IFormFile> files, string relativePath)
+        public async Task<List<string>> SaveFiles(List<IFormFile> files, string relativePath)
         {
             if (files == null || files.Count == 0)
             {
