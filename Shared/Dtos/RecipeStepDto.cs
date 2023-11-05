@@ -5,5 +5,6 @@ namespace Shared.Dtos
         public string Name { get; set; }
         public string Description { get; set; }
         public int Sequence { get; set; }
+        public List<string> PictureUrls { get; set; }
     }
 }
