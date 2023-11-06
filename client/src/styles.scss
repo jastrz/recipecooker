@@ -1,22 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+// @import 'bootstrap/scss/bootstrap';
 
 html {
-    position: relative;
-    min-height: 100%;
+  position: relative;
+  min-height: 100%;
 }
 
 label.xng-breadcrumb-trail {
-    color: orange;
+  color: orange;
 }
 
 // body, input {
 //     font-family: 'Raleway';
 // }
 
-  
 // @font-face {
 //     font-family: 'Raleway';
 //     src: url('assets/Raleway-VariableFont_wght.ttf') format('truetype');

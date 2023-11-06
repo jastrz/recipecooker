@@ -1,31 +1,56 @@
-<div class="row" style="margin-top: 50px;">
+<div class="row" style="margin-top: 50px">
   <div class="col-lg-6" *ngIf="ingredients.length > 0">
     <app-ingredient-list [ingredients]="ingredients"></app-ingredient-list>
   </div>
-  <div class="col-lg-6 form-group" style="margin:auto; vertical-align: top;" >
+  <div class="col-lg-6 form-group" style="margin: auto; vertical-align: top">
     <div *ngIf="ingredientsForm" [formGroup]="ingredientsForm">
-
       <mat-form-field class="field mt-4">
-          <mat-label>Ingredient</mat-label>
-          <input id="ingredient-name" matInput placeholder="..." formControlName="name">
+        <mat-label>Ingredient</mat-label>
+        <input
+          id="ingredient-name"
+          matInput
+          placeholder="..."
+          formControlName="name"
+        />
       </mat-form-field>
 
       <mat-form-field class="field mt-4">
-          <mat-label>Quantity</mat-label>
-          <input id="ingredient-quantity" matInput placeholder="..." formControlName="quantity">
+        <mat-label>Quantity</mat-label>
+        <input
+          id="ingredient-quantity"
+          matInput
+          placeholder="..."
+          formControlName="quantity"
+        />
       </mat-form-field>
 
       <mat-form-field class="field mt-4">
-          <mat-label>Unit</mat-label>
-          <mat-select formControlName="unit">
-            <mat-option *ngFor="let unitOption of unitOptions" [value]="unitOption">{{ unitOption }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <mat-label>Unit</mat-label>
+        <mat-select formControlName="unit">
+          <mat-option
+            *ngFor="let unitOption of unitOptions"
+            [value]="unitOption"
+            >{{ unitOption }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
 
-      <button (click)="addIngredient()" class="btn btn-primary" style="float: right;">Add</button>
+      <button
+        (click)="addIngredient()"
+        class="btn btn-primary"
+        style="float: right"
+      >
+        Add
+      </button>
 
-      <button type="submit" class="btn btn-primary mt-4" (click)="onSubmit()" [disabled]="ingredients.length == 0">Continue</button>
+      <button
+        type="submit"
+        class="btn btn-primary mt-4"
+        (click)="onSubmit()"
+        [disabled]="ingredients.length == 0"
+      >
+        Continue
+      </button>
     </div>
   </div>
 </div>
-

@@ -1,0 +1,11 @@
+<div style="text-align: right">
+  <img
+    *ngFor="let album of albums; let i = index"
+    class="lightbox-img"
+    [src]="album.src"
+    (click)="open(i)"
+    width="auto"
+    height="200"
+    alt="Recipe Image"
+  />
+</div>
