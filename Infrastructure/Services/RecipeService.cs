@@ -20,7 +20,7 @@ namespace Infrastructure.Services
                 HandleTag(recipeTag);
             }
 
-            foreach(var recipeIngredient in recipe.RecipeIngredients)
+            foreach (var recipeIngredient in recipe.RecipeIngredients)
             {
                 HandleIngredient(recipeIngredient);
             }
@@ -35,7 +35,7 @@ namespace Infrastructure.Services
         {
             var existingIngredient = _context.Ingredients.FirstOrDefault(i => i.Name == recipeIngredient.Ingredient.Name);
 
-            if(existingIngredient == null)
+            if (existingIngredient == null)
             {
                 _context.Ingredients.Add(recipeIngredient.Ingredient);
             }
@@ -74,6 +74,18 @@ namespace Infrastructure.Services
                 recipeTag.TagId = existingTag.Id;
                 recipeTag.Tag = existingTag;
             }
+        }
+
+        public async Task AddImagesToRecipe(Recipe recipe, List<string> pictureUrls)
+        {
+            pictureUrls.ForEach(url => recipe.PictureUrls.Add(new Picture { Url = url }));
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddImagesToRecipeStep(RecipeStep recipeStep, List<string> pictureUrls)
+        {
+            pictureUrls.ForEach(url => recipeStep.PictureUrls.Add(new Picture { Url = url }));
+            await _context.SaveChangesAsync();
         }
     }
 }

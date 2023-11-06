@@ -1,6 +1,7 @@
 export interface RecipeStep {
-    name: string;
-    description: string;
-    pictureUrls?: string[];
-    pictures?: File[];
+  id: number;
+  name: string;
+  description: string;
+  pictureUrls?: string[];
+  pictures?: File[];
 }

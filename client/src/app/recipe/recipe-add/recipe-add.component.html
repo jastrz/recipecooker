@@ -2,7 +2,7 @@
     <h2>Add recipe</h2>
     <mat-stepper #stepper>
         <mat-step >
-        <ng-template matStepLabel>Basic info</ng-template>
+          <ng-template matStepLabel>Basic info</ng-template>
           <app-recipe-add-basics 
             [recipeForm]="recipeForm" 
             [recipeImages]="recipeImages"
@@ -12,15 +12,15 @@
 
         <mat-step>
           <ng-template matStepLabel>Ingredient list</ng-template>
-              <app-recipe-add-ingredients 
-                [ingredientsForm]="ingredientsForm"
-                [ingredients]="ingredients"
-                (formSubmitted)="onIngredientsStepSubmitted($event)">
-              </app-recipe-add-ingredients>
+          <app-recipe-add-ingredients 
+            [ingredientsForm]="ingredientsForm"
+            [ingredients]="ingredients"
+            (formSubmitted)="onIngredientsStepSubmitted($event)">
+          </app-recipe-add-ingredients>
         </mat-step>
 
         <mat-step>
-        <ng-template matStepLabel>Recipe steps</ng-template>
+          <ng-template matStepLabel>Recipe steps</ng-template>
           <app-recipe-add-steps 
             (formSubmitted)="onStepsStepSubmitted($event)"
             [recipeStepForm]="recipeStepForm"

@@ -1,26 +1,47 @@
-<div class="row" style="margin-top: 50px;">
-    <div class="col-lg-6" *ngIf="recipeSteps && recipeSteps.length > 0">
-        <app-recipe-steps-list [recipeSteps]="recipeSteps"></app-recipe-steps-list>
-    </div>
-    <div class="col-lg-6 form-group" style="margin:auto; vertical-align: top;" >
-        <div *ngIf="recipeStepForm" [formGroup]="recipeStepForm">
-            <mat-form-field class="field mt-4">
-                <mat-label>Step name</mat-label>
-                <input id="recipe-step-name" matInput placeholder="..." formControlName="name">
-            </mat-form-field>
-        
-            <mat-form-field class="description-field mt-4">
-                <mat-label>Description</mat-label>
-                <textarea id="recipe-step-description" matInput cdkTextareaAutosize placeholder="..." formControlName="description"></textarea>
-            </mat-form-field>
+<div class="row" style="margin-top: 50px">
+  <div class="col-lg-6" *ngIf="recipeSteps && recipeSteps.length > 0">
+    <app-recipe-steps-list [recipeSteps]="recipeSteps"></app-recipe-steps-list>
+  </div>
+  <div class="col-lg-6 form-group" style="margin: auto; vertical-align: top">
+    <div *ngIf="recipeStepForm" [formGroup]="recipeStepForm">
+      <mat-form-field class="field mt-4">
+        <mat-label>Step name</mat-label>
+        <input
+          id="recipe-step-name"
+          matInput
+          placeholder="..."
+          formControlName="name"
+        />
+      </mat-form-field>
 
-            <app-image-loader [selectedImages]="selectedImages"></app-image-loader>
-        
-            <!-- <input type="file" (change)="onFileSelected($event)" formControlName="imageFile" accept="image/*"> -->
-            <!-- The 'accept' attribute restricts file selection to image files -->
-        
-            <button (click)="addRecipeStep()" class="btn btn-primary" style="float: right;">Add</button>
-        </div>
+      <mat-form-field class="description-field mt-4">
+        <mat-label>Description</mat-label>
+        <textarea
+          id="recipe-step-description"
+          matInput
+          cdkTextareaAutosize
+          placeholder="..."
+          formControlName="description"
+        ></textarea>
+      </mat-form-field>
+
+      <app-image-loader [selectedImages]="selectedImages"></app-image-loader>
+
+      <button
+        (click)="addRecipeStep()"
+        class="btn btn-primary"
+        style="float: right"
+      >
+        Add
+      </button>
     </div>
+  </div>
 </div>
-<button type="submit" class="btn btn-primary mt-4" (click)="onSubmit()" [disabled]="recipeSteps && recipeSteps.length == 0">Continue</button>
+<button
+  type="submit"
+  class="btn btn-primary mt-4"
+  (click)="onSubmit()"
+  [disabled]="recipeSteps && recipeSteps.length == 0"
+>
+  Continue
+</button>

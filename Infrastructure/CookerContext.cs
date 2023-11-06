@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using System.Reflection;
 
@@ -48,10 +49,10 @@ namespace Infrastructure
                 .HasForeignKey(rt => rt.TagId);
 
             modelBuilder.Entity<RecipeStep>()
-                .HasKey(rs => new { rs.RecipeId, rs.Sequence });
+                .HasKey(rs => new { rs.RecipeId, rs.Id });
 
             modelBuilder.Entity<RecipeIngredient>()
-                .HasKey(ri => new { ri.RecipeId, ri.IngredientId});
+                .HasKey(ri => new { ri.RecipeId, ri.IngredientId });
 
             modelBuilder.Entity<RecipeIngredient>()
                 .HasOne(ri => ri.Recipe)

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data
 {
     [DbContext(typeof(CookerContext))]
-    [Migration("20231105111532_AddedRecipeStepPictures")]
+    [Migration("20231105185138_AddedRecipeStepPictures")]
     partial class AddedRecipeStepPictures
     {
         /// <inheritdoc />
@@ -60,10 +60,10 @@ namespace Infrastructure.Data
                     b.Property<int?>("RecipeId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("RecipeStepRecipeId")
+                    b.Property<int?>("RecipeStepId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("RecipeStepSequence")
+                    b.Property<int?>("RecipeStepRecipeId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Url")
@@ -73,7 +73,7 @@ namespace Infrastructure.Data
 
                     b.HasIndex("RecipeId");
 
-                    b.HasIndex("RecipeStepRecipeId", "RecipeStepSequence");
+                    b.HasIndex("RecipeStepRecipeId", "RecipeStepId");
 
                     b.ToTable("Picture");
                 });
@@ -118,7 +118,7 @@ namespace Infrastructure.Data
                     b.Property<int>("RecipeId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Sequence")
+                    b.Property<int>("Id")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
@@ -127,7 +127,7 @@ namespace Infrastructure.Data
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("RecipeId", "Sequence");
+                    b.HasKey("RecipeId", "Id");
 
                     b.ToTable("Steps");
                 });
@@ -174,7 +174,7 @@ namespace Infrastructure.Data
 
                     b.HasOne("Core.Entities.RecipeStep", null)
                         .WithMany("PictureUrls")
-                        .HasForeignKey("RecipeStepRecipeId", "RecipeStepSequence");
+                        .HasForeignKey("RecipeStepRecipeId", "RecipeStepId");
                 });
 
             modelBuilder.Entity("Core.Entities.RecipeIngredient", b =>

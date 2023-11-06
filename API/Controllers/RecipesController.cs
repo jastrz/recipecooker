@@ -30,15 +30,15 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IReadOnlyList<RecipeDto>> GetRecipes([FromQuery]RecipeSpecParams @params)
+        public async Task<IReadOnlyList<RecipeDto>> GetRecipes([FromQuery] RecipeSpecParams @params)
         {
             var recipes = await _recipeRepo.GetRecipes();
 
-            if(!string.IsNullOrEmpty(@params.Character))
+            if (!string.IsNullOrEmpty(@params.Character))
                 recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Character)).ToList();
-            if(!string.IsNullOrEmpty(@params.MainIngredient))
+            if (!string.IsNullOrEmpty(@params.MainIngredient))
                 recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.MainIngredient)).ToList();
-            if(!string.IsNullOrEmpty(@params.Origin))
+            if (!string.IsNullOrEmpty(@params.Origin))
                 recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Origin)).ToList();
 
             var data = _mapper.Map<IReadOnlyList<Recipe>, IReadOnlyList<RecipeDto>>(recipes);
@@ -47,16 +47,16 @@ namespace API.Controllers
         }
 
         [HttpGet("tags")]
-        public async Task<IReadOnlyList<TagDto>> GetTags() 
+        public async Task<IReadOnlyList<TagDto>> GetTags()
         {
             var tags = await _recipeRepo.GetTags();
             var data = _mapper.Map<IReadOnlyList<Tag>, IReadOnlyList<TagDto>>(tags);
-            
+
             return data;
         }
 
         [HttpGet("{id}")]
-        public async Task<RecipeDto> GetRecipe(int id) 
+        public async Task<RecipeDto> GetRecipe(int id)
         {
             var recipe = await _recipeRepo.GetRecipe(id);
             var data = _mapper.Map<Recipe, RecipeDto>(recipe);
@@ -75,13 +75,16 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("post/image")]
-        public async Task<IActionResult> PostRecipeImagesAsync([FromForm] List<IFormFile> files) 
+        [Route("{id}/images")]
+        public async Task<IActionResult> PostRecipeImages([FromRoute] int id, [FromForm] List<IFormFile> files)
         {
             try
             {
                 var pictureUrls = await _fileService.SaveFiles(files, "images/recipes");
-                return Ok(pictureUrls);
+                var recipe = await _recipeRepo.GetRecipe(id);
+                await _recipeService.AddImagesToRecipe(recipe, pictureUrls);
+
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -91,13 +94,17 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("post/step-images")]
-        public async Task<IActionResult> PostStepImagesAsync([FromForm] List<IFormFile> files) 
+        [Route("{id}/{stepId}/images")]
+        public async Task<IActionResult> PostStepImages([FromRoute] int id, [FromRoute] int stepId, [FromForm] List<IFormFile> files)
         {
             try
             {
-                var pictureUrls = await _fileService.SaveFiles(files, "images/steps");
-                return Ok(pictureUrls);
+                var pictureUrls = await _fileService.SaveFiles(files, "images/recipes");
+                var recipe = await _recipeRepo.GetRecipe(id);
+                var step = recipe.Steps.FirstOrDefault(x => x.Id == stepId); // todo: correct step ids and sequences
+                await _recipeService.AddImagesToRecipeStep(step, pictureUrls);
+
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -107,7 +114,6 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("post")]
         public async Task<IActionResult> PostRecipe([FromBody] RecipeDto recipeDto)
         {
             var recipe = _mapper.Map<RecipeDto, Recipe>(recipeDto);

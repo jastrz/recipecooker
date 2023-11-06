@@ -1,14 +1,28 @@
-<div class="row mt-4" style="height: 160px;">
-    <div class="col-4">
-      <input type="file" class="form-control-file" style="display: none" accept=".jpg" multiple (change)="onFileSelected($event)"  #hiddenfileinput>
-      <button (click)="hiddenfileinput.click()" class="btn btn-primary">Select image</button>
-    </div>
-    
+<div class="row mt-4" style="height: 160px">
+  <div class="col-4">
+    <input
+      type="file"
+      class="form-control-file"
+      style="display: none"
+      accept=".jpg"
+      multiple
+      (change)="onFileSelected($event)"
+      #hiddenfileinput
+    />
+    <button (click)="hiddenfileinput.click()" class="btn btn-primary">
+      Select image
+    </button>
   </div>
-  <div class="row" *ngIf="selectedImages && selectedImages.length > 0">
-    <div class="col-4 image-container" *ngFor="let image of imagesData; let i = index">
-      <img [src]="image" alt="Thumbnail" style="max-height: 150px; width: auto">
-      <p>{{selectedImages[i].name}}</p>
-      <button (click)="removeImage(i)" class="btn btn-primary remove-button">X</button>
-    </div>
+</div>
+<div class="row" *ngIf="selectedImages && selectedImages.length > 0">
+  <div
+    class="col-4 image-container"
+    *ngFor="let image of imagesData; let i = index"
+  >
+    <img [src]="image" alt="Thumbnail" style="max-height: 150px; width: auto" />
+    <p>{{ selectedImages[i].name }}</p>
+    <button (click)="removeImage(i)" class="btn btn-primary remove-button">
+      X
+    </button>
   </div>
+</div>
