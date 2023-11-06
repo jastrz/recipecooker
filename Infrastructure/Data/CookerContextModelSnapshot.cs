@@ -15,7 +15,7 @@ namespace Infrastructure.Data
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.10");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.13");
 
             modelBuilder.Entity("Core.Entities.Category", b =>
                 {
@@ -57,12 +57,20 @@ namespace Infrastructure.Data
                     b.Property<int?>("RecipeId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("RecipeStepId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("RecipeStepRecipeId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Url")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RecipeId");
+
+                    b.HasIndex("RecipeStepRecipeId", "RecipeStepId");
 
                     b.ToTable("Picture");
                 });
@@ -107,7 +115,7 @@ namespace Infrastructure.Data
                     b.Property<int>("RecipeId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Sequence")
+                    b.Property<int>("Id")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
@@ -116,7 +124,7 @@ namespace Infrastructure.Data
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("RecipeId", "Sequence");
+                    b.HasKey("RecipeId", "Id");
 
                     b.ToTable("Steps");
                 });
@@ -160,6 +168,10 @@ namespace Infrastructure.Data
                     b.HasOne("Core.Entities.Recipe", null)
                         .WithMany("PictureUrls")
                         .HasForeignKey("RecipeId");
+
+                    b.HasOne("Core.Entities.RecipeStep", null)
+                        .WithMany("PictureUrls")
+                        .HasForeignKey("RecipeStepRecipeId", "RecipeStepId");
                 });
 
             modelBuilder.Entity("Core.Entities.RecipeIngredient", b =>
@@ -232,6 +244,11 @@ namespace Infrastructure.Data
                     b.Navigation("RecipeTags");
 
                     b.Navigation("Steps");
+                });
+
+            modelBuilder.Entity("Core.Entities.RecipeStep", b =>
+                {
+                    b.Navigation("PictureUrls");
                 });
 
             modelBuilder.Entity("Core.Entities.Tag", b =>

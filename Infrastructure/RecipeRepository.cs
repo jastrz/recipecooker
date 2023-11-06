@@ -19,6 +19,7 @@ namespace Infrastructure
                 .Where(r => r.Id == id)
                 .Include(r => r.PictureUrls)
                 .Include(r => r.Steps)
+                    .ThenInclude(s => s.PictureUrls)
                 .Include(r => r.RecipeTags)
                     .ThenInclude(r => r.Tag)
                         .ThenInclude(r => r.Category)
@@ -26,7 +27,7 @@ namespace Infrastructure
                     .ThenInclude(r => r.Ingredient)
                 .FirstOrDefaultAsync();
 
-                return recipe;
+            return recipe;
         }
 
         public async Task<IReadOnlyList<Recipe>> GetRecipes()
@@ -48,7 +49,7 @@ namespace Infrastructure
         {
             var recipeSteps = await _context.Steps.Where(s => s.RecipeId == recipeId)
                 .ToListAsync();
-            
+
             return recipeSteps;
         }
 
