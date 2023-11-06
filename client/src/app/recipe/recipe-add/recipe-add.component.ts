@@ -52,6 +52,7 @@ export class RecipeAddComponent {
   recipeForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
+    summary: ['', Validators.required],
     ingredientTags: ['', Validators.required],
     originTags: ['', Validators.required],
     characterTags: ['', Validators.required],
@@ -129,6 +130,7 @@ export class RecipeAddComponent {
     const recipe: Recipe = {
       name: formValue.name as string,
       description: formValue.description as string,
+      summary: formValue.summary as string,
       steps: this.recipeSteps,
       ingredients: this.ingredients,
       pictureUrls: [],

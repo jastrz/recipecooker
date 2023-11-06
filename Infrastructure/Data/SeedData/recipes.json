@@ -1,6 +1,7 @@
 [
   {
     "name": "Spaghetti Carbonara",
+    "summary": "Classic Italian pasta dish with eggs, cheese, and pancetta.",
     "description": "Classic Italian pasta dish with eggs, cheese, and pancetta.",
     "pictureUrls": ["images/recipes/spaghetti.jpg"],
     "tags": [
@@ -45,6 +46,7 @@
   },
   {
     "name": "Chicken Alfredo",
+    "summary": "Creamy pasta with chicken, mushrooms, and a rich Alfredo sauce.",
     "description": "Creamy pasta with chicken, mushrooms, and a rich Alfredo sauce.",
     "pictureUrls": ["images/recipes/chicken_alfredo.jpg"],
     "tags": [
@@ -89,6 +91,7 @@
   },
   {
     "name": "Margarita Pizza",
+    "summary": "Classic pizza with tomatoes, mozzarella, and basil.",
     "description": "Classic pizza with tomatoes, mozzarella, and basil.",
     "pictureUrls": ["images/recipes/margarita_pizza.jpg"],
     "tags": [
@@ -133,6 +136,7 @@
   },
   {
     "name": "Sushi Rolls",
+    "summary": "Fresh sushi rolls with a variety of fillings.",
     "description": "Fresh sushi rolls with a variety of fillings.",
     "pictureUrls": ["images/recipes/sushi.jpg"],
     "tags": [
@@ -177,6 +181,7 @@
   },
   {
     "name": "Baked Lasagna",
+    "summary": "Homemade lasagna with layers of pasta, cheese, and sauce.",
     "description": "Homemade lasagna with layers of pasta, cheese, and sauce.",
     "pictureUrls": ["images/recipes/lasagna.jpg"],
     "tags": [
@@ -221,6 +226,7 @@
   },
   {
     "name": "Miso Soup",
+    "summary": "Japanese soup with miso paste, tofu, seaweed, and green onions.",
     "description": "Japanese soup with miso paste, tofu, seaweed, and green onions.",
     "pictureUrls": ["images/recipes/miso_soup.jpg"],
     "tags": [
@@ -265,6 +271,7 @@
   },
   {
     "name": "Ratatouille",
+    "summary": "A French vegetable stew with tomatoes, eggplant, and zucchini.",
     "description": "A French vegetable stew with tomatoes, eggplant, and zucchini.",
     "pictureUrls": ["images/recipes/ratatouille.jpg"],
     "tags": [
@@ -309,6 +316,7 @@
   },
   {
     "name": "BBQ Pulled Pork",
+    "summary": "Slow-cooked pulled pork with BBQ sauce, served in a bun.",
     "description": "Slow-cooked pulled pork with BBQ sauce, served in a bun.",
     "pictureUrls": ["images/recipes/pulled_pork.jpg"],
     "tags": [
@@ -353,6 +361,7 @@
   },
   {
     "name": "Chicken Shawarma",
+    "summary": "Middle Eastern dish with marinated chicken, served in a flatbread.",
     "description": "Middle Eastern dish with marinated chicken, served in a flatbread.",
     "pictureUrls": ["images/recipes/shawarma.jpg"],
     "tags": [
@@ -397,6 +406,7 @@
   },
   {
     "name": "Chocolate Chip Cookies",
+    "summary": "Homemade cookies with chocolate chips and a soft center.",
     "description": "Homemade cookies with chocolate chips and a soft center.",
     "pictureUrls": ["images/recipes/cookies.jpg"],
     "tags": [

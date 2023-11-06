@@ -4,9 +4,9 @@
   <div class="card" *ngIf="recipe">
     <div class="row">
       <div class="col-8">
-        <strong class="d-inline-block mb-2 text-primary-emphasis">World</strong>
-        <h3 class="mb-0">{{ recipe.name }}</h3>
-        <p class="card-text mt-4">{{ recipe.description }}</p>
+        <h3 class="mb-0 fs-2">{{ recipe.name }}</h3>
+        <p class="card-text mt-4 fs-6">{{ recipe.summary }}</p>
+        <p class="card-text mt-4 fs-6">{{ recipe.description }}</p>
       </div>
       <div class="col-4">
         <app-album [pictureUrls]="recipe.pictureUrls"></app-album>

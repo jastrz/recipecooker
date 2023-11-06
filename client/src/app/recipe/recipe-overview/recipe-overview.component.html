@@ -1,21 +1,31 @@
 <ng-container *ngIf="recipe">
-    <mat-card>
-        <mat-card-header style="min-height: 100px;">
-          <mat-card-title>{{recipe.name}}</mat-card-title>
-          <mat-card-subtitle>{{recipe.description}}</mat-card-subtitle>
-        </mat-card-header>
-        <ng-container *ngFor="let pictureUrl of recipe.pictureUrls">
-            <img mat-card-image [src]="pictureUrl" [alt]="recipe.name" class="sized" [@pictureAnimation]>
-        </ng-container>
-        <mat-card-content style="margin-top: 40px; min-height: 200px;">
-          <p>
-            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-            bred for hunting.
-          </p>
-        </mat-card-content>
-        <mat-card-actions style="justify-content: end; margin-top: 20px;">
-            <button mat-button (click)="viewDetailsClicked()">View details »</button>
-        </mat-card-actions>
-      </mat-card>
+  <mat-card class="card">
+    <mat-card-header style="min-height: 100px">
+      <mat-card-title (click)="viewDetailsClicked()" style="cursor: pointer">{{
+        recipe.name
+      }}</mat-card-title>
+      <mat-card-subtitle>{{ recipe.summary }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <img
+      mat-card-image
+      [src]="recipe.pictureUrls[0]"
+      [alt]="recipe.name"
+      class="sized"
+      (click)="viewDetailsClicked()"
+      [@pictureAnimation]
+      style="cursor: pointer"
+    />
+
+    <mat-card-content style="margin-top: 40px; min-height: 200px">
+      <p>
+        The Shiba Inu is the smallest of the six original and distinct spitz
+        breeds of dog from Japan. A small, agile dog that copes very well with
+        mountainous terrain, the Shiba Inu was originally bred for hunting.
+      </p>
+    </mat-card-content>
+    <mat-card-actions style="justify-content: end; margin-top: 20px">
+      <button mat-button (click)="viewDetailsClicked()">View details »</button>
+    </mat-card-actions>
+  </mat-card>
 </ng-container>
