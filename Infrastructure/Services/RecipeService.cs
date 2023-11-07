@@ -78,13 +78,13 @@ namespace Infrastructure.Services
 
         public async Task AddImagesToRecipe(Recipe recipe, List<string> pictureUrls)
         {
-            pictureUrls.ForEach(url => recipe.PictureUrls.Add(new Picture { Url = url }));
+            pictureUrls.ForEach(url => recipe.Pictures.Add(new Picture { Url = url }));
             await _context.SaveChangesAsync();
         }
 
         public async Task AddImagesToRecipeStep(RecipeStep recipeStep, List<string> pictureUrls)
         {
-            pictureUrls.ForEach(url => recipeStep.PictureUrls.Add(new Picture { Url = url }));
+            pictureUrls.ForEach(url => recipeStep.Pictures.Add(new Picture { Url = url }));
             await _context.SaveChangesAsync();
         }
     }

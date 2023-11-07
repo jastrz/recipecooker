@@ -17,9 +17,9 @@ namespace Infrastructure
         {
             var recipe = await _context.Recipes
                 .Where(r => r.Id == id)
-                .Include(r => r.PictureUrls)
+                .Include(r => r.Pictures)
                 .Include(r => r.Steps)
-                    .ThenInclude(s => s.PictureUrls)
+                    .ThenInclude(s => s.Pictures)
                 .Include(r => r.RecipeTags)
                     .ThenInclude(r => r.Tag)
                         .ThenInclude(r => r.Category)
@@ -33,7 +33,7 @@ namespace Infrastructure
         public async Task<IReadOnlyList<Recipe>> GetRecipes()
         {
             var recipes = await _context.Recipes
-                .Include(r => r.PictureUrls)
+                .Include(r => r.Pictures)
                 .Include(r => r.Steps)
                 .Include(r => r.RecipeTags)
                     .ThenInclude(rt => rt.Tag)

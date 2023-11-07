@@ -11,10 +11,10 @@ namespace API.Helpers
             CreateMap<Recipe, RecipeDto>()
                 .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.RecipeTags.Select(rt => rt.Tag)))
                 .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src => src.RecipeIngredients))
-                .ForMember(dest => dest.PictureUrls, opt => opt.MapFrom<RecipeUrlResolver>());
+                .ForMember(dest => dest.PictureUrls, opt => opt.MapFrom<PictureUrlResolver>());
 
             CreateMap<RecipeDto, Recipe>()
-                .ForMember(dest => dest.PictureUrls, opt => opt.MapFrom(src => src.PictureUrls.Select(url => new Picture { Url = url })))
+                .ForMember(dest => dest.Pictures, opt => opt.MapFrom(src => src.PictureUrls.Select(url => new Picture { Url = url })))
                 .ForMember(dest => dest.RecipeTags, opt => opt.MapFrom(src => src.Tags.Select(tag => new RecipeTag
                 {
                     Tag = new Tag()
@@ -40,7 +40,7 @@ namespace API.Helpers
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
 
             CreateMap<RecipeStep, RecipeStepDto>()
-                .ForMember(dest => dest.PictureUrls, opt => opt.MapFrom<RecipeStepValueResolver>())
+                .ForMember(dest => dest.PictureUrls, opt => opt.MapFrom<PictureUrlResolver>())
                 .ReverseMap();
 
             CreateMap<RecipeIngredient, IngredientDto>()
