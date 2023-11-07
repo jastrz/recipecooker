@@ -30,6 +30,18 @@ namespace Infrastructure
             return recipe;
         }
 
+        public async Task<IReadOnlyList<Recipe>> GetRecipesOverview()
+        {
+            var recipes = await _context.Recipes
+                .Include(r => r.Pictures)
+                .Include(r => r.RecipeTags)
+                    .ThenInclude(rt => rt.Tag)
+                        .ThenInclude(t => t.Category)
+                .ToListAsync();
+
+            return recipes;
+        }
+
         public async Task<IReadOnlyList<Recipe>> GetRecipes()
         {
             var recipes = await _context.Recipes
@@ -72,5 +84,7 @@ namespace Infrastructure
 
             return sortedTags;
         }
+
+
     }
 }

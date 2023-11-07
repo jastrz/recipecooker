@@ -14,7 +14,7 @@ import { RecipeStep } from 'src/app/models/recipeStep';
 import { RecipeDetailsComponent } from '../recipe-details/recipe-details.component';
 import { RecipeStepsListComponent } from './recipe-add-steps/recipe-steps-list/recipe-steps-list.component';
 import { Recipe } from 'src/app/models/recipe';
-import { RecipesService } from 'src/app/cooker/recipes.service';
+import { RecipesService } from 'src/app/services/recipes.service';
 import { Ingredient } from 'src/app/models/ingredient';
 import { RecipeAddIngredientsComponent } from './recipe-add-ingredients/recipe-add-ingredients.component';
 import { IngredientListComponent } from './recipe-add-ingredients/ingredient-list/ingredient-list.component';

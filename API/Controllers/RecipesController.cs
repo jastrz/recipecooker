@@ -33,17 +33,30 @@ namespace API.Controllers
         public async Task<IReadOnlyList<RecipeDto>> GetRecipes([FromQuery] RecipeSpecParams @params)
         {
             var recipes = await _recipeRepo.GetRecipes();
+            var filteredRecipes = FilterRecipes(recipes, @params);
+            var data = _mapper.Map<IReadOnlyList<Recipe>, IReadOnlyList<RecipeDto>>(filteredRecipes);
+            return data;
+        }
 
+        [HttpGet]
+        [Route("overview")]
+        public async Task<IReadOnlyList<RecipeDto>> GetRecipesOverview([FromQuery] RecipeSpecParams @params)
+        {
+            var recipes = await _recipeRepo.GetRecipesOverview();
+            var filteredRecipes = FilterRecipes(recipes, @params);
+            var data = _mapper.Map<IReadOnlyList<Recipe>, IReadOnlyList<RecipeDto>>(filteredRecipes);
+            return data;
+        }
+
+        private IReadOnlyList<Recipe> FilterRecipes(IReadOnlyList<Recipe> recipes, RecipeSpecParams @params)
+        {
             if (!string.IsNullOrEmpty(@params.Character))
                 recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Character)).ToList();
             if (!string.IsNullOrEmpty(@params.MainIngredient))
                 recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.MainIngredient)).ToList();
             if (!string.IsNullOrEmpty(@params.Origin))
                 recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Origin)).ToList();
-
-            var data = _mapper.Map<IReadOnlyList<Recipe>, IReadOnlyList<RecipeDto>>(recipes);
-
-            return data;
+            return recipes;
         }
 
         [HttpGet("tags")]

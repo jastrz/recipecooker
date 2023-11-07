@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlbumComponent } from 'src/app/common/album/album.component';
-import { RecipesService } from 'src/app/cooker/recipes.service';
+import { RecipesService } from 'src/app/services/recipes.service';
 import { Recipe } from 'src/app/models/recipe';
 import { BreadcrumbService } from 'xng-breadcrumb';
 
