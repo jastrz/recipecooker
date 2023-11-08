@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { RecipeStepsListComponent } from './recipe-steps-list/recipe-steps-list.component';
 import { RecipeStep } from 'src/app/models/recipeStep';
 import { ImageLoaderComponent } from 'src/app/common/image-loader/image-loader.component';
+import { RecipeAddService } from '../recipe-add.service';
 
 @Component({
   selector: 'app-recipe-add-steps',
@@ -31,34 +32,41 @@ import { ImageLoaderComponent } from 'src/app/common/image-loader/image-loader.c
   ],
 })
 export class RecipeAddStepsComponent {
-  @Input() recipeStepForm?: FormGroup;
-  @Input() recipeSteps: RecipeStep[] = [];
-  @Output() formSubmitted: EventEmitter<RecipeStep[]> = new EventEmitter<
-    RecipeStep[]
-  >();
+  @Output() formSubmitted: EventEmitter<void> = new EventEmitter<void>();
+  recipeStepForm?: FormGroup;
 
-  selectedImages: File[] = [];
+  constructor(private recipeAddService: RecipeAddService) {}
 
-  constructor(private fb: FormBuilder) {}
-
-  addRecipeStep() {
-    const name = this.recipeStepForm?.get('name')?.value;
-    const description = this.recipeStepForm?.get('description')?.value;
-
-    if (name && description) {
-      const step: RecipeStep = {
-        name: name,
-        description: description,
-        pictures: [...this.selectedImages],
-        id: this.recipeSteps.length + 1,
-      };
-      this.recipeSteps?.push(step);
-      this.recipeStepForm?.reset();
-      this.selectedImages = [];
-    }
+  get recipeStepsGroups(): FormGroup[] {
+    return this.recipeAddService.recipeStepForms.controls as FormGroup[];
   }
 
+  addRecipeStep() {
+    this.recipeAddService.addRecipeStep();
+  }
+
+  removeRecipeStep(index: number) {
+    this.recipeAddService.removeRecipeStep(index);
+  }
+
+  // addRecipeStep() {
+  //   const name = this.recipeStepForm?.get('name')?.value;
+  //   const description = this.recipeStepForm?.get('description')?.value;
+
+  //   if (name && description) {
+  //     const step: RecipeStep = {
+  //       name: name,
+  //       description: description,
+  //       pictures: [...this.selectedImages],
+  //       id: this.recipeSteps.length + 1,
+  //     };
+  //     this.recipeSteps?.push(step);
+  //     this.recipeStepForm?.reset();
+  //     this.selectedImages = [];
+  //   }
+  // }
+
   onSubmit() {
-    this.formSubmitted.emit(this.recipeSteps);
+    this.formSubmitted.emit();
   }
 }

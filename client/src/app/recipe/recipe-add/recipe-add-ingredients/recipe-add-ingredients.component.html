@@ -1,56 +1,58 @@
 <div class="row" style="margin-top: 50px">
-  <div class="col-lg-6" *ngIf="ingredients.length > 0">
+  <!-- todo: LISTS can be used for different editor view -->
+  <!-- <div class="col-lg-6" *ngIf="ingredients.length > 0">
     <app-ingredient-list [ingredients]="ingredients"></app-ingredient-list>
-  </div>
+  </div> -->
   <div class="col-lg-6 form-group" style="margin: auto; vertical-align: top">
-    <div *ngIf="ingredientsForm" [formGroup]="ingredientsForm">
-      <mat-form-field class="field mt-4">
-        <mat-label>Ingredient</mat-label>
-        <input
-          id="ingredient-name"
-          matInput
-          placeholder="..."
-          formControlName="name"
-        />
-      </mat-form-field>
+    <div *ngFor="let ingredientGroup of ingredientGroups; let i = index">
+      <div [formGroup]="ingredientGroup" style="margin-bottom: 50px">
+        <div class="row">
+          <div class="col-8">
+            <mat-form-field class="field mt-4">
+              <mat-label>Ingredient</mat-label>
+              <input matInput placeholder="..." formControlName="name" />
+            </mat-form-field>
+          </div>
+          <div class="col-4" style="display: flex; align-items: center">
+            <button (click)="removeIngredient(i)" class="btn btn-danger">
+              X
+            </button>
+          </div>
+        </div>
 
-      <mat-form-field class="field mt-4">
-        <mat-label>Quantity</mat-label>
-        <input
-          id="ingredient-quantity"
-          matInput
-          placeholder="..."
-          formControlName="quantity"
-        />
-      </mat-form-field>
-
-      <mat-form-field class="field mt-4">
-        <mat-label>Unit</mat-label>
-        <mat-select formControlName="unit">
-          <mat-option
-            *ngFor="let unitOption of unitOptions"
-            [value]="unitOption"
-            >{{ unitOption }}</mat-option
-          >
-        </mat-select>
-      </mat-form-field>
-
-      <button
-        (click)="addIngredient()"
-        class="btn btn-primary"
-        style="float: right"
-      >
-        Add
-      </button>
-
-      <button
-        type="submit"
-        class="btn btn-primary mt-4"
-        (click)="onSubmit()"
-        [disabled]="ingredients.length == 0"
-      >
-        Continue
-      </button>
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field class="field mt-4">
+              <mat-label>Quantity</mat-label>
+              <input matInput placeholder="..." formControlName="quantity" />
+            </mat-form-field>
+          </div>
+          <div class="col-6">
+            <mat-form-field class="field mt-4">
+              <mat-label>Unit</mat-label>
+              <mat-select formControlName="unit">
+                <mat-option
+                  *ngFor="let unitOption of unitOptions"
+                  [value]="unitOption"
+                  >{{ unitOption }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <button
+      (click)="addIngredient()"
+      class="btn btn-success"
+      style="float: right"
+    >
+      Add
+    </button>
+
+    <button type="submit" class="btn btn-primary mt-4" (click)="onSubmit()">
+      Continue
+    </button>
   </div>
 </div>

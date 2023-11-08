@@ -1,41 +1,53 @@
 <div class="container text-center">
-    <h2>Add recipe</h2>
-    <mat-stepper #stepper>
-        <mat-step >
-          <ng-template matStepLabel>Basic info</ng-template>
-          <app-recipe-add-basics 
-            [recipeForm]="recipeForm" 
-            [recipeImages]="recipeImages"
-            (formSubmitted)="onBasicsStepSubmit()">
-          </app-recipe-add-basics>
-        </mat-step>
+  <h2>Add recipe</h2>
+  <mat-stepper #stepper>
+    <mat-step>
+      <ng-template matStepLabel>Basic info</ng-template>
+      <app-recipe-add-basics (formSubmitted)="onBasicsStepSubmit()">
+      </app-recipe-add-basics>
+    </mat-step>
 
-        <mat-step>
-          <ng-template matStepLabel>Ingredient list</ng-template>
-          <app-recipe-add-ingredients 
-            [ingredientsForm]="ingredientsForm"
-            [ingredients]="ingredients"
-            (formSubmitted)="onIngredientsStepSubmitted($event)">
-          </app-recipe-add-ingredients>
-        </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Ingredient list</ng-template>
+      <app-recipe-add-ingredients
+        (formSubmitted)="onIngredientsStepSubmitted()"
+      >
+      </app-recipe-add-ingredients>
+    </mat-step>
 
-        <mat-step>
-          <ng-template matStepLabel>Recipe steps</ng-template>
-          <app-recipe-add-steps 
-            (formSubmitted)="onStepsStepSubmitted($event)"
-            [recipeStepForm]="recipeStepForm"
-            [recipeSteps]="recipeSteps">
-          </app-recipe-add-steps>
-            
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Done</ng-template>
-          <p>You are now done.</p>
-          <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="stepper.reset()">Reset</button>
-            <button mat-button (click)="postRecipe()">Post</button>
-          </div>
-        </mat-step>
-    </mat-stepper>
+    <mat-step>
+      <ng-template matStepLabel>Recipe steps</ng-template>
+      <app-recipe-add-steps (formSubmitted)="onStepsStepSubmitted()">
+      </app-recipe-add-steps>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <div style="margin-top: 80px">
+        <button
+          class="btn btn-primary"
+          mat-button
+          matStepperPrevious
+          style="margin-right: 20px"
+        >
+          Back
+        </button>
+        <button
+          class="btn btn-danger"
+          mat-button
+          (click)="stepper.reset()"
+          style="margin-right: 20px"
+        >
+          Reset
+        </button>
+        <button
+          class="btn btn-success"
+          mat-button
+          (click)="postRecipe()"
+          style="margin-right: 20px"
+        >
+          Publish
+        </button>
+      </div>
+    </mat-step>
+  </mat-stepper>
 </div>

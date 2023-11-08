@@ -1,15 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { ImageLoaderComponent } from 'src/app/common/image-loader/image-loader.component';
+import { RecipeAddService } from '../recipe-add.service';
 
 @Component({
   selector: 'app-recipe-add-basics',
@@ -27,11 +23,12 @@ import { ImageLoaderComponent } from 'src/app/common/image-loader/image-loader.c
   ],
 })
 export class RecipeAddBasicsComponent {
-  @Input() recipeForm?: FormGroup;
-  @Input() recipeImages: File[] = [];
   @Output() formSubmitted = new EventEmitter<null>();
+  recipeForm?: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private recipeAddService: RecipeAddService) {
+    this.recipeForm = recipeAddService.recipeForm;
+  }
 
   onSubmit() {
     const formData = this.recipeForm?.value;

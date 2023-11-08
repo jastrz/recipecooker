@@ -44,7 +44,9 @@
         <input matInput placeholder="..." formControlName="characterTags" />
       </mat-form-field>
 
-      <app-image-loader [selectedImages]="recipeImages"></app-image-loader>
+      <app-image-loader
+        [selectedImages]="recipeForm.get('files')?.value"
+      ></app-image-loader>
 
       <button
         (click)="onSubmit()"

@@ -1,47 +1,56 @@
 <div class="row" style="margin-top: 50px">
-  <div class="col-lg-6" *ngIf="recipeSteps && recipeSteps.length > 0">
+  <!-- todo: LISTS can be used for different editor view -->
+  <!-- <div class="col-lg-6" *ngIf="recipeSteps && recipeSteps.length > 0">
     <app-recipe-steps-list [recipeSteps]="recipeSteps"></app-recipe-steps-list>
-  </div>
+  </div> -->
   <div class="col-lg-6 form-group" style="margin: auto; vertical-align: top">
-    <div *ngIf="recipeStepForm" [formGroup]="recipeStepForm">
-      <mat-form-field class="field mt-4">
-        <mat-label>Step name</mat-label>
-        <input
-          id="recipe-step-name"
-          matInput
-          placeholder="..."
-          formControlName="name"
-        />
-      </mat-form-field>
-
-      <mat-form-field class="description-field mt-4">
-        <mat-label>Description</mat-label>
-        <textarea
-          id="recipe-step-description"
-          matInput
-          cdkTextareaAutosize
-          placeholder="..."
-          formControlName="description"
-        ></textarea>
-      </mat-form-field>
-
-      <app-image-loader [selectedImages]="selectedImages"></app-image-loader>
-
+    <div
+      *ngFor="let recipeStepsGroup of recipeStepsGroups; let i = index"
+      style="margin-top: 50px"
+    >
       <button
-        (click)="addRecipeStep()"
+        (click)="removeRecipeStep(i)"
         class="btn btn-primary"
         style="float: right"
       >
-        Add
+        X
       </button>
+      <div [formGroup]="recipeStepsGroup">
+        <mat-form-field class="field mt-4">
+          <mat-label>Step name</mat-label>
+          <input
+            id="recipe-step-name"
+            matInput
+            placeholder="..."
+            formControlName="name"
+          />
+        </mat-form-field>
+
+        <mat-form-field class="description-field mt-4">
+          <mat-label>Description</mat-label>
+          <textarea
+            id="recipe-step-description"
+            matInput
+            cdkTextareaAutosize
+            placeholder="..."
+            formControlName="description"
+          ></textarea>
+        </mat-form-field>
+
+        <app-image-loader
+          [selectedImages]="recipeStepsGroup.get('files')?.value"
+        ></app-image-loader>
+      </div>
     </div>
+    <button
+      (click)="addRecipeStep()"
+      class="btn btn-success"
+      style="float: right"
+    >
+      Add
+    </button>
+    <button type="submit" class="btn btn-primary mt-4" (click)="onSubmit()">
+      Continue
+    </button>
   </div>
 </div>
-<button
-  type="submit"
-  class="btn btn-primary mt-4"
-  (click)="onSubmit()"
-  [disabled]="recipeSteps && recipeSteps.length == 0"
->
-  Continue
-</button>
