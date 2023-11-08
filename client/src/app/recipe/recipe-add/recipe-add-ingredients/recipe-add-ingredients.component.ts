@@ -1,17 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { Ingredient } from 'src/app/models/ingredient';
 import { IngredientListComponent } from './ingredient-list/ingredient-list.component';
 import { RecipeAddService } from '../recipe-add.service';
+import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
 
 @Component({
   selector: 'app-recipe-add-ingredients',
@@ -24,7 +18,9 @@ import { RecipeAddService } from '../recipe-add.service';
     MatInputModule,
     MatSelectModule,
     IngredientListComponent,
+    SharedAnimationsModule,
   ],
+  animations: [SharedAnimationsModule.elementAddedAnimation],
 })
 export class RecipeAddIngredientsComponent {
   @Output() formSubmitted: EventEmitter<void> = new EventEmitter<void>();

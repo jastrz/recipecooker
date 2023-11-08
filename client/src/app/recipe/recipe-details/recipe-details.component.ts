@@ -1,10 +1,3 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,20 +5,15 @@ import { AlbumComponent } from 'src/app/common/album/album.component';
 import { RecipesService } from 'src/app/services/recipes.service';
 import { Recipe } from 'src/app/models/recipe';
 import { BreadcrumbService } from 'xng-breadcrumb';
+import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
 
 @Component({
   selector: 'app-recipe-details',
   templateUrl: './recipe-details.component.html',
   styleUrls: ['./recipe-details.component.scss'],
   standalone: true,
-  imports: [CommonModule, AlbumComponent],
-  animations: [
-    trigger('openClose', [
-      state('closed', style({ transform: 'translateX(-100%)', opacity: 0 })),
-      transition('open => closed', [animate('.1s ease-out')]),
-      transition('closed => open', [animate('.15s ease-in')]),
-    ]),
-  ],
+  imports: [CommonModule, AlbumComponent, SharedAnimationsModule],
+  animations: [SharedAnimationsModule.openCloseAnimation],
 })
 export class RecipeDetailsComponent implements OnInit {
   active: boolean = false;

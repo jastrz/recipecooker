@@ -4,7 +4,10 @@
     <app-ingredient-list [ingredients]="ingredients"></app-ingredient-list>
   </div> -->
   <div class="col-lg-6 form-group" style="margin: auto; vertical-align: top">
-    <div *ngFor="let ingredientGroup of ingredientGroups; let i = index">
+    <div
+      *ngFor="let ingredientGroup of ingredientGroups; let i = index"
+      [@add]="'added'"
+    >
       <div [formGroup]="ingredientGroup" style="margin-bottom: 50px">
         <div class="row">
           <div class="col-8">

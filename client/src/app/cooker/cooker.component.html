@@ -1,10 +1,10 @@
-<div class="container mt-5">
-  <mat-accordion
-    class="example-headers-align"
-    multi
-    *ngIf="groupedTags.size > 0"
-  >
-    <mat-expansion-panel expanded="true" (opened)="onCookerOpened()">
+<div class="container mt-5" [@openClose]="'open'">
+  <mat-accordion class="example-headers-align" *ngIf="groupedTags.size > 0">
+    <mat-expansion-panel
+      expanded="true"
+      (opened)="onCookerOpened()"
+      [hideToggle]="!showRecipes"
+    >
       <mat-expansion-panel-header>
         <mat-panel-title> Find recipes </mat-panel-title>
 

@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/services/account.service';
 import { RecipeAddService } from './recipe-add.service';
+import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
 
 @Component({
   selector: 'app-recipe-add',
@@ -32,7 +33,9 @@ import { RecipeAddService } from './recipe-add.service';
     RecipeAddStepsComponent,
     RecipeAddIngredientsComponent,
     IngredientListComponent,
+    SharedAnimationsModule,
   ],
+  animations: [SharedAnimationsModule.openCloseAnimation],
 })
 export class RecipeAddComponent {
   @ViewChild('stepper') stepper?: MatStepper;

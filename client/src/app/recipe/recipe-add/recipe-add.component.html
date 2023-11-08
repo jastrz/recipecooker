@@ -1,4 +1,4 @@
-<div class="container text-center">
+<div class="container text-center" [@openClose]="'open'">
   <h2>Add recipe</h2>
   <mat-stepper #stepper>
     <mat-step>
@@ -44,7 +44,7 @@
           mat-button
           (click)="postRecipe()"
           style="margin-right: 20px"
-          [disabled]="recipeValidationErrors.length == 0"
+          [disabled]="recipeValidationErrors.length !== 0"
         >
           Publish
         </button>

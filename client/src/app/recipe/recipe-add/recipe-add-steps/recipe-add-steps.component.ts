@@ -1,19 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { RecipeStepsListComponent } from './recipe-steps-list/recipe-steps-list.component';
-import { RecipeStep } from 'src/app/models/recipeStep';
 import { ImageLoaderComponent } from 'src/app/common/image-loader/image-loader.component';
 import { RecipeAddService } from '../recipe-add.service';
+import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
 
 @Component({
   selector: 'app-recipe-add-steps',
@@ -29,7 +23,9 @@ import { RecipeAddService } from '../recipe-add.service';
     MatInputModule,
     MatSelectModule,
     RecipeStepsListComponent,
+    SharedAnimationsModule,
   ],
+  animations: [SharedAnimationsModule.elementAddedAnimation],
 })
 export class RecipeAddStepsComponent {
   @Output() formSubmitted: EventEmitter<void> = new EventEmitter<void>();
