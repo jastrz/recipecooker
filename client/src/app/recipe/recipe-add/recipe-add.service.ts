@@ -101,6 +101,20 @@ export class RecipeAddService {
     return recipe;
   }
 
+  getValidationInfo(): string[] {
+    const errors: string[] = [];
+
+    if (this.recipeForm.invalid) errors.push('recipe basics');
+
+    if (this.recipeStepForms.invalid || this.recipeStepForms.length == 0)
+      errors.push('recipe steps');
+
+    if (this.ingredientForms.invalid || this.ingredientForms.length == 0)
+      errors.push('ingredients');
+
+    return errors;
+  }
+
   private getIngredients(): Ingredient[] {
     const ingredients: Ingredient[] = [];
 

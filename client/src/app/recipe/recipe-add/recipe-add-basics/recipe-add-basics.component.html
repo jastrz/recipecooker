@@ -44,6 +44,10 @@
         <input matInput placeholder="..." formControlName="characterTags" />
       </mat-form-field>
 
+      <div *ngIf="!recipeForm.valid && recipeForm.touched" style="float: right">
+        <mat-error>You must fill all fields.</mat-error>
+      </div>
+
       <app-image-loader
         [selectedImages]="recipeForm.get('files')?.value"
       ></app-image-loader>

@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatChipListbox } from '@angular/material/chips';
-import { RecipesService } from '../services/recipes.service';
 import { Recipe } from '../models/recipe';
-import { ITag, Tag } from '../models/tag';
+import { Tag } from '../models/tag';
 import { MatAccordion } from '@angular/material/expansion';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { CookerService } from './cooker.service';

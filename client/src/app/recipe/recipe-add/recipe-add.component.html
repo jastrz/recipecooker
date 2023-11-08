@@ -21,7 +21,7 @@
       </app-recipe-add-steps>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
+      <ng-template matStepLabel>Finish</ng-template>
       <div style="margin-top: 80px">
         <button
           class="btn btn-primary"
@@ -44,9 +44,19 @@
           mat-button
           (click)="postRecipe()"
           style="margin-right: 20px"
+          [disabled]="recipeValidationErrors.length == 0"
         >
           Publish
         </button>
+      </div>
+      <div
+        *ngIf="recipeValidationErrors.length > 0"
+        style="margin-top: 50px; text-align: center"
+      >
+        <mat-error>Found errors in: </mat-error>
+        <mat-error *ngFor="let error of recipeValidationErrors">{{
+          error
+        }}</mat-error>
       </div>
     </mat-step>
   </mat-stepper>

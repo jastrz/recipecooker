@@ -37,6 +37,13 @@
           ></textarea>
         </mat-form-field>
 
+        <div
+          *ngIf="!recipeStepsGroup.valid && recipeStepsGroup.touched"
+          style="float: right"
+        >
+          <mat-error>You must fill all fields.</mat-error>
+        </div>
+
         <app-image-loader
           [selectedImages]="recipeStepsGroup.get('files')?.value"
         ></app-image-loader>

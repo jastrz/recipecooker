@@ -82,4 +82,8 @@ export class RecipeAddComponent {
       },
     });
   }
+
+  get recipeValidationErrors(): string[] {
+    return this.recipeAddService.getValidationInfo();
+  }
 }
