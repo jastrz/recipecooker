@@ -1,20 +1,33 @@
 <div class="container is-fluid">
-    <div class="row justify-content-center">
-        <div class="col-6">
-            <ul class="nav my-4 fs-6 justify-content-center">
-                <li class="nav-item">
-                  <a class="p-2" routerLink="/cook" routerLinkActive="active"><mat-icon> local_pizza</mat-icon> Cook</a>
-                </li>
-                <li class="nav-item">
-                  <a class="p-2" routerLink="/about" routerLinkActive="active"><mat-icon>info</mat-icon> About</a>
-                </li>
-                <li class="nav-item">
-                  <a class="p-2" routerLink="/add-recipe" routerLinkActive="active"><mat-icon>fastfood</mat-icon> Add recipe</a>
-                </li>
-                <li class="nav-item">
-                  <a class="p-2" routerLink="/account" routerLinkActive="active"><mat-icon>account_circle</mat-icon> Login</a>
-                </li>
-            </ul>
-        </div>
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <ul class="nav my-4 fs-6 justify-content-center">
+        <li class="nav-item">
+          <a class="p-2" routerLink="/cook" routerLinkActive="active"
+            ><mat-icon> local_pizza</mat-icon> Cook</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="p-2" routerLink="/about" routerLinkActive="active"
+            ><mat-icon>info</mat-icon> About</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="p-2" routerLink="/add-recipe" routerLinkActive="active"
+            ><mat-icon>fastfood</mat-icon> Add recipe</a
+          >
+        </li>
+        <li *ngIf="accountService.user$ | async as user">
+          <a routerLink="/account" routerLinkActive="active"
+            ><mat-icon>account_circle</mat-icon> My Account</a
+          >
+        </li>
+        <li *ngIf="(accountService.user$ | async) === null">
+          <a routerLink="/account" routerLinkActive="active"
+            ><mat-icon>account_circle</mat-icon> Sign In</a
+          >
+        </li>
+      </ul>
     </div>
+  </div>
 </div>
