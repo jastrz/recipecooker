@@ -87,5 +87,11 @@ namespace Infrastructure.Services
             pictureUrls.ForEach(url => recipeStep.Pictures.Add(new Picture { Url = url }));
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateRecipeRating(Recipe recipe, double rating)
+        {
+            recipe.Ratings.Add(new Rating(rating));
+            await _context.SaveChangesAsync();
+        }
     }
 }

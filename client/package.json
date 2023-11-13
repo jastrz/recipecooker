@@ -24,6 +24,7 @@
     "@popperjs/core": "^2.11.6",
     "angular-font-awesome": "^3.1.2",
     "bootstrap": "^5.3.2",
+    "bootstrap-icons": "^1.11.1",
     "bootswatch": "^5.3.2",
     "font-awesome": "^4.7.0",
     "ngx-lightbox": "^3.0.0",

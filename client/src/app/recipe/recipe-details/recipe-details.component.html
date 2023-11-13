@@ -1,64 +1,92 @@
 <div class="container" [@openClose]="'open'">
-  <button class="btn btn-primary mb-4" (click)="onClickBackButton()"><</button>
+  <ng-container *ngIf="recipe">
+    <button class="btn btn-primary mb-4" (click)="onClickBackButton()">
+      <
+    </button>
 
-  <div class="card" *ngIf="recipe">
     <div class="row">
       <div class="col-8">
-        <h3 class="mb-0 fs-2">{{ recipe.name }}</h3>
-        <p class="card-text mt-4 fs-6">{{ recipe.summary }}</p>
-        <p class="card-text mt-4 fs-6">{{ recipe.description }}</p>
+        <ngb-rating [rate]="rate" (rateChange)="onRateChange($event)">
+          <ng-template let-fill="fill" let-index="index">
+            <i
+              class="bi-star{{ fill === 100 ? '-fill' : '' }}"
+              [class.filled]="fill === 100"
+              [class.low]="index < rate"
+            ></i>
+          </ng-template>
+        </ngb-rating>
+        <pre>Rating: <b>{{rate | number: '1.2-2'}}</b></pre>
       </div>
-      <div class="col-4">
-        <app-album [pictureUrls]="recipe.pictureUrls"></app-album>
+      <div class="col-4" style="text-align: right">
+        <button
+          class="btn btn-primary"
+          style="width: 100px"
+          (click)="onClickEditButton()"
+        >
+          Edit
+        </button>
       </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-6 offset-6">
-      <div class="card" *ngIf="recipe">
-        <div class="card-body">
-          <h3 class="card-title text-primary">Ingredients</h3>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Unit</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let ingredient of recipe.ingredients">
-                <td>{{ ingredient.name }}</td>
-                <td>{{ ingredient.quantity }}</td>
-                <td>{{ ingredient.unit }}</td>
-              </tr>
-            </tbody>
-          </table>
+    <div class="card">
+      <div class="row">
+        <div class="col-8">
+          <h3 class="mb-0 fs-2">{{ recipe.name }}</h3>
+          <p class="card-text mt-4 fs-6">{{ recipe.summary }}</p>
+          <p class="card-text mt-4 fs-6">{{ recipe.description }}</p>
+        </div>
+        <div class="col-4">
+          <app-album [pictureUrls]="recipe.pictureUrls"></app-album>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="mt-4 card" *ngIf="recipe && recipe.steps.length > 0">
-    <div class="card-body">
-      <h3 class="card-title text-primary">Steps</h3>
-      <ul class="list-group">
-        <div class="card-content" *ngFor="let step of recipe.steps">
-          <div class="row">
-            <div class="col-8">
-              <h2>{{ step.id }}. {{ step.name }}</h2>
-              <p>{{ step.description }}</p>
-            </div>
-            <div class="col-4">
-              <app-album
-                *ngIf="step.pictureUrls"
-                [pictureUrls]="step.pictureUrls"
-              ></app-album>
-            </div>
+    <div class="row">
+      <div class="col-6 offset-6">
+        <div class="card" *ngIf="recipe">
+          <div class="card-body">
+            <h3 class="card-title text-primary">Ingredients</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ingredient of recipe.ingredients">
+                  <td>{{ ingredient.name }}</td>
+                  <td>{{ ingredient.quantity }}</td>
+                  <td>{{ ingredient.unit }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-      </ul>
+      </div>
     </div>
-  </div>
+
+    <div class="mt-4 card" *ngIf="recipe && recipe.steps.length > 0">
+      <div class="card-body">
+        <h3 class="card-title text-primary">Steps</h3>
+        <ul class="list-group">
+          <div class="card-content" *ngFor="let step of recipe.steps">
+            <div class="row">
+              <div class="col-8">
+                <h2>{{ step.id }}. {{ step.name }}</h2>
+                <p>{{ step.description }}</p>
+              </div>
+              <div class="col-4">
+                <app-album
+                  *ngIf="step.pictureUrls"
+                  [pictureUrls]="step.pictureUrls"
+                ></app-album>
+              </div>
+            </div>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </ng-container>
 </div>

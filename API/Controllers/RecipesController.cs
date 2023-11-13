@@ -1,5 +1,3 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -114,7 +112,7 @@ namespace API.Controllers
             {
                 var pictureUrls = await _fileService.SaveFiles(files, "images/recipes");
                 var recipe = await _recipeRepo.GetRecipe(id);
-                var step = recipe.Steps.FirstOrDefault(x => x.Id == stepId); // todo: correct step ids and sequences
+                var step = recipe.Steps.FirstOrDefault(x => x.Id == stepId);
                 await _recipeService.AddImagesToRecipeStep(step, pictureUrls);
 
                 return Ok();
@@ -133,6 +131,17 @@ namespace API.Controllers
             var savedRecipe = await _recipeService.AddRecipeAsync(recipe);
 
             return Ok(savedRecipe.Id);
+        }
+
+        // [Authorize]
+        [HttpPatch]
+        [Route("{id}/rating/{rating}")]
+        public async Task<IActionResult> PatchRating([FromRoute] int id, [FromRoute] double rating)
+        {
+            var recipe = await _recipeRepo.GetRecipe(id);
+            await _recipeService.UpdateRecipeRating(recipe, rating);
+
+            return Ok();
         }
     }
 }

@@ -114,6 +114,10 @@ export class RecipesService {
     return this.http.post<any>(this.hostUrl + 'recipes', recipe);
   }
 
+  public rateRecipe(id: number, rating: number) {
+    return this.http.patch(this.hostUrl + `recipes/${id}/rating/${rating}`, {});
+  }
+
   private createStepsHttpObservable(
     recipeId: number,
     stepId: number,

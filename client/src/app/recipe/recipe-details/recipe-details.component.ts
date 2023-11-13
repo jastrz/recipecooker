@@ -6,13 +6,19 @@ import { RecipesService } from 'src/app/services/recipes.service';
 import { Recipe } from 'src/app/models/recipe';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
+import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-recipe-details',
   templateUrl: './recipe-details.component.html',
   styleUrls: ['./recipe-details.component.scss'],
   standalone: true,
-  imports: [CommonModule, AlbumComponent, SharedAnimationsModule],
+  imports: [
+    CommonModule,
+    AlbumComponent,
+    SharedAnimationsModule,
+    NgbRatingModule,
+  ],
   animations: [SharedAnimationsModule.openCloseAnimation],
 })
 export class RecipeDetailsComponent implements OnInit {
@@ -26,6 +32,10 @@ export class RecipeDetailsComponent implements OnInit {
     private breadcrumbService: BreadcrumbService
   ) {
     this.breadcrumbService.set('@recipe', ' ');
+  }
+
+  get rate(): number {
+    return this.recipe?.rating ? this.recipe.rating : 0;
   }
 
   ngOnInit(): void {
@@ -42,5 +52,17 @@ export class RecipeDetailsComponent implements OnInit {
 
   onClickBackButton() {
     this.router.navigateByUrl('/cook');
+  }
+
+  onClickEditButton() {}
+
+  onRateChange(value: number) {
+    console.log('rate changed');
+    if (this.recipe?.id) {
+      this.recipeService.rateRecipe(this.recipe.id, value).subscribe({
+        next: (response) => console.log('updated rating'),
+        error: (error) => console.log(error),
+      });
+    }
   }
 }

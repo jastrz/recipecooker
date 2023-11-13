@@ -11,4 +11,5 @@ export interface Recipe {
   steps: RecipeStep[];
   tags: ITag[];
   ingredients?: Ingredient[];
+  rating?: number;
 }

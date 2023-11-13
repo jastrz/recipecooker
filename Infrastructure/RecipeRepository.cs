@@ -25,6 +25,7 @@ namespace Infrastructure
                         .ThenInclude(r => r.Category)
                 .Include(r => r.RecipeIngredients)
                     .ThenInclude(r => r.Ingredient)
+                .Include(r => r.Ratings)
                 .FirstOrDefaultAsync();
 
             return recipe;
