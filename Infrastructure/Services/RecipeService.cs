@@ -1,5 +1,6 @@
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 
 namespace Infrastructure.Services
 {
@@ -29,6 +30,45 @@ namespace Infrastructure.Services
             await _context.SaveChangesAsync();
 
             return recipe;
+        }
+
+        public async Task AddImagesToRecipe(Recipe recipe, List<string> pictureUrls)
+        {
+            pictureUrls.ForEach(url => recipe.Pictures.Add(new Picture { Url = url }));
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddImagesToRecipeStep(RecipeStep recipeStep, List<string> pictureUrls)
+        {
+            pictureUrls.ForEach(url => recipeStep.Pictures.Add(new Picture { Url = url }));
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateRecipeRating(Recipe recipe, double rating, string userId)
+        {
+            var existingRating = recipe.Ratings.Find(x => x.UserId == userId);
+            if (existingRating != null)
+            {
+                existingRating.Value = rating;
+            }
+            else
+            {
+                recipe.Ratings.Add(new Rating(rating, userId));
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public IReadOnlyList<Recipe> FilterRecipes(IReadOnlyList<Recipe> recipes, RecipeTagParams @params)
+        {
+            if (!string.IsNullOrEmpty(@params.Character))
+                recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Character)).ToList();
+            if (!string.IsNullOrEmpty(@params.MainIngredient))
+                recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.MainIngredient)).ToList();
+            if (!string.IsNullOrEmpty(@params.Origin))
+                recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Origin)).ToList();
+
+            return recipes;
         }
 
         private void HandleIngredient(RecipeIngredient recipeIngredient)
@@ -74,24 +114,6 @@ namespace Infrastructure.Services
                 recipeTag.TagId = existingTag.Id;
                 recipeTag.Tag = existingTag;
             }
-        }
-
-        public async Task AddImagesToRecipe(Recipe recipe, List<string> pictureUrls)
-        {
-            pictureUrls.ForEach(url => recipe.Pictures.Add(new Picture { Url = url }));
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task AddImagesToRecipeStep(RecipeStep recipeStep, List<string> pictureUrls)
-        {
-            pictureUrls.ForEach(url => recipeStep.Pictures.Add(new Picture { Url = url }));
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateRecipeRating(Recipe recipe, double rating)
-        {
-            recipe.Ratings.Add(new Rating(rating));
-            await _context.SaveChangesAsync();
         }
     }
 }

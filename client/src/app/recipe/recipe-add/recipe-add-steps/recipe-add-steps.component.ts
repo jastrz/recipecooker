@@ -45,23 +45,6 @@ export class RecipeAddStepsComponent {
     this.recipeAddService.removeRecipeStep(index);
   }
 
-  // addRecipeStep() {
-  //   const name = this.recipeStepForm?.get('name')?.value;
-  //   const description = this.recipeStepForm?.get('description')?.value;
-
-  //   if (name && description) {
-  //     const step: RecipeStep = {
-  //       name: name,
-  //       description: description,
-  //       pictures: [...this.selectedImages],
-  //       id: this.recipeSteps.length + 1,
-  //     };
-  //     this.recipeSteps?.push(step);
-  //     this.recipeStepForm?.reset();
-  //     this.selectedImages = [];
-  //   }
-  // }
-
   onSubmit() {
     this.formSubmitted.emit();
   }

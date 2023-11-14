@@ -12,18 +12,25 @@
               class="bi-star{{ fill === 100 ? '-fill' : '' }}"
               [class.filled]="fill === 100"
               [class.low]="index < rate"
+              
             ></i>
           </ng-template>
         </ngb-rating>
         <pre>Rating: <b>{{rate | number: '1.2-2'}}</b></pre>
       </div>
-      <div class="col-4" style="text-align: right">
+      <div
+        class="col-4"
+        style="text-align: right; display: flex; justify-content: flex-end"
+      >
         <button
           class="btn btn-primary"
-          style="width: 100px"
+          style="margin-right: 10px"
           (click)="onClickEditButton()"
         >
-          Edit
+          <mat-icon>edit</mat-icon>Edit
+        </button>
+        <button class="btn btn-primary" (click)="onClickSaveButton()">
+          <mat-icon>save</mat-icon>Save
         </button>
       </div>
     </div>

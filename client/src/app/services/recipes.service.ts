@@ -51,9 +51,11 @@ export class RecipesService {
       );
   }
 
-  public getRecipe(recipeId: number) {
-    const recipe = this.recipesCache.find((r) => r.id == recipeId);
-    if (recipe) return of(recipe);
+  public getRecipe(recipeId: number, useCache: boolean = true) {
+    if (useCache) {
+      const recipe = this.recipesCache.find((r) => r.id == recipeId);
+      if (recipe) return of(recipe);
+    }
 
     return this.http.get<Recipe>(this.hostUrl + 'recipes/' + recipeId).pipe(
       map((response: Recipe) => {
@@ -115,6 +117,7 @@ export class RecipesService {
   }
 
   public rateRecipe(id: number, rating: number) {
+    console.log(`recipes/${id}/rating/${rating}`);
     return this.http.patch(this.hostUrl + `recipes/${id}/rating/${rating}`, {});
   }
 

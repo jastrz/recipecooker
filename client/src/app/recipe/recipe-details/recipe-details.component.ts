@@ -7,6 +7,8 @@ import { Recipe } from 'src/app/models/recipe';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
 import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatIconModule } from '@angular/material/icon';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-recipe-details',
@@ -18,6 +20,7 @@ import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
     AlbumComponent,
     SharedAnimationsModule,
     NgbRatingModule,
+    MatIconModule,
   ],
   animations: [SharedAnimationsModule.openCloseAnimation],
 })
@@ -41,13 +44,7 @@ export class RecipeDetailsComponent implements OnInit {
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (!id) return;
-
-    this.recipeService.getRecipe(+id).subscribe({
-      next: (data) => {
-        this.recipe = data;
-        this.breadcrumbService.set('@recipe', this.recipe.name);
-      },
-    });
+    this.getRecipe(+id);
   }
 
   onClickBackButton() {
@@ -56,13 +53,25 @@ export class RecipeDetailsComponent implements OnInit {
 
   onClickEditButton() {}
 
+  onClickSaveButton() {}
+
   onRateChange(value: number) {
-    console.log('rate changed');
     if (this.recipe?.id) {
-      this.recipeService.rateRecipe(this.recipe.id, value).subscribe({
-        next: (response) => console.log('updated rating'),
+      const id = this.recipe?.id;
+      this.recipeService.rateRecipe(id, value).subscribe({
+        next: () => this.getRecipe(id, false),
         error: (error) => console.log(error),
       });
     }
+  }
+
+  private getRecipe(id: number, cached: boolean = true) {
+    console.log('getting recipe');
+    this.recipeService.getRecipe(id, cached).subscribe({
+      next: (data) => {
+        this.recipe = data;
+        this.breadcrumbService.set('@recipe', this.recipe.name);
+      },
+    });
   }
 }

@@ -34,17 +34,6 @@ export class RecipeAddIngredientsComponent {
     return this.recipeAddService.ingredientForms.controls as FormGroup[];
   }
 
-  // addIngredient = () => {
-  //   const formValue = this.ingredientsForm?.value;
-  //   const ingredient: Ingredient = {
-  //     name: formValue.name ?? '',
-  //     quantity: formValue.quantity ? +formValue.quantity : 0,
-  //     unit: formValue.unit ?? '',
-  //   };
-  //   this.ingredients?.push(ingredient);
-  //   this.ingredientsForm?.reset();
-  // };
-
   addIngredient() {
     this.recipeAddService.addIngredient();
   }

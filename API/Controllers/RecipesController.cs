@@ -1,10 +1,14 @@
+using System.Security.Claims;
 using AutoMapper;
 using Core.Entities;
+using Core.Entities.Identity;
 using Core.Interfaces;
 using Core.Specifications;
 using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shared.Dtos;
 
 namespace API.Controllers
@@ -16,10 +20,12 @@ namespace API.Controllers
         private readonly ILogger<RecipesController> _logger;
         private readonly IRecipeService _recipeService;
         private readonly IFileService _fileService;
+        private readonly UserManager<AppUser> _userManager;
 
         public RecipesController(IRecipeRepository recipeRepo, IMapper mapper, ILogger<RecipesController> logger,
-         IRecipeService recipeService, IFileService fileUploadService)
+         IRecipeService recipeService, IFileService fileUploadService, UserManager<AppUser> userManager)
         {
+            _userManager = userManager;
             _fileService = fileUploadService;
             _recipeService = recipeService;
             _logger = logger;
@@ -28,33 +34,22 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IReadOnlyList<RecipeDto>> GetRecipes([FromQuery] RecipeSpecParams @params)
+        public async Task<IReadOnlyList<RecipeDto>> GetRecipes([FromQuery] RecipeTagParams @params)
         {
             var recipes = await _recipeRepo.GetRecipes();
-            var filteredRecipes = FilterRecipes(recipes, @params);
+            var filteredRecipes = _recipeService.FilterRecipes(recipes, @params);
             var data = _mapper.Map<IReadOnlyList<Recipe>, IReadOnlyList<RecipeDto>>(filteredRecipes);
             return data;
         }
 
         [HttpGet]
         [Route("overview")]
-        public async Task<IReadOnlyList<RecipeDto>> GetRecipesOverview([FromQuery] RecipeSpecParams @params)
+        public async Task<IReadOnlyList<RecipeDto>> GetRecipesOverview([FromQuery] RecipeTagParams @params)
         {
             var recipes = await _recipeRepo.GetRecipesOverview();
-            var filteredRecipes = FilterRecipes(recipes, @params);
+            var filteredRecipes = _recipeService.FilterRecipes(recipes, @params);
             var data = _mapper.Map<IReadOnlyList<Recipe>, IReadOnlyList<RecipeDto>>(filteredRecipes);
             return data;
-        }
-
-        private IReadOnlyList<Recipe> FilterRecipes(IReadOnlyList<Recipe> recipes, RecipeSpecParams @params)
-        {
-            if (!string.IsNullOrEmpty(@params.Character))
-                recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Character)).ToList();
-            if (!string.IsNullOrEmpty(@params.MainIngredient))
-                recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.MainIngredient)).ToList();
-            if (!string.IsNullOrEmpty(@params.Origin))
-                recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Origin)).ToList();
-            return recipes;
         }
 
         [HttpGet("tags")]
@@ -133,13 +128,16 @@ namespace API.Controllers
             return Ok(savedRecipe.Id);
         }
 
-        // [Authorize]
+        [Authorize]
         [HttpPatch]
         [Route("{id}/rating/{rating}")]
         public async Task<IActionResult> PatchRating([FromRoute] int id, [FromRoute] double rating)
         {
+            var user = await _userManager.Users
+                .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+                
             var recipe = await _recipeRepo.GetRecipe(id);
-            await _recipeService.UpdateRecipeRating(recipe, rating);
+            await _recipeService.UpdateRecipeRating(recipe, rating, user.Id);
 
             return Ok();
         }
