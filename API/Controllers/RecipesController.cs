@@ -135,11 +135,13 @@ namespace API.Controllers
         {
             var user = await _userManager.Users
                 .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
-                
+
             var recipe = await _recipeRepo.GetRecipe(id);
             await _recipeService.UpdateRecipeRating(recipe, rating, user.Id);
 
             return Ok();
         }
+
+
     }
 }

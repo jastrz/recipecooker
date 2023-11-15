@@ -8,12 +8,9 @@ import { RecipeOverviewComponent } from '../recipe/recipe-overview/recipe-overvi
 import { RecipeDetailsComponent } from '../recipe/recipe-details/recipe-details.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
-import { SharedAnimationsModule } from '../common/animations/shared-animations.module';
 
 @NgModule({
-  declarations: [
-    CookerComponent,
-  ],
+  declarations: [CookerComponent],
   imports: [
     CommonModule,
     CookerRoutingModule,
@@ -23,7 +20,6 @@ import { SharedAnimationsModule } from '../common/animations/shared-animations.m
     RecipeDetailsComponent,
     MatExpansionModule,
     NgbPaginationModule,
-    SharedAnimationsModule
-  ]
+  ],
 })
-export class CookerModule { }
+export class CookerModule {}

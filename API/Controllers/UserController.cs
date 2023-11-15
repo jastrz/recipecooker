@@ -16,12 +16,17 @@ namespace API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
+        private readonly IRecipeRepository _recipeRepository;
+        private readonly IUserService _userService;
 
-        public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
+        public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService,
+        IRecipeRepository recipeRepository, IUserService userService)
         {
+            _userService = userService;
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _recipeRepository = recipeRepository;
         }
 
         [HttpGet("emailexists")]
@@ -90,8 +95,22 @@ namespace API.Controllers
                 Email = user.Email,
                 Token = _tokenService.CreateToken(user),
                 DisplayName = user.DisplayName,
-                UserId = user.Id
+                UserId = user.Id,
+                SavedRecipeIds = user.SavedRecipeIds
             };
+        }
+
+        [Authorize]
+        [HttpPatch]
+        [Route("recipes/{recipeId}/save")]
+        public async Task<ActionResult<IReadOnlyList<string>>> SaveRecipe([FromRoute] int recipeId, [FromBody] bool saved)
+        {
+            var user = await _userManager.Users
+                .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+
+            await _userService.SetRecipeSaved(user, recipeId, saved);
+
+            return Ok(user.SavedRecipeIds);
         }
     }
 }

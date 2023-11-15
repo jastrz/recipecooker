@@ -27,12 +27,14 @@ builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<CookerContextSeed>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Flatten validation error response
-builder.Services.Configure<ApiBehaviorOptions>(options => {
-    options.InvalidModelStateResponseFactory = actionContext => 
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = actionContext =>
     {
         var errors = actionContext.ModelState.Where(e => e.Value.Errors.Count > 0)
             .SelectMany(x => x.Value.Errors)
@@ -48,18 +50,21 @@ builder.Services.Configure<ApiBehaviorOptions>(options => {
 });
 
 // Identity
-builder.Services.AddDbContext<AppIdentityDbContext>(opt => {
-                opt.UseSqlite(builder.Configuration.GetConnectionString("IdentityConnection"));
-            });
+builder.Services.AddDbContext<AppIdentityDbContext>(opt =>
+{
+    opt.UseSqlite(builder.Configuration.GetConnectionString("IdentityConnection"));
+});
 
-builder.Services.AddIdentityCore<AppUser>(opt => {
+builder.Services.AddIdentityCore<AppUser>(opt =>
+{
     // add identity options here
 })
     .AddEntityFrameworkStores<AppIdentityDbContext>()
     .AddSignInManager<SignInManager<AppUser>>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => {
+                .AddJwtBearer(options =>
+                {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
@@ -105,19 +110,19 @@ var userManager = services.GetRequiredService<UserManager<AppUser>>();
 
 var logger = services.GetRequiredService<ILogger<Program>>();
 
-try 
+try
 {
     await cookerContext.Database.MigrateAsync();
-    if(cookerContext.Recipes.Count() == 0)
+    if (cookerContext.Recipes.Count() == 0)
     {
         var cookerContextSeed = services.GetRequiredService<CookerContextSeed>();
         await cookerContextSeed.SeedAsync(cookerContext);
     }
-    
+
     await identityContext.Database.MigrateAsync();
     await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
 }
-catch(Exception ex)
+catch (Exception ex)
 {
     logger.LogError(ex, "Error during migration.");
 }

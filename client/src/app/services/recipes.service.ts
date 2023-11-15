@@ -42,6 +42,7 @@ export class RecipesService {
 
   public getRecipesForOverview(tags?: ITag[]) {
     const params = this.getTagParams(tags);
+    console.log(params);
     return this.http
       .get<Recipe[]>(this.hostUrl + 'recipes/overview', { params })
       .pipe(

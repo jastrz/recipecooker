@@ -12,7 +12,6 @@
               class="bi-star{{ fill === 100 ? '-fill' : '' }}"
               [class.filled]="fill === 100"
               [class.low]="index < rate"
-              
             ></i>
           </ng-template>
         </ngb-rating>
@@ -29,7 +28,11 @@
         >
           <mat-icon>edit</mat-icon>Edit
         </button>
-        <button class="btn btn-primary" (click)="onClickSaveButton()">
+        <button
+          class="btn btn-primary"
+          (click)="onClickSaveButton()"
+          *ngIf="!isRecipeSaved"
+        >
           <mat-icon>save</mat-icon>Save
         </button>
       </div>

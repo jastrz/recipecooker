@@ -5,11 +5,13 @@ import { Tag } from '../models/tag';
 import { MatAccordion } from '@angular/material/expansion';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { CookerService } from './cooker.service';
+import { SharedAnimationsModule } from '../common/animations/shared-animations.module';
 
 @Component({
   selector: 'app-cooker',
   templateUrl: './cooker.component.html',
   styleUrls: ['./cooker.component.scss'],
+  animations: [SharedAnimationsModule.openCloseAnimation],
 })
 export class CookerComponent implements OnInit {
   @ViewChild('meatList') meatList?: MatChipListbox;
