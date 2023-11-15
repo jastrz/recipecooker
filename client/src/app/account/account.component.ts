@@ -4,6 +4,8 @@ import { RegistrationComponent } from './registration/registration.component';
 import { AccountService } from '../services/account.service';
 import { CommonModule } from '@angular/common';
 import { SharedAnimationsModule } from '../common/animations/shared-animations.module';
+import { RouterModule } from '@angular/router';
+import { BreadcrumbService } from 'xng-breadcrumb';
 
 @Component({
   selector: 'app-account',
@@ -15,9 +17,17 @@ import { SharedAnimationsModule } from '../common/animations/shared-animations.m
     LoginComponent,
     RegistrationComponent,
     SharedAnimationsModule,
+    RouterModule,
   ],
   animations: [SharedAnimationsModule.openCloseAnimation],
 })
 export class AccountComponent {
-  constructor(public accountService: AccountService) {}
+  displayName: string = '';
+
+  constructor(
+    public accountService: AccountService,
+    private bcService: BreadcrumbService
+  ) {
+    this.bcService.set('account/', 'Menu');
+  }
 }

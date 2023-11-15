@@ -31,6 +31,19 @@ namespace Infrastructure
             return recipe;
         }
 
+        public async Task<Recipe> GetRecipeOverview(int id)
+        {
+            var recipe = await _context.Recipes
+                .Where(r => r.Id == id)
+                .Include(r => r.Pictures)
+                .Include(r => r.RecipeTags)
+                    .ThenInclude(rt => rt.Tag)
+                        .ThenInclude(t => t.Category)
+                .FirstOrDefaultAsync();
+
+            return recipe;
+        }
+
         public async Task<IReadOnlyList<Recipe>> GetRecipesOverview()
         {
             var recipes = await _context.Recipes

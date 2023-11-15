@@ -28,12 +28,13 @@
         >
           <mat-icon>edit</mat-icon>Edit
         </button>
-        <button
-          class="btn btn-primary"
-          (click)="onClickSaveButton()"
-          *ngIf="!isRecipeSaved"
-        >
-          <mat-icon>save</mat-icon>Save
+        <button class="btn btn-primary" (click)="onClickSaveButton()">
+          <ng-container *ngIf="isRecipeSaved"
+            ><mat-icon>check_circle_outline</mat-icon>Saved</ng-container
+          >
+          <ng-container *ngIf="!isRecipeSaved"
+            ><mat-icon>save</mat-icon>Save</ng-container
+          >
         </button>
       </div>
     </div>

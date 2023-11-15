@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using API.Dtos;
 using API.Errors;
+using AutoMapper;
+using Core.Entities;
 using Core.Entities.Identity;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -18,15 +20,17 @@ namespace API.Controllers
         private readonly ITokenService _tokenService;
         private readonly IRecipeRepository _recipeRepository;
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
         public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService,
-        IRecipeRepository recipeRepository, IUserService userService)
+        IRecipeRepository recipeRepository, IUserService userService, IMapper mapper)
         {
             _userService = userService;
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
             _recipeRepository = recipeRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("emailexists")]
@@ -111,6 +115,25 @@ namespace API.Controllers
             await _userService.SetRecipeSaved(user, recipeId, saved);
 
             return Ok(user.SavedRecipeIds);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("recipes")]
+        public async Task<IReadOnlyList<RecipeDto>> GetSavedRecipes()
+        {
+            var user = await _userManager.Users
+                .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+
+            List<Recipe> recipes = new();
+            foreach (string id in user.SavedRecipeIds)
+            {
+                recipes.Add(await _recipeRepository.GetRecipeOverview(int.Parse(id)));
+            }
+
+            var data = _mapper.Map<IReadOnlyList<Recipe>, IReadOnlyList<RecipeDto>>(recipes);
+
+            return data;
         }
     }
 }

@@ -15,13 +15,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { BreadcrumbModule } from 'xng-breadcrumb';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavComponent,
-    FooterComponent
-  ],
+  declarations: [AppComponent, NavComponent, FooterComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -31,13 +28,13 @@ import { BreadcrumbModule } from 'xng-breadcrumb';
     MatIconModule,
     ToastrModule.forRoot(),
     NgxSpinnerModule,
-    BreadcrumbModule
+    BreadcrumbModule,
   ],
-  providers: [   
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

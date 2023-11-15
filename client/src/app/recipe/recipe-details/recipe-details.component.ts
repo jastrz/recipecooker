@@ -9,7 +9,6 @@ import { SharedAnimationsModule } from 'src/app/common/animations/shared-animati
 import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatIconModule } from '@angular/material/icon';
 import { AccountService } from 'src/app/services/account.service';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-recipe-details',
@@ -55,7 +54,7 @@ export class RecipeDetailsComponent implements OnInit {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (!id) return;
     this.getRecipe(+id);
-    this.accountService.getSavedRecipes().subscribe();
+    this.accountService.getSavedRecipesIds().subscribe();
   }
 
   onClickBackButton() {
@@ -68,13 +67,7 @@ export class RecipeDetailsComponent implements OnInit {
     console.log(this.accountService.savedRecipeIds);
     if (this.recipe?.id) {
       const id = this.recipe?.id.toString();
-      this.accountService.getSavedRecipes().subscribe((savedRecipes) => {
-        if (savedRecipes && savedRecipes.includes(id)) {
-          console.log('Recipe is already saved.');
-        } else {
-          this.accountService.saveRecipe(id, true).subscribe();
-        }
-      });
+      this.accountService.saveRecipe(id, !this.isRecipeSaved).subscribe();
     }
   }
 

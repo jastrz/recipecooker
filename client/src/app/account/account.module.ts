@@ -1,12 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [
-  ],
-  imports: [
-  ],
-  exports: [
-  ]
+  declarations: [],
+  imports: [],
+  exports: [],
 })
-export class AccountModule { }
+export class AccountModule {}

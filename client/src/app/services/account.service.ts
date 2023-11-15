@@ -1,14 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-import {
-  Observable,
-  ReplaySubject,
-  firstValueFrom,
-  map,
-  of,
-  switchMap,
-} from 'rxjs';
+import { Observable, ReplaySubject, firstValueFrom, map, of } from 'rxjs';
+import { Recipe } from '../models/recipe';
 
 @Injectable({
   providedIn: 'root',
@@ -44,7 +38,7 @@ export class AccountService {
     );
   }
 
-  getSavedRecipes() {
+  getSavedRecipesIds() {
     return this.user$.pipe(
       map((user) => {
         if (user && user.savedRecipeIds)
@@ -52,6 +46,14 @@ export class AccountService {
         return this.savedRecipeIds;
       })
     );
+  }
+
+  getDisplayName(): Observable<string | null> {
+    return this.user$.pipe(map((user) => (user ? user.displayName : null)));
+  }
+
+  getSavedRecipes() {
+    return this.http.get<Recipe[]>(this.hostUrl + 'user/recipes');
   }
 
   async isAuthenticated(): Promise<boolean> {
@@ -86,6 +88,7 @@ export class AccountService {
   }
 
   saveRecipe(recipeId: string, saved: boolean) {
+    console.log(saved);
     return this.http
       .patch<string[]>(this.hostUrl + `user/recipes/${recipeId}/save`, saved)
       .pipe(
