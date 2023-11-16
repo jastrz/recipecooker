@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { IngredientListComponent } from './ingredient-list/ingredient-list.component';
@@ -19,19 +19,23 @@ import { SharedAnimationsModule } from 'src/app/common/animations/shared-animati
     MatSelectModule,
     IngredientListComponent,
     SharedAnimationsModule,
+    FormsModule,
   ],
   animations: [SharedAnimationsModule.elementAddedAnimation],
 })
 export class RecipeAddIngredientsComponent {
   @Output() formSubmitted: EventEmitter<void> = new EventEmitter<void>();
-  ingredientsForm?: FormGroup;
 
   unitOptions: string[] = ['litre', 'ml', 'kg', 'g', 'unit', 'tbsp', 'tsp'];
 
-  constructor(private recipeAddService: RecipeAddService) {}
+  constructor(public recipeAddService: RecipeAddService) {}
 
-  get ingredientGroups(): FormGroup[] {
-    return this.recipeAddService.ingredientForms.controls as FormGroup[];
+  get ingredients(): FormArray {
+    return this.recipeAddService.recipeForm.get('ingredients') as FormArray;
+  }
+
+  get recipeForm() {
+    return this.recipeAddService.recipeForm;
   }
 
   addIngredient() {

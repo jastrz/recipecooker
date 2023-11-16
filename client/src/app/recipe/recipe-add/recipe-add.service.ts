@@ -9,9 +9,6 @@ import { FileService } from 'src/app/services/file.service';
   providedIn: 'root',
 })
 export class RecipeAddService {
-  ingredientForms: FormArray;
-  recipeStepForms: FormArray;
-
   recipeForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
@@ -20,27 +17,40 @@ export class RecipeAddService {
     originTags: ['', Validators.required],
     characterTags: ['', Validators.required],
     files: this.fb.array([]),
+    ingredients: this.fb.array([this.createIngredientForm()]),
+    recipeSteps: this.fb.array([this.createStepsForm()]),
   });
 
-  constructor(private fb: FormBuilder, private fileService: FileService) {
-    this.ingredientForms = this.fb.array([this.createIngredientForm()]);
-    this.recipeStepForms = this.fb.array([this.createStepsForm()]);
-  }
+  constructor(private fb: FormBuilder, private fileService: FileService) {}
 
   addIngredient() {
-    this.ingredientForms.push(this.createIngredientForm());
+    this.ingredients.push(this.createIngredientForm());
+    (this.recipeForm.get('ingredients') as FormArray).push(
+      this.createIngredientForm()
+    );
+    console.log(this.recipeForm.get('ingredients') as FormArray);
+  }
+
+  get ingredients() {
+    return this.recipeForm.get('ingredients') as FormArray;
+  }
+
+  get recipeSteps() {
+    return this.recipeForm.get('recipeSteps') as FormArray;
   }
 
   addRecipeStep() {
-    this.recipeStepForms.push(this.createStepsForm());
+    this.recipeSteps.push(this.createStepsForm());
   }
 
   removeIngredient(index: number) {
-    this.ingredientForms.removeAt(index);
+    (this.recipeForm.get('ingredients') as FormArray).removeAt(index);
+    this.ingredients.removeAt(index);
   }
 
   removeRecipeStep(index: number) {
-    this.recipeStepForms.removeAt(index);
+    (this.recipeForm.get('recipeSteps') as FormArray).removeAt(index);
+    this.ingredients.removeAt(index);
   }
 
   createIngredientForm(): FormGroup {
@@ -64,7 +74,7 @@ export class RecipeAddService {
       recipe.pictureUrls
     );
 
-    this.recipeForm.setValue({
+    this.recipeForm.patchValue({
       name: recipe.name,
       description: recipe.description,
       summary: recipe.summary,
@@ -80,15 +90,17 @@ export class RecipeAddService {
         .filter((tag) => tag.category === 'character')
         .map((tag) => tag.name)
         .join(','),
-      files: [],
+      files: recipePictures,
+      ingredients: [],
+      recipeSteps: [],
     });
 
-    this.ingredientForms.clear();
-    this.recipeStepForms.clear();
+    this.ingredients.clear();
+    this.recipeSteps.clear();
 
     // Add new ingredients
     recipe.ingredients?.forEach((ingredient) => {
-      this.ingredientForms.push(
+      this.ingredients.push(
         this.fb.group({
           name: [ingredient.name, Validators.required],
           quantity: [
@@ -102,11 +114,11 @@ export class RecipeAddService {
 
     // Add steps
     recipe.steps.forEach((step) => {
-      this.recipeStepForms.push(
+      this.recipeSteps.push(
         this.fb.group({
           name: [step.name, Validators.required],
           description: [step.description, Validators.required],
-          files: [],
+          files: this.fb.array([]),
         })
       );
     });
@@ -160,10 +172,10 @@ export class RecipeAddService {
 
     if (this.recipeForm.invalid) errors.push('recipe basics');
 
-    if (this.recipeStepForms.invalid || this.recipeStepForms.length == 0)
+    if (this.recipeSteps.invalid || this.recipeSteps.length == 0)
       errors.push('recipe steps');
 
-    if (this.ingredientForms.invalid || this.ingredientForms.length == 0)
+    if (this.ingredients.invalid || this.ingredients.length == 0)
       errors.push('ingredients');
 
     return errors;
@@ -171,14 +183,14 @@ export class RecipeAddService {
 
   reset() {
     this.recipeForm.reset();
-    this.ingredientForms = this.fb.array([this.createIngredientForm()]);
-    this.recipeStepForms = this.fb.array([this.createStepsForm()]);
+    this.ingredients.clear();
+    this.recipeSteps.clear();
   }
 
   private getIngredients(): Ingredient[] {
     const ingredients: Ingredient[] = [];
 
-    this.ingredientForms.controls.forEach((ingredientForm) => {
+    this.ingredients.controls.forEach((ingredientForm) => {
       const ingredient: Ingredient = {
         name: ingredientForm.get('name')?.value,
         quantity: ingredientForm.get('quantity')?.value,
@@ -193,7 +205,7 @@ export class RecipeAddService {
   private getRecipeSteps(): RecipeStep[] {
     const recipeSteps: RecipeStep[] = [];
 
-    this.recipeStepForms.controls.forEach((stepForm, index) => {
+    this.recipeSteps.controls.forEach((stepForm, index) => {
       const recipeStep: RecipeStep = {
         id: index,
         name: stepForm.get('name')?.value,

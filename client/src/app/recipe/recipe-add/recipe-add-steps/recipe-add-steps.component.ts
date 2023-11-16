@@ -33,8 +33,12 @@ export class RecipeAddStepsComponent {
 
   constructor(private recipeAddService: RecipeAddService) {}
 
-  get recipeStepsGroups(): FormGroup[] {
-    return this.recipeAddService.recipeStepForms.controls as FormGroup[];
+  get recipeSteps() {
+    return this.recipeAddService.recipeSteps;
+  }
+
+  get recipeForm() {
+    return this.recipeAddService.recipeForm;
   }
 
   addRecipeStep() {
