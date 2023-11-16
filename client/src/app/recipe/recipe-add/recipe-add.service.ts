@@ -25,10 +25,6 @@ export class RecipeAddService {
 
   addIngredient() {
     this.ingredients.push(this.createIngredientForm());
-    (this.recipeForm.get('ingredients') as FormArray).push(
-      this.createIngredientForm()
-    );
-    console.log(this.recipeForm.get('ingredients') as FormArray);
   }
 
   get ingredients() {
@@ -44,12 +40,10 @@ export class RecipeAddService {
   }
 
   removeIngredient(index: number) {
-    (this.recipeForm.get('ingredients') as FormArray).removeAt(index);
     this.ingredients.removeAt(index);
   }
 
   removeRecipeStep(index: number) {
-    (this.recipeForm.get('recipeSteps') as FormArray).removeAt(index);
     this.ingredients.removeAt(index);
   }
 
@@ -184,7 +178,9 @@ export class RecipeAddService {
   reset() {
     this.recipeForm.reset();
     this.ingredients.clear();
+    this.ingredients.push(this.createIngredientForm());
     this.recipeSteps.clear();
+    this.recipeSteps.push(this.createStepsForm());
   }
 
   private getIngredients(): Ingredient[] {

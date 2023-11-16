@@ -63,8 +63,11 @@ export class RecipeDetailsComponent implements OnInit {
     this.router.navigateByUrl('/cook');
   }
 
-  onClickEditButton() {
-    if (this.recipe) this.recipeAddService.loadRecipe(this.recipe);
+  async onClickEditButton() {
+    if (this.recipe) {
+      await this.recipeAddService.loadRecipe(this.recipe);
+      this.router.navigateByUrl('/add-recipe');
+    }
   }
 
   onClickSaveButton() {
