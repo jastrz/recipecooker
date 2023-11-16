@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -22,12 +22,17 @@ import { RecipeAddService } from '../recipe-add.service';
     ImageLoaderComponent,
   ],
 })
-export class RecipeAddBasicsComponent {
+export class RecipeAddBasicsComponent implements OnInit {
   @Output() formSubmitted = new EventEmitter<null>();
   recipeForm?: FormGroup;
 
-  constructor(private recipeAddService: RecipeAddService) {
-    this.recipeForm = recipeAddService.recipeForm;
+  constructor(private recipeAddService: RecipeAddService) {}
+  async ngOnInit(): Promise<void> {
+    this.recipeForm = this.recipeAddService.recipeForm;
+  }
+
+  get pictures() {
+    return this.recipeForm?.get('files')?.value;
   }
 
   onSubmit() {

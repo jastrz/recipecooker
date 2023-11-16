@@ -63,6 +63,11 @@ export class RecipeAddComponent {
     this.stepper?.next();
   }
 
+  reset() {
+    this.stepper?.reset();
+    this.recipeAddService.reset();
+  }
+
   async postRecipe() {
     const authenticated = await this.accountService.isAuthenticated();
     console.log(`Authenticated: ${authenticated}`);

@@ -17,17 +17,14 @@ export class CookerService {
   // todo: reset or add tag / tags after recipe additiion
   initialize() {
     if (this.groupedTags.size == 0) {
-      return this.recipesService
-        .getTags()
-        .pipe(
-          map((result) => {
-            this.updateGroupedTags(result);
-            if (this.tagsSelectedForSearch.length > 0) {
-              this.updateRecipes();
-            }
-          })
-        )
-        .subscribe();
+      return this.recipesService.getTags().subscribe({
+        next: (result) => {
+          this.updateGroupedTags(result);
+          if (this.tagsSelectedForSearch.length > 0) {
+            this.updateRecipes();
+          }
+        },
+      });
     } else {
       if (this.tagsSelectedForSearch.length > 0) {
         this.updateRecipes();
@@ -62,14 +59,12 @@ export class CookerService {
   private updateRecipes() {
     return this.recipesService
       .getRecipesForOverview(this.tagsSelectedForSearch)
-      .pipe(
-        switchMap((result) => {
+      .subscribe({
+        next: (result) => {
           this.recipes = result;
           this.updateTags();
-          return result;
-        })
-      )
-      .subscribe();
+        },
+      });
   }
 
   private updateTags() {

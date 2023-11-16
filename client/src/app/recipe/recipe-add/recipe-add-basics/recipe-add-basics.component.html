@@ -48,9 +48,7 @@
         <mat-error>You must fill all fields.</mat-error>
       </div>
 
-      <app-image-loader
-        [selectedImages]="recipeForm.get('files')?.value"
-      ></app-image-loader>
+      <app-image-loader [selectedImages]="pictures"></app-image-loader>
 
       <button
         (click)="onSubmit()"

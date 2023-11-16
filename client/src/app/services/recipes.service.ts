@@ -4,7 +4,7 @@ import { Recipe } from '../models/recipe';
 import { Observable, forkJoin, map, mergeMap, of } from 'rxjs';
 import { ITag } from '../models/tag';
 import { RecipeStep } from '../models/recipeStep';
-import { FileUploadService } from './file-upload.service';
+import { FileService } from './file.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class RecipesService {
 
   constructor(
     private http: HttpClient,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileService
   ) {}
 
   public getRecipes(tags?: ITag[]) {

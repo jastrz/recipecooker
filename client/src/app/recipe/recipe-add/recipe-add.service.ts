@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Ingredient } from 'src/app/models/ingredient';
 import { Recipe } from 'src/app/models/recipe';
 import { RecipeStep } from 'src/app/models/recipeStep';
+import { FileService } from 'src/app/services/file.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,7 @@ export class RecipeAddService {
     files: this.fb.array([]),
   });
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private fileService: FileService) {
     this.ingredientForms = this.fb.array([this.createIngredientForm()]);
     this.recipeStepForms = this.fb.array([this.createStepsForm()]);
   }
@@ -55,6 +56,59 @@ export class RecipeAddService {
       name: ['', Validators.required],
       description: ['', Validators.required],
       files: this.fb.array([]),
+    });
+  }
+
+  async loadRecipe(recipe: Recipe) {
+    const recipePictures = await this.fileService.loadFilesFromUrls(
+      recipe.pictureUrls
+    );
+
+    this.recipeForm.setValue({
+      name: recipe.name,
+      description: recipe.description,
+      summary: recipe.summary,
+      ingredientTags: recipe.tags
+        .filter((tag) => tag.category === 'mainIngredient')
+        .map((tag) => tag.name)
+        .join(','),
+      originTags: recipe.tags
+        .filter((tag) => tag.category === 'origin')
+        .map((tag) => tag.name)
+        .join(','),
+      characterTags: recipe.tags
+        .filter((tag) => tag.category === 'character')
+        .map((tag) => tag.name)
+        .join(','),
+      files: [],
+    });
+
+    this.ingredientForms.clear();
+    this.recipeStepForms.clear();
+
+    // Add new ingredients
+    recipe.ingredients?.forEach((ingredient) => {
+      this.ingredientForms.push(
+        this.fb.group({
+          name: [ingredient.name, Validators.required],
+          quantity: [
+            ingredient.quantity,
+            [Validators.required, Validators.pattern('^[0-9]*$')],
+          ],
+          unit: [ingredient.unit, Validators.required],
+        })
+      );
+    });
+
+    // Add steps
+    recipe.steps.forEach((step) => {
+      this.recipeStepForms.push(
+        this.fb.group({
+          name: [step.name, Validators.required],
+          description: [step.description, Validators.required],
+          files: [],
+        })
+      );
     });
   }
 
@@ -113,6 +167,12 @@ export class RecipeAddService {
       errors.push('ingredients');
 
     return errors;
+  }
+
+  reset() {
+    this.recipeForm.reset();
+    this.ingredientForms = this.fb.array([this.createIngredientForm()]);
+    this.recipeStepForms = this.fb.array([this.createStepsForm()]);
   }
 
   private getIngredients(): Ingredient[] {

@@ -9,6 +9,7 @@ import { SharedAnimationsModule } from 'src/app/common/animations/shared-animati
 import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatIconModule } from '@angular/material/icon';
 import { AccountService } from 'src/app/services/account.service';
+import { RecipeAddService } from '../recipe-add/recipe-add.service';
 
 @Component({
   selector: 'app-recipe-details',
@@ -33,7 +34,8 @@ export class RecipeDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private breadcrumbService: BreadcrumbService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private recipeAddService: RecipeAddService
   ) {
     this.breadcrumbService.set('@recipe', ' ');
   }
@@ -61,7 +63,9 @@ export class RecipeDetailsComponent implements OnInit {
     this.router.navigateByUrl('/cook');
   }
 
-  onClickEditButton() {}
+  onClickEditButton() {
+    if (this.recipe) this.recipeAddService.loadRecipe(this.recipe);
+  }
 
   onClickSaveButton() {
     console.log(this.accountService.savedRecipeIds);

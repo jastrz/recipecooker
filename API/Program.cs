@@ -80,9 +80,9 @@ builder.Services.AddSwaggerDocumentation();
 var app = builder.Build();
 
 app.UseCors(builder => builder
-    .WithOrigins("*")
     .AllowAnyMethod()
     .AllowAnyHeader()
+    .AllowAnyOrigin()
 );
 
 app.UseMiddleware<ExceptionMiddleware>();
