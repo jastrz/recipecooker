@@ -63,6 +63,10 @@ namespace Infrastructure
                 .HasOne(ri => ri.Ingredient)
                 .WithMany(i => i.RecipeIngredients)
                 .HasForeignKey(ri => ri.IngredientId);
+
+            modelBuilder.Entity<Recipe>()
+                .Property(r => r.Status)
+                .HasConversion(s => s.ToString(), s => (RecipeStatus)Enum.Parse(typeof(RecipeStatus), s));
         }
     }
 }

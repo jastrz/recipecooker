@@ -1,16 +1,26 @@
 using Core.Entities.Identity;
 using Core.Interfaces;
 using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Services
 {
     public class UserService : IUserService
     {
         private readonly AppIdentityDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public UserService(AppIdentityDbContext context)
+        public UserService(AppIdentityDbContext context, UserManager<AppUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
+        }
+
+        public async Task<List<string>> GetRolesForUserAsync(AppUser user)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return roles.ToList();
         }
 
         public async Task SetRecipeSaved(AppUser user, int recipeId, bool saved)

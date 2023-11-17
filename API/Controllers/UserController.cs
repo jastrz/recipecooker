@@ -94,13 +94,16 @@ namespace API.Controllers
             var user = await _userManager.Users
                 .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
 
+            var roles = await _userService.GetRolesForUserAsync(user);
+
             return new UserDto
             {
                 Email = user.Email,
                 Token = _tokenService.CreateToken(user),
                 DisplayName = user.DisplayName,
                 UserId = user.Id,
-                SavedRecipeIds = user.SavedRecipeIds
+                SavedRecipeIds = user.SavedRecipeIds,
+                Roles = roles
             };
         }
 

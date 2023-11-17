@@ -1,7 +1,12 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-4 mt-4" *ngFor="let recipe of savedRecipes">
+    <div class="col-md-4 mt-4" *ngFor="let recipe of savedRecipes$ | async">
       <app-recipe-overview [recipe]="recipe"></app-recipe-overview>
     </div>
+  </div>
+  <div class="row" style="text-align: center">
+    <h2 *ngIf="(savedRecipes$ | async)?.length === 0">
+      You didn't save any recipes!
+    </h2>
   </div>
 </div>

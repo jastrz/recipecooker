@@ -11,7 +11,9 @@ namespace Core.Entities.Identity
         [NotMapped]
         public List<string> SavedRecipeIds
         {
-            get => SavedRecipes?.Split(',').ToList() ?? new List<string>();
+            get => (SavedRecipes != null && SavedRecipes.Length > 0)
+                ? SavedRecipes.Split(',').ToList()
+                : new List<string>();
         }
 
         public void AddSavedRecipe(string id)
@@ -19,7 +21,7 @@ namespace Core.Entities.Identity
             if (SavedRecipeIds.Contains(id))
                 return;
 
-            if (SavedRecipes == null)
+            if (SavedRecipes == null || SavedRecipes.Length == 0)
                 SavedRecipes = id;
             else
                 SavedRecipes += "," + id;
@@ -30,10 +32,9 @@ namespace Core.Entities.Identity
             if (SavedRecipes == null)
                 return;
 
-            var recipeIds = SavedRecipeIds;
-            recipeIds.Remove(id);
-
-            SavedRecipes = string.Join(',', recipeIds);
+            var savedRecipeIds = SavedRecipeIds;
+            savedRecipeIds.Remove(id);
+            SavedRecipes = string.Join(',', savedRecipeIds);
         }
     }
 }

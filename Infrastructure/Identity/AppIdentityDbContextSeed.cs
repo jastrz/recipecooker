@@ -5,9 +5,9 @@ namespace Infrastructure.Identity
 {
     public class AppIdentityDbContextSeed
     {
-        public static async Task SeedUsersAsync(UserManager<AppUser> userManager) 
+        public static async Task SeedUsersAsync(UserManager<AppUser> userManager)
         {
-            if(!userManager.Users.Any())
+            if (!userManager.Users.Any())
             {
                 var user = new AppUser
                 {
@@ -17,6 +17,7 @@ namespace Infrastructure.Identity
                 };
 
                 await userManager.CreateAsync(user, "P@$$w0rd");
+                await userManager.AddToRoleAsync(user, "Administrator");
             }
         }
     }

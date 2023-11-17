@@ -59,6 +59,7 @@ builder.Services.AddIdentityCore<AppUser>(opt =>
 {
     // add identity options here
 })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppIdentityDbContext>()
     .AddSignInManager<SignInManager<AppUser>>();
 
@@ -102,29 +103,44 @@ app.UseAuthorization();
 app.MapControllers();
 // app.MapFallbackToController("Index", "Fallback");
 
-using var scope = app.Services.CreateScope();
-var services = scope.ServiceProvider;
-var cookerContext = services.GetRequiredService<CookerContext>();
-var identityContext = services.GetRequiredService<AppIdentityDbContext>();
-var userManager = services.GetRequiredService<UserManager<AppUser>>();
-
-var logger = services.GetRequiredService<ILogger<Program>>();
-
-try
+using (var scope = app.Services.CreateScope())
 {
-    await cookerContext.Database.MigrateAsync();
-    if (cookerContext.Recipes.Count() == 0)
+    var services = scope.ServiceProvider;
+    var cookerContext = services.GetRequiredService<CookerContext>();
+    var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+
+    var logger = services.GetRequiredService<ILogger<Program>>();
+
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var roles = new[] { "Administrator", "SuperUser", "User" };
+
+    try
     {
-        var cookerContextSeed = services.GetRequiredService<CookerContextSeed>();
-        await cookerContextSeed.SeedAsync(cookerContext);
+        await cookerContext.Database.MigrateAsync();
+        if (cookerContext.Recipes.Count() == 0)
+        {
+            var cookerContextSeed = services.GetRequiredService<CookerContextSeed>();
+            await cookerContextSeed.SeedAsync(cookerContext);
+        }
+
+        await identityContext.Database.MigrateAsync();
+        foreach (var role in roles)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+                await roleManager.CreateAsync(new IdentityRole(role));
+        }
+        await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Error during migration.");
     }
 
-    await identityContext.Database.MigrateAsync();
-    await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
-}
-catch (Exception ex)
-{
-    logger.LogError(ex, "Error during migration.");
+
+
+    // if(await userManager.FindByEmailAsync)
+
 }
 
 app.Run();
