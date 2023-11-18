@@ -1,20 +1,44 @@
 a {
-    text-decoration: none;
-    color: #343a40;
-    
-    &.active {
-        color: orange;
-    }
+  text-decoration: none;
+  color: #343a40;
+
+  &.active {
+    color: orange;
+  }
 }
 
 ul.nav li {
-    padding-right: 25px;
+  padding-right: 25px;
 }
 
 .mat-icon {
-    transform: scale(1.25);
+  transform: scale(1.25);
 }
 
-.container {
-    padding-bottom: 30px;
+.row {
+  padding-bottom: 30px;
+  min-height: 200px;
+}
+
+.image-container {
+  width: 100%;
+  max-width: 100%;
+  height: 150px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 50px;
+  padding-top: 30px;
+}
+
+.responsive-image {
+  width: auto;
+  height: 100%;
+  display: block;
+}
+
+.navigation {
+  padding-top: 30px;
 }

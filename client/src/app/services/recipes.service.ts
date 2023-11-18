@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Recipe } from '../models/recipe';
 import { Observable, forkJoin, map, mergeMap, of } from 'rxjs';
 import { ITag } from '../models/tag';
@@ -21,8 +21,9 @@ export class RecipesService {
     private fileUploadService: FileService
   ) {}
 
-  public getRecipes(tags?: ITag[]) {
-    const params = this.getTagParams(tags);
+  public getRecipes(tags?: ITag[], status?: string) {
+    let params = this.getTagParams(tags);
+    if (status) params = params.append('status', status);
     return this.http.get<Recipe[]>(this.hostUrl + 'recipes', { params }).pipe(
       map((response: Recipe[]) => {
         this.recipesCache.push(
@@ -50,6 +51,17 @@ export class RecipesService {
           return response;
         })
       );
+  }
+
+  public setRecipeStatus(recipeId: number, status: string) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+    });
+    return this.http.patch<boolean>(
+      this.hostUrl + `recipes/${recipeId}/status`,
+      JSON.stringify(status),
+      { headers }
+    );
   }
 
   public getRecipe(recipeId: number, useCache: boolean = true) {

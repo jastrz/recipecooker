@@ -8,6 +8,7 @@ import { Recipe } from '../models/recipe';
   providedIn: 'root',
 })
 export class AccountService {
+
   private hostUrl = 'https://localhost:5002/api/';
   private userSource = new ReplaySubject<User | null>(1);
   user$ = this.userSource.asObservable();
