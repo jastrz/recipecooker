@@ -34,7 +34,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IReadOnlyList<RecipeDto>> GetRecipes([FromQuery] RecipeTagParams @params)
+        public async Task<IReadOnlyList<RecipeDto>> GetRecipes([FromQuery] RecipeSearchParams @params)
         {
             var recipes = await _recipeRepo.GetRecipes();
             var filteredRecipes = _recipeService.FilterRecipes(recipes, @params);
@@ -44,7 +44,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("overview")]
-        public async Task<IReadOnlyList<RecipeDto>> GetRecipesOverview([FromQuery] RecipeTagParams @params)
+        public async Task<IReadOnlyList<RecipeDto>> GetRecipesOverview([FromQuery] RecipeSearchParams @params)
         {
             var recipes = await _recipeRepo.GetRecipesOverview();
             var filteredRecipes = _recipeService.FilterRecipes(recipes, @params);
@@ -140,6 +140,16 @@ namespace API.Controllers
             await _recipeService.UpdateRecipeRating(recipe, rating, user.Id);
 
             return Ok();
+        }
+
+        [Authorize]
+        [HttpPatch]
+        [Route("{id}/status")]
+        public async Task<IActionResult> PatchStatus([FromRoute] int id, [FromBody] string status)
+        {
+            var recipe = await _recipeRepo.GetRecipe(id);
+            bool success = await _recipeService.UpdateRecipeStatus(recipe, status);
+            return Ok(success);
         }
     }
 }

@@ -10,6 +10,8 @@ import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatIconModule } from '@angular/material/icon';
 import { AccountService } from 'src/app/services/account.service';
 import { RecipeAddService } from '../recipe-add/recipe-add.service';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-recipe-details',
@@ -22,6 +24,8 @@ import { RecipeAddService } from '../recipe-add/recipe-add.service';
     SharedAnimationsModule,
     NgbRatingModule,
     MatIconModule,
+    MatSelectModule,
+    FormsModule,
   ],
   animations: [SharedAnimationsModule.openCloseAnimation],
 })
@@ -75,6 +79,14 @@ export class RecipeDetailsComponent implements OnInit {
     if (this.recipe?.id) {
       const id = this.recipe?.id.toString();
       this.accountService.saveRecipe(id, !this.isRecipeSaved).subscribe();
+    }
+  }
+
+  onStatusChange() {
+    if (this.recipe?.id && this.recipe?.status) {
+      this.recipeService
+        .setRecipeStatus(this.recipe?.id, this.recipe?.status)
+        .subscribe({ next: (result) => console.log(result) });
     }
   }
 

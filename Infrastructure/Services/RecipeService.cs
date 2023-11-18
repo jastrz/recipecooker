@@ -59,7 +59,7 @@ namespace Infrastructure.Services
             await _context.SaveChangesAsync();
         }
 
-        public IReadOnlyList<Recipe> FilterRecipes(IReadOnlyList<Recipe> recipes, RecipeTagParams @params)
+        public IReadOnlyList<Recipe> FilterRecipes(IReadOnlyList<Recipe> recipes, RecipeSearchParams @params)
         {
             if (!string.IsNullOrEmpty(@params.Character))
                 recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Character)).ToList();
@@ -67,6 +67,12 @@ namespace Infrastructure.Services
                 recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.MainIngredient)).ToList();
             if (!string.IsNullOrEmpty(@params.Origin))
                 recipes = recipes.Where(recipe => recipe.RecipeTags.Any(rt => rt.Tag.Name == @params.Origin)).ToList();
+
+            RecipeStatus status;
+            if (Enum.TryParse(@params.Status, out status))
+            {
+                recipes = recipes.Where(recipe => recipe.Status == status).ToList();
+            }
 
             return recipes;
         }
@@ -114,6 +120,18 @@ namespace Infrastructure.Services
                 recipeTag.TagId = existingTag.Id;
                 recipeTag.Tag = existingTag;
             }
+        }
+
+        public async Task<bool> UpdateRecipeStatus(Recipe recipe, string statusString)
+        {
+            RecipeStatus status;
+            if (Enum.TryParse(statusString, out status))
+            {
+                recipe.Status = status;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

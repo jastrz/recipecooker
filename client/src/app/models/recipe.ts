@@ -12,4 +12,5 @@ export interface Recipe {
   tags: ITag[];
   ingredients?: Ingredient[];
   rating?: number;
+  status?: string;
 }
