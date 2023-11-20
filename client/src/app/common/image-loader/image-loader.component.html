@@ -14,13 +14,12 @@
     </button>
   </div>
 </div>
-<div class="row" *ngIf="selectedImages && selectedImages.length > 0">
+<div class="row" *ngIf="pictureUrls">
   <div
     class="col-4 image-container"
-    *ngFor="let image of imagesData; let i = index"
+    *ngFor="let image of pictureUrls; let i = index"
   >
     <img [src]="image" alt="Thumbnail" style="max-height: 150px; width: auto" />
-    <p>{{ selectedImages[i].name }}</p>
     <button (click)="removeImage(i)" class="btn btn-primary remove-button">
       X
     </button>

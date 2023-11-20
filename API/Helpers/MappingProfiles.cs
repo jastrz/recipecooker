@@ -41,8 +41,10 @@ namespace API.Helpers
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
 
             CreateMap<RecipeStep, RecipeStepDto>()
-                .ForMember(dest => dest.PictureUrls, opt => opt.MapFrom<PictureUrlResolver>())
-                .ReverseMap();
+                .ForMember(dest => dest.PictureUrls, opt => opt.MapFrom<PictureUrlResolver>());
+
+            CreateMap<RecipeStepDto, RecipeStep>()
+                .ForMember(dest => dest.Pictures, opt => opt.MapFrom(src => src.PictureUrls.Select(url => new Picture { Url = url })));
 
             CreateMap<RecipeIngredient, IngredientDto>()
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))

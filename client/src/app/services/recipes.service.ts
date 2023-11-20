@@ -100,30 +100,39 @@ export class RecipesService {
       );
   }
 
-  public uploadRecipe(recipe: Recipe, recipeImages: File[]) {
-    var stepsObservables: Observable<any>[] = [];
-
-    return this.postRecipe(recipe).pipe(
-      mergeMap((id) => {
-        recipe.id = id;
-        recipe.steps.map((step) => {
-          if (step.pictures && step.pictures.length > 0) {
-            stepsObservables.push(
-              this.createStepsHttpObservable(recipe.id!, step.id, step.pictures)
-            );
-          }
-        });
-
-        return this.fileUploadService.uploadFiles(
-          recipeImages,
-          `recipes/${id}/images`
-        );
-      }),
-      mergeMap(() => {
-        return forkJoin(stepsObservables);
-      })
-    );
+  public deleteRecipe(recipeId: number) {
+    return this.http.delete(this.hostUrl + `recipes/${recipeId}`);
   }
+
+  public putRecipe(recipe: Recipe) {
+    return this.http.put<number>(this.hostUrl + `recipes/${recipe.id}`, recipe);
+  }
+
+  // public uploadRecipe(recipe: Recipe) {
+  //   return this.postRecipe(recipe);
+  //   // var stepsObservables: Observable<any>[] = [];
+
+  //   // return this.postRecipe(recipe).pipe(
+  //   //   mergeMap((id) => {
+  //   //     recipe.id = id;
+  //   //     recipe.steps.map((step) => {
+  //   //       if (step.pictures && step.pictures.length > 0) {
+  //   //         stepsObservables.push(
+  //   //           this.createStepsHttpObservable(recipe.id!, step.id, step.pictures)
+  //   //         );
+  //   //       }
+  //   //     });
+
+  //   //     return this.fileUploadService.uploadFiles(
+  //   //       recipeImages,
+  //   //       `recipes/${id}/images`
+  //   //     );
+  //   //   }),
+  //   //   mergeMap(() => {
+  //   //     return forkJoin(stepsObservables);
+  //   //   })
+  //   // );
+  // }
 
   public postRecipe(recipe: Recipe) {
     return this.http.post<any>(this.hostUrl + 'recipes', recipe);

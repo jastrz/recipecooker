@@ -21,7 +21,7 @@ namespace API.Helpers
 
             return source.Pictures
                 .Where(picture => !string.IsNullOrEmpty(picture.Url))
-                .Select(picture => _configuration["ApiUrl"] + picture.Url)
+                .Select(picture => picture.Url.Contains(_configuration["ApiUrl"]) ? picture.Url : _configuration["ApiUrl"] + picture.Url)
                 .ToList();
         }
     }

@@ -67,6 +67,14 @@ export class RecipeDetailsComponent implements OnInit {
     this.router.navigateByUrl('/cook');
   }
 
+  onClickDeleteButton() {
+    if (this.recipe?.id)
+      this.recipeService.deleteRecipe(this.recipe?.id).subscribe({
+        next: () => this.router.navigateByUrl('/cook'),
+        error: (error) => console.log(error),
+      });
+  }
+
   async onClickEditButton() {
     if (this.recipe) {
       await this.recipeAddService.loadRecipe(this.recipe);

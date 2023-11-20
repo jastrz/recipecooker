@@ -1,6 +1,8 @@
+using System.Security.Cryptography;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace Infrastructure.Services
 {
@@ -132,6 +134,21 @@ namespace Infrastructure.Services
                 return true;
             }
             return false;
+        }
+
+        public async Task RemoveRecipe(Recipe recipe)
+        {
+            _context.Recipes.Remove(recipe);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateRecipe(Recipe from, Recipe to)
+        {
+            _context.Entry(from).CurrentValues.SetValues(to);
+            from.Pictures = to.Pictures;
+            from.Steps = to.Steps;
+
+            await _context.SaveChangesAsync();
         }
     }
 }

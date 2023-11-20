@@ -9,6 +9,7 @@ import { FileService } from 'src/app/services/file.service';
   providedIn: 'root',
 })
 export class RecipeAddService {
+  loadedRecipe?: Recipe | null;
   recipeForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
@@ -17,6 +18,7 @@ export class RecipeAddService {
     originTags: ['', Validators.required],
     characterTags: ['', Validators.required],
     files: this.fb.array([]),
+    pictureUrls: this.fb.array([]),
     ingredients: this.fb.array([this.createIngredientForm()]),
     recipeSteps: this.fb.array([this.createStepsForm()]),
   });
@@ -33,6 +35,10 @@ export class RecipeAddService {
 
   get recipeSteps() {
     return this.recipeForm.get('recipeSteps') as FormArray;
+  }
+
+  get pictureUrls() {
+    return this.recipeForm.get('pictureUrls') as FormArray;
   }
 
   addRecipeStep() {
@@ -59,15 +65,12 @@ export class RecipeAddService {
     return this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      files: this.fb.array([]),
+      pictureUrls: this.fb.array([]),
     });
   }
 
-  async loadRecipe(recipe: Recipe) {
-    const recipePictures = await this.fileService.loadFilesFromUrls(
-      recipe.pictureUrls
-    );
-
+  loadRecipe(recipe: Recipe) {
+    this.loadedRecipe = recipe;
     this.recipeForm.patchValue({
       name: recipe.name,
       description: recipe.description,
@@ -84,13 +87,16 @@ export class RecipeAddService {
         .filter((tag) => tag.category === 'character')
         .map((tag) => tag.name)
         .join(','),
-      files: recipePictures,
-      ingredients: [],
-      recipeSteps: [],
     });
 
     this.ingredients.clear();
     this.recipeSteps.clear();
+    this.pictureUrls.clear();
+
+    // Add recipe pictures
+    recipe.pictureUrls.forEach((url) => {
+      this.pictureUrls.push(this.fb.control(url));
+    });
 
     // Add new ingredients
     recipe.ingredients?.forEach((ingredient) => {
@@ -108,14 +114,17 @@ export class RecipeAddService {
 
     // Add steps
     recipe.steps.forEach((step) => {
-      this.recipeSteps.push(
-        this.fb.group({
-          name: [step.name, Validators.required],
-          description: [step.description, Validators.required],
-          files: this.fb.array([]),
-        })
-      );
+      const stepGroup = this.createStepsForm();
+      stepGroup.get('name')?.setValue(step.name);
+      stepGroup.get('description')?.setValue(step.description);
+      step.pictureUrls?.forEach((url) => {
+        (stepGroup.get('pictureUrls') as FormArray).push(this.fb.control(url));
+      });
+
+      this.recipeSteps.push(stepGroup);
     });
+
+    console.log(this.recipeForm);
   }
 
   getRecipe(): Recipe {
@@ -129,8 +138,9 @@ export class RecipeAddService {
       summary: formValue.summary as string,
       steps: recipeSteps,
       ingredients: ingredients,
-      pictureUrls: [],
+      pictureUrls: this.pictureUrls.value,
       tags: [],
+      id: this.loadedRecipe ? this.loadedRecipe.id : undefined,
     };
 
     // Map ingredientTags
@@ -181,6 +191,7 @@ export class RecipeAddService {
     this.ingredients.push(this.createIngredientForm());
     this.recipeSteps.clear();
     this.recipeSteps.push(this.createStepsForm());
+    this.loadedRecipe = undefined;
   }
 
   private getIngredients(): Ingredient[] {
@@ -206,8 +217,7 @@ export class RecipeAddService {
         id: index,
         name: stepForm.get('name')?.value,
         description: stepForm.get('description')?.value,
-        pictureUrls: [],
-        pictures: stepForm.get('files')?.value,
+        pictureUrls: stepForm.get('pictureUrls')?.value,
       };
 
       recipeSteps.push(recipeStep);

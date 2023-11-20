@@ -39,6 +39,13 @@
         >
           <mat-icon>edit</mat-icon>Edit
         </button>
+        <button
+          class="btn btn-danger"
+          style="margin-right: 10px"
+          (click)="onClickDeleteButton()"
+        >
+          <mat-icon>delete</mat-icon>Delete
+        </button>
         <button class="btn btn-primary" (click)="onClickSaveButton()">
           <ng-container *ngIf="isRecipeSaved"
             ><mat-icon>check_circle_outline</mat-icon>Saved</ng-container

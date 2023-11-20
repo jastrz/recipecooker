@@ -21,9 +21,10 @@ namespace API.Controllers
         private readonly IRecipeService _recipeService;
         private readonly IFileService _fileService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IConfiguration _config;
 
         public RecipesController(IRecipeRepository recipeRepo, IMapper mapper, ILogger<RecipesController> logger,
-         IRecipeService recipeService, IFileService fileUploadService, UserManager<AppUser> userManager)
+         IRecipeService recipeService, IFileService fileUploadService, UserManager<AppUser> userManager, IConfiguration config)
         {
             _userManager = userManager;
             _fileService = fileUploadService;
@@ -31,6 +32,7 @@ namespace API.Controllers
             _logger = logger;
             _recipeRepo = recipeRepo;
             _mapper = mapper;
+            _config = config;
         }
 
         [HttpGet]
@@ -77,6 +79,21 @@ namespace API.Controllers
             var data = _mapper.Map<IReadOnlyList<RecipeStep>, IReadOnlyList<RecipeStepDto>>(steps);
 
             return data;
+        }
+
+        [HttpPost]
+        [Route("images")]
+        public async Task<ActionResult<List<string>>> PostImages([FromForm] List<IFormFile> files)
+        {
+            try
+            {
+                var pictureUrls = await _fileService.SaveFiles(files, "images");
+                return Ok(pictureUrls.Select(url => _config["ApiUrl"] + url));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [Authorize]
@@ -126,6 +143,31 @@ namespace API.Controllers
             var savedRecipe = await _recipeService.AddRecipeAsync(recipe);
 
             return Ok(savedRecipe.Id);
+        }
+
+        [Authorize]
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<ActionResult<int>> PutRecipe([FromRoute] int id, [FromBody] RecipeDto recipeDto)
+        {
+            var updatedRecipe = _mapper.Map<RecipeDto, Recipe>(recipeDto);
+            var recipe = await _recipeRepo.GetRecipe(id);
+
+            await _recipeService.UpdateRecipe(recipe, updatedRecipe);
+
+            return Ok(recipe.Id);
+        }
+
+
+        [Authorize]
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteRecipe([FromRoute] int id)
+        {
+            var recipe = await _recipeRepo.GetRecipe(id);
+            await _recipeService.RemoveRecipe(recipe);
+
+            return Ok();
         }
 
         [Authorize]

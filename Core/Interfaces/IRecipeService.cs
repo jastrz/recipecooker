@@ -11,5 +11,7 @@ namespace Core.Interfaces
         Task UpdateRecipeRating(Recipe recipe, double rating, string userId);
         IReadOnlyList<Recipe> FilterRecipes(IReadOnlyList<Recipe> recipes, RecipeSearchParams @params);
         Task<bool> UpdateRecipeStatus(Recipe recipe, string status);
+        Task RemoveRecipe(Recipe recipe);
+        Task UpdateRecipe(Recipe from, Recipe to);
     }
 }

@@ -1,12 +1,6 @@
 import { CommonModule } from '@angular/common';
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { FileService } from 'src/app/services/file.service';
 
 @Component({
   selector: 'app-image-loader',
@@ -15,52 +9,39 @@ import {
   standalone: true,
   imports: [CommonModule],
 })
-export class ImageLoaderComponent implements AfterViewInit {
-  @Input() selectedImages?: File[];
-  imagesData: (string | ArrayBuffer | null)[] = [];
+export class ImageLoaderComponent {
+  @Input() pictureUrls?: string[];
+  private selectedImages: File[] = [];
 
-  ngAfterViewInit(): void {
-    console.log('loading image');
-
-    console.log(this.selectedImages);
-    if (this.selectedImages) {
-      this.selectedImages.forEach((image) => {
-        console.log('loading image');
-        this.readImage(image);
-      });
-    }
-  }
+  constructor(private fileService: FileService) {}
 
   onFileSelected(event: any) {
     const fileList: FileList = event.target.files;
-
-    if (this.selectedImages?.length === 0) {
-      this.imagesData = [];
-    }
 
     if (fileList.length > 0) {
       for (let i = 0; i < fileList.length; i++) {
         const file: File = fileList[i];
         this.selectedImages?.push(file);
-        this.readImage(file);
       }
     }
     console.log(this.selectedImages);
+
+    if (this.selectedImages) {
+      this.fileService
+        .uploadFiles(this.selectedImages, 'recipes/images')
+        .subscribe({
+          next: (urls: string[]) => {
+            urls.forEach((url) => {
+              this.pictureUrls?.push(url);
+            });
+            this.selectedImages = [];
+            console.log(this.pictureUrls);
+          },
+        });
+    }
   }
 
   removeImage(id: number) {
-    this.selectedImages?.splice(id, 1);
-    this.imagesData.splice(id, 1);
-  }
-
-  private readImage(file: File) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      console.log(e);
-      if (e.target) {
-        this.imagesData.push(e.target.result);
-      }
-    };
-    reader.readAsDataURL(file);
+    this.pictureUrls?.splice(id, 1);
   }
 }

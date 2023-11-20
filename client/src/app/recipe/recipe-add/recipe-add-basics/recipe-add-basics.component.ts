@@ -35,6 +35,10 @@ export class RecipeAddBasicsComponent implements OnInit {
     return this.recipeForm?.get('files')?.value;
   }
 
+  get pictureUrls() {
+    return this.recipeForm?.get('pictureUrls')?.value;
+  }
+
   onSubmit() {
     const formData = this.recipeForm?.value;
     console.log(formData);

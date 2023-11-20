@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/services/account.service';
 import { RecipeAddService } from './recipe-add.service';
 import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-recipe-add',
@@ -68,17 +69,25 @@ export class RecipeAddComponent {
     this.recipeAddService.reset();
   }
 
-  async postRecipe() {
+  async publishRecipe() {
     const authenticated = await this.accountService.isAuthenticated();
     console.log(`Authenticated: ${authenticated}`);
     if (!authenticated) this.router.navigateByUrl('account');
 
     const recipe = this.recipeAddService.getRecipe();
-    const images = this.recipeAddService.recipeForm.get('files')
-      ?.value as File[];
 
-    this.recipeService.uploadRecipe(recipe, images).subscribe({
-      next: () => {
+    console.log(recipe);
+
+    let recipePublishObservable: Observable<number>;
+    if (recipe.id) {
+      recipePublishObservable = this.recipeService.putRecipe(recipe);
+    } else {
+      recipePublishObservable = this.recipeService.postRecipe(recipe);
+    }
+
+    recipePublishObservable.subscribe({
+      next: (id) => {
+        recipe.id = id;
         this.toastr.success('Recipe added!');
         this.router.navigateByUrl('cook/recipe/' + recipe.id);
         console.log(recipe.id);
