@@ -74,6 +74,11 @@ export class RecipesService {
       map((response: Recipe) => {
         if (!this.recipesCache.some((r) => r.id === response.id)) {
           this.recipesCache.push(response);
+        } else if (!useCache) {
+          this.recipesCache = this.recipesCache.filter(
+            (r) => r.id != response.id
+          );
+          this.recipesCache.push(response);
         }
         return response;
       })

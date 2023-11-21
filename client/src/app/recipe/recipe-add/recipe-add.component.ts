@@ -88,14 +88,18 @@ export class RecipeAddComponent {
     recipePublishObservable.subscribe({
       next: (id) => {
         recipe.id = id;
-        this.toastr.success('Recipe added!');
-        this.router.navigateByUrl('cook/recipe/' + recipe.id);
-        console.log(recipe.id);
+        this.toastr.success('Recipe published!');
+        this.recipeService.getRecipe(recipe.id, false).subscribe({
+          next: () => {
+            this.router.navigateByUrl('cook/recipe/' + recipe.id);
+            this.reset();
+          },
+          error: (error) => console.log(error),
+        });
       },
       error: (error) => {
         this.toastr.error(error);
         console.error(error);
-        console.log(recipe.id);
       },
     });
   }

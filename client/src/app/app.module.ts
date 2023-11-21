@@ -15,7 +15,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { BreadcrumbModule } from 'xng-breadcrumb';
-import { RouterModule } from '@angular/router';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [AppComponent, NavComponent, FooterComponent],
@@ -29,6 +29,7 @@ import { RouterModule } from '@angular/router';
     ToastrModule.forRoot(),
     NgxSpinnerModule,
     BreadcrumbModule,
+    MatDialogModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
