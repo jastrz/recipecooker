@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
-import { AccountService } from '../services/account.service';
+import { AccountService } from './account.service';
 import { CommonModule } from '@angular/common';
 import { SharedAnimationsModule } from '../common/animations/shared-animations.module';
 import { RouterModule } from '@angular/router';

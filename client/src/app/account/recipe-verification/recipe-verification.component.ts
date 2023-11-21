@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Recipe } from 'src/app/models/recipe';
 import { RecipeOverviewComponent } from 'src/app/recipe/recipe-overview/recipe-overview.component';
-import { RecipesService } from 'src/app/services/recipes.service';
+import { RecipesService } from 'src/app/recipe/recipes.service';
 
 @Component({
   selector: 'app-recipe-verification',

@@ -1,16 +1,22 @@
 .image-container {
-    position: relative; 
-    display: inline-block; 
-  }
-  
+  position: relative;
+  display: inline-block;
+  margin-bottom: 30px;
+}
+
 .remove-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: red;
-    color: white;
-    padding: 5px;
-    font-size: 18px;
-    min-width: 35px;
-    cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  font-size: 1em;
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+}
+
+.selectButton {
+  width: 120px;
+  height: 40px;
+  font-size: small;
 }

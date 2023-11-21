@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { IngredientListComponent } from './ingredient-list/ingredient-list.component';
 import { RecipeAddService } from '../recipe-add.service';
 import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-recipe-add-ingredients',
@@ -20,6 +21,7 @@ import { SharedAnimationsModule } from 'src/app/common/animations/shared-animati
     IngredientListComponent,
     SharedAnimationsModule,
     FormsModule,
+    MatCardModule,
   ],
   animations: [SharedAnimationsModule.elementAddedAnimation],
 })

@@ -7,12 +7,12 @@ import { RecipeAddBasicsComponent } from './recipe-add-basics/recipe-add-basics.
 import { RecipeAddStepsComponent } from './recipe-add-steps/recipe-add-steps.component';
 import { RecipeDetailsComponent } from '../recipe-details/recipe-details.component';
 import { RecipeStepsListComponent } from './recipe-add-steps/recipe-steps-list/recipe-steps-list.component';
-import { RecipesService } from 'src/app/services/recipes.service';
+import { RecipesService } from 'src/app/recipe/recipes.service';
 import { RecipeAddIngredientsComponent } from './recipe-add-ingredients/recipe-add-ingredients.component';
 import { IngredientListComponent } from './recipe-add-ingredients/ingredient-list/ingredient-list.component';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AccountService } from 'src/app/services/account.service';
+import { AccountService } from 'src/app/account/account.service';
 import { RecipeAddService } from './recipe-add.service';
 import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
 import { Observable } from 'rxjs';

@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Recipe } from '../models/recipe';
-import { Observable, forkJoin, map, mergeMap, of } from 'rxjs';
+import { map, of } from 'rxjs';
 import { ITag } from '../models/tag';
 import { RecipeStep } from '../models/recipeStep';
-import { FileService } from './file.service';
+import { FileService } from '../services/file.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipesService {
-  private hostUrl = 'https://localhost:5002/api/';
+  private hostUrl = environment.apiUrl;
 
   recipesCache: Recipe[] = [];
   tags: ITag[] = [];

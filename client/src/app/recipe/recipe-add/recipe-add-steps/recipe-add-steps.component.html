@@ -8,20 +8,20 @@
     style="margin: auto; vertical-align: top"
     formArrayName="recipeSteps"
   >
-    <div
+    <mat-card
       *ngFor="let recipeStepForm of recipeSteps.controls; let i = index"
       [formGroupName]="i"
-      style="margin-top: 50px"
       [@add]="'added'"
     >
       <button
         (click)="removeRecipeStep(i)"
-        class="btn btn-primary"
+        class="btn btn-danger removeButton"
         style="float: right"
       >
         X
       </button>
-      <div>
+
+      <div class="content">
         <mat-form-field class="field mt-4">
           <mat-label>Step name</mat-label>
           <input
@@ -54,7 +54,7 @@
           [pictureUrls]="recipeStepForm.get('pictureUrls')?.value"
         ></app-image-loader>
       </div>
-    </div>
+    </mat-card>
     <button
       (click)="addRecipeStep()"
       class="btn btn-success"

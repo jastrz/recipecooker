@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Recipe } from 'src/app/models/recipe';
 import { RecipeOverviewComponent } from 'src/app/recipe/recipe-overview/recipe-overview.component';
-import { AccountService } from 'src/app/services/account.service';
+import { AccountService } from 'src/app/account/account.service';
 
 @Component({
   selector: 'app-saved-recipes-list',

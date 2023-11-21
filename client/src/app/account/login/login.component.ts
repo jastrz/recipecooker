@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
-import { AccountService } from 'src/app/services/account.service';
+import { AccountService } from 'src/app/account/account.service';
 
 @Component({
   selector: 'app-login',

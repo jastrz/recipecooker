@@ -8,6 +8,7 @@ import { RecipeStepsListComponent } from './recipe-steps-list/recipe-steps-list.
 import { ImageLoaderComponent } from 'src/app/common/image-loader/image-loader.component';
 import { RecipeAddService } from '../recipe-add.service';
 import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-recipe-add-steps',
@@ -24,6 +25,7 @@ import { SharedAnimationsModule } from 'src/app/common/animations/shared-animati
     MatSelectModule,
     RecipeStepsListComponent,
     SharedAnimationsModule,
+    MatCardModule,
   ],
   animations: [SharedAnimationsModule.elementAddedAnimation],
 })
@@ -46,6 +48,7 @@ export class RecipeAddStepsComponent {
   }
 
   removeRecipeStep(index: number) {
+    console.log(`remove recipe step ${index}`);
     this.recipeAddService.removeRecipeStep(index);
   }
 

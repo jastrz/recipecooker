@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { ImageLoaderComponent } from 'src/app/common/image-loader/image-loader.component';
 import { RecipeAddService } from '../recipe-add.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-recipe-add-basics',
@@ -20,6 +21,7 @@ import { RecipeAddService } from '../recipe-add.service';
     MatInputModule,
     MatSelectModule,
     ImageLoaderComponent,
+    MatCardModule
   ],
 })
 export class RecipeAddBasicsComponent implements OnInit {

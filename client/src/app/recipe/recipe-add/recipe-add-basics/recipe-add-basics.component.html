@@ -1,64 +1,67 @@
 <div class="mt-4" *ngIf="recipeForm" [formGroup]="recipeForm">
-  <div class="row">
-    <div
-      class="col-lg-6 form-group"
-      style="float: none; margin: auto; margin-top: 50px"
-    >
-      <mat-form-field class="field mt-4">
-        <mat-label>Recipe name</mat-label>
-        <input matInput placeholder="..." formControlName="name" />
-      </mat-form-field>
+  <div
+    class="col-lg-10 form-group"
+    style="float: none; margin: auto; margin-top: 50px"
+  >
+    <mat-card>
+      <div class="content">
+        <mat-form-field class="field mt-4">
+          <mat-label>Recipe name</mat-label>
+          <input matInput placeholder="..." formControlName="name" />
+        </mat-form-field>
 
-      <mat-form-field class="description-field mt-4">
-        <mat-label>Summary</mat-label>
-        <textarea
-          matInput
-          cdkTextareaAutosize
-          placeholder="..."
-          formControlName="summary"
-        ></textarea>
-      </mat-form-field>
+        <mat-form-field class="description-field mt-4">
+          <mat-label>Summary</mat-label>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            placeholder="..."
+            formControlName="summary"
+          ></textarea>
+        </mat-form-field>
 
-      <mat-form-field class="description-field mt-4">
-        <mat-label>Description</mat-label>
-        <textarea
-          matInput
-          cdkTextareaAutosize
-          placeholder="..."
-          formControlName="description"
-        ></textarea>
-      </mat-form-field>
+        <mat-form-field class="description-field mt-4">
+          <mat-label>Description</mat-label>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            placeholder="..."
+            formControlName="description"
+          ></textarea>
+        </mat-form-field>
 
-      <mat-form-field class="field mt-4">
-        <mat-label>Main ingredient</mat-label>
-        <input matInput placeholder="..." formControlName="ingredientTags" />
-      </mat-form-field>
+        <mat-form-field class="field mt-4">
+          <mat-label>Main ingredient</mat-label>
+          <input matInput placeholder="..." formControlName="ingredientTags" />
+        </mat-form-field>
 
-      <mat-form-field class="field mt-4">
-        <mat-label>Origin</mat-label>
-        <input matInput placeholder="..." formControlName="originTags" />
-      </mat-form-field>
+        <mat-form-field class="field mt-4">
+          <mat-label>Origin</mat-label>
+          <input matInput placeholder="..." formControlName="originTags" />
+        </mat-form-field>
 
-      <mat-form-field class="field mt-4">
-        <mat-label>Character</mat-label>
-        <input matInput placeholder="..." formControlName="characterTags" />
-      </mat-form-field>
+        <mat-form-field class="field mt-4">
+          <mat-label>Character</mat-label>
+          <input matInput placeholder="..." formControlName="characterTags" />
+        </mat-form-field>
 
-      <div *ngIf="!recipeForm.valid && recipeForm.touched" style="float: right">
-        <mat-error>You must fill all fields.</mat-error>
+        <div
+          *ngIf="!recipeForm.valid && recipeForm.touched"
+          style="float: right"
+        >
+          <mat-error>You must fill all fields.</mat-error>
+        </div>
+
+        <app-image-loader [pictureUrls]="pictureUrls"></app-image-loader>
       </div>
+    </mat-card>
 
-      <app-image-loader
-        [pictureUrls]="pictureUrls"
-      ></app-image-loader>
-
-      <button
-        (click)="onSubmit()"
-        class="btn btn-primary mt-4"
-        [disabled]="recipeForm.invalid"
-      >
-        Continue
-      </button>
-    </div>
+    <button
+      (click)="onSubmit()"
+      class="btn btn-primary mt-4"
+      [disabled]="recipeForm.invalid"
+    >
+      Continue
+    </button>
   </div>
 </div>

@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { Observable, ReplaySubject, firstValueFrom, map, of } from 'rxjs';
 import { Recipe } from '../models/recipe';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
-
-  private hostUrl = 'https://localhost:5002/api/';
+  private hostUrl = environment.apiUrl;
   private userSource = new ReplaySubject<User | null>(1);
   user$ = this.userSource.asObservable();
 

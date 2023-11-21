@@ -37,9 +37,6 @@ export class ConfirmationDialog {
   }
 
   onNoClicked() {
-    //this.data.declineCallback();
-    console.log('no clicked');
-
     this.dialogRef.close();
   }
 }

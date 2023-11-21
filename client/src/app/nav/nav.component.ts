@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AccountService } from '../services/account.service';
+import { AccountService } from '../account/account.service';
 
 @Component({
   selector: 'app-nav',

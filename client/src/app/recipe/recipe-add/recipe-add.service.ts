@@ -23,7 +23,7 @@ export class RecipeAddService {
     recipeSteps: this.fb.array([this.createStepsForm()]),
   });
 
-  constructor(private fb: FormBuilder, private fileService: FileService) {}
+  constructor(private fb: FormBuilder) {}
 
   addIngredient() {
     this.ingredients.push(this.createIngredientForm());
@@ -50,7 +50,7 @@ export class RecipeAddService {
   }
 
   removeRecipeStep(index: number) {
-    this.ingredients.removeAt(index);
+    this.recipeSteps.removeAt(index);
   }
 
   createIngredientForm(): FormGroup {
@@ -222,8 +222,6 @@ export class RecipeAddService {
 
       recipeSteps.push(recipeStep);
     });
-
-    console.log(recipeSteps);
 
     return recipeSteps;
   }

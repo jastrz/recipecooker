@@ -9,7 +9,10 @@
       (change)="onFileSelected($event)"
       #hiddenfileinput
     />
-    <button (click)="hiddenfileinput.click()" class="btn btn-primary">
+    <button
+      (click)="hiddenfileinput.click()"
+      class="btn btn-primary selectButton"
+    >
       Select images
     </button>
   </div>
@@ -20,7 +23,7 @@
     *ngFor="let image of pictureUrls; let i = index"
   >
     <img [src]="image" alt="Thumbnail" style="max-height: 150px; width: auto" />
-    <button (click)="removeImage(i)" class="btn btn-primary remove-button">
+    <button (click)="removeImage(i)" class="btn btn-danger remove-button">
       X
     </button>
   </div>

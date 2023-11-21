@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ITag, Tag } from '../models/tag';
 import { Recipe } from '../models/recipe';
-import { RecipesService } from '../services/recipes.service';
+import { RecipesService } from '../recipe/recipes.service';
 import { map, of, switchMap } from 'rxjs';
 
 @Injectable({
