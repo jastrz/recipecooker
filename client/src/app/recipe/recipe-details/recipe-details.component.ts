@@ -12,6 +12,11 @@ import { AccountService } from 'src/app/services/account.service';
 import { RecipeAddService } from '../recipe-add/recipe-add.service';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  ConfirmationDialog,
+  ConfirmationDialogData,
+} from 'src/app/common/confirmation-dialog/confirmation-dialog';
 
 @Component({
   selector: 'app-recipe-details',
@@ -39,7 +44,8 @@ export class RecipeDetailsComponent implements OnInit {
     private router: Router,
     private breadcrumbService: BreadcrumbService,
     private accountService: AccountService,
-    private recipeAddService: RecipeAddService
+    private recipeAddService: RecipeAddService,
+    public dialog: MatDialog
   ) {
     this.breadcrumbService.set('@recipe', ' ');
   }
@@ -68,11 +74,11 @@ export class RecipeDetailsComponent implements OnInit {
   }
 
   onClickDeleteButton() {
-    if (this.recipe?.id)
-      this.recipeService.deleteRecipe(this.recipe?.id).subscribe({
-        next: () => this.router.navigateByUrl('/cook'),
-        error: (error) => console.log(error),
-      });
+    this.dialog.open(ConfirmationDialog, {
+      data: {
+        confirmationCallback: () => this.deleteRecipe(),
+      } as ConfirmationDialogData,
+    });
   }
 
   async onClickEditButton() {
@@ -106,6 +112,14 @@ export class RecipeDetailsComponent implements OnInit {
         error: (error) => console.log(error),
       });
     }
+  }
+
+  private deleteRecipe() {
+    if (this.recipe?.id)
+      this.recipeService.deleteRecipe(this.recipe?.id).subscribe({
+        next: () => this.router.navigateByUrl('/cook'),
+        error: (error) => console.log(error),
+      });
   }
 
   private getRecipe(id: number, cached: boolean = true) {

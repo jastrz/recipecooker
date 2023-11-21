@@ -1,0 +1,27 @@
+.confirmation-dialog-container {
+  width: 300px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.mat-h1 {
+  margin: 0;
+}
+
+.mat-dialog-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.mat-dialog-actions button {
+  width: 80px;
+  height: 40px;
+}
+
+.mat-dialog-actions button:not(:last-child) {
+  margin-right: 40px;
+}

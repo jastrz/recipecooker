@@ -72,15 +72,6 @@ namespace API.Controllers
             return data;
         }
 
-        [HttpGet("steps/{id}")]
-        public async Task<IReadOnlyList<RecipeStepDto>> GetRecipeSteps(int id)
-        {
-            var steps = await _recipeRepo.GetRecipeSteps(id);
-            var data = _mapper.Map<IReadOnlyList<RecipeStep>, IReadOnlyList<RecipeStepDto>>(steps);
-
-            return data;
-        }
-
         [HttpPost]
         [Route("images")]
         public async Task<ActionResult<List<string>>> PostImages([FromForm] List<IFormFile> files)
