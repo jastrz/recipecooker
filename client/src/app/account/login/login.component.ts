@@ -1,18 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
 import { AccountService } from 'src/app/account/account.service';
+import {
+  GoogleSigninButtonModule,
+  SocialAuthService,
+  SocialUser,
+} from '@abacritt/angularx-social-login';
+import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
+import { AppModule } from 'src/app/app.module';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatInputModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    GoogleSigninButtonModule,
+  ],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm = this.fb.group({
     email: ['', Validators.required],
     password: ['', Validators.required],
@@ -23,10 +34,26 @@ export class LoginComponent {
     private accountService: AccountService
   ) {}
 
+  ngOnInit() {
+    // left temporarily
+    // @ts-ignore
+    // window.handleCredentialResponse = (response) => {
+    //   console.log(response.credential);
+    //   this.loginWithGoogle(response.credential);
+    // };
+  }
+
   login() {
     this.accountService.login(this.loginForm.value).subscribe({
       next: (user) => console.log(user),
       error: (error) => console.log(error),
     });
   }
+
+  // loginWithGoogle(credential: string) {
+  //   this.accountService.loginWithGoogle(credential).subscribe({
+  //     next: (user) => console.log('logged in with google', user),
+  //     error: (error) => console.log(error),
+  //   });
+  // }
 }

@@ -1,10 +1,12 @@
 using System.Security.Claims;
+using System.Text.Json;
 using API.Dtos;
 using API.Errors;
 using AutoMapper;
 using Core.Entities;
 using Core.Entities.Identity;
 using Core.Interfaces;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +15,7 @@ using Shared.Dtos;
 
 namespace API.Controllers
 {
+
     public class UserController : BaseApiController
     {
         private readonly UserManager<AppUser> _userManager;
@@ -21,9 +24,10 @@ namespace API.Controllers
         private readonly IRecipeRepository _recipeRepository;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _config;
 
         public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService,
-        IRecipeRepository recipeRepository, IUserService userService, IMapper mapper)
+        IRecipeRepository recipeRepository, IUserService userService, IMapper mapper, IConfiguration config)
         {
             _userService = userService;
             _userManager = userManager;
@@ -31,6 +35,7 @@ namespace API.Controllers
             _tokenService = tokenService;
             _recipeRepository = recipeRepository;
             _mapper = mapper;
+            _config = config;
         }
 
         [HttpGet("emailexists")]
@@ -53,6 +58,46 @@ namespace API.Controllers
                 Token = _tokenService.CreateToken(user),
                 DisplayName = user.UserName
             };
+        }
+
+        [HttpPost("google")]
+        public async Task<ActionResult<UserDto>> LoginWithGoogle([FromBody] GoogleLoginRequest request)
+        {
+            var payload = await _tokenService.VerifyGoogleToken(request.IdToken);
+
+            if (payload == null) return BadRequest("Couldn't get data from Google");
+
+            var email = payload.Email;
+            var existingUser = await _userManager.FindByEmailAsync(email);
+
+            if (existingUser != null)
+            {
+                return new UserDto
+                {
+                    Email = existingUser.Email,
+                    Token = _tokenService.CreateToken(existingUser),
+                    DisplayName = existingUser.DisplayName
+                };
+            }
+            else
+            {
+                var displayName = payload.GivenName;
+                var user = new AppUser
+                {
+                    DisplayName = displayName,
+                    Email = email,
+                    UserName = email
+                };
+                var result = await _userManager.CreateAsync(user, request.IdToken);
+                if (!result.Succeeded) return BadRequest(new ApiResponse(400));
+
+                return new UserDto
+                {
+                    Email = user.Email,
+                    Token = _tokenService.CreateToken(user),
+                    DisplayName = user.DisplayName
+                };
+            }
         }
 
         [HttpPost("register")]

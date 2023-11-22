@@ -16,6 +16,15 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { BreadcrumbModule } from 'xng-breadcrumb';
 import { MatDialogModule } from '@angular/material/dialog';
+import {
+  GoogleLoginProvider,
+  GoogleSigninButtonDirective,
+  SocialAuthServiceConfig,
+  SocialLoginModule,
+} from '@abacritt/angularx-social-login';
+import { environment } from 'src/environments/environment';
+
+const googleClientId = environment.googleClientId;
 
 @NgModule({
   declarations: [AppComponent, NavComponent, FooterComponent],
@@ -30,11 +39,32 @@ import { MatDialogModule } from '@angular/material/dialog';
     NgxSpinnerModule,
     BreadcrumbModule,
     MatDialogModule,
+    SocialLoginModule,
   ],
+  exports: [],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(googleClientId, {
+              oneTapEnabled: false,
+              prompt: 'consent',
+            }),
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
+        },
+      } as SocialAuthServiceConfig,
+    },
+    GoogleSigninButtonDirective,
   ],
   bootstrap: [AppComponent],
 })

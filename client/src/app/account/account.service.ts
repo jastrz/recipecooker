@@ -4,6 +4,8 @@ import { User } from '../models/user';
 import { Observable, ReplaySubject, firstValueFrom, map, of } from 'rxjs';
 import { Recipe } from '../models/recipe';
 import { environment } from 'src/environments/environment';
+import { GoogleLoginRequest } from '../models/google-login-request';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,17 @@ export class AccountService {
 
   savedRecipeIds: string[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authService: SocialAuthService
+  ) {
+    this.authService.authState.subscribe((user) => {
+      this.loginWithGoogle(user.idToken).subscribe({
+        next: (user) => console.log('logged in with google', user),
+        error: (error) => console.log(error),
+      });
+    });
+  }
 
   loadCurrentUser(token: string | null) {
     if (token === null) {
@@ -29,8 +41,7 @@ export class AccountService {
     return this.http.get<User>(this.hostUrl + 'user', { headers }).pipe(
       map((user) => {
         if (user) {
-          localStorage.setItem('token', user.token);
-          this.userSource.next(user);
+          this.setUser(user);
           return user;
         } else {
           return null;
@@ -58,7 +69,6 @@ export class AccountService {
   }
 
   async isAuthenticated(): Promise<boolean> {
-    // await new Promise(resolve => setTimeout(resolve, 2000));
     const user = await firstValueFrom(this.user$);
     return !!user;
   }
@@ -66,8 +76,7 @@ export class AccountService {
   register(values: any) {
     return this.http.post<User>(this.hostUrl + 'user/register', values).pipe(
       map((user) => {
-        this.userSource.next(user);
-        localStorage.setItem('token', user.token);
+        this.setUser(user);
         return user;
       })
     );
@@ -76,8 +85,18 @@ export class AccountService {
   login(values: any) {
     return this.http.post<User>(this.hostUrl + 'user/login', values).pipe(
       map((user) => {
-        this.userSource.next(user);
-        localStorage.setItem('token', user.token);
+        this.setUser(user);
+        return user;
+      })
+    );
+  }
+
+  loginWithGoogle(credential: string) {
+    const request = new GoogleLoginRequest();
+    request.idToken = credential;
+    return this.http.post<User>(this.hostUrl + 'user/google', request).pipe(
+      map((user) => {
+        this.setUser(user);
         return user;
       })
     );
@@ -98,5 +117,10 @@ export class AccountService {
           return this.savedRecipeIds;
         })
       );
+  }
+
+  private setUser(user: User) {
+    this.userSource.next(user);
+    localStorage.setItem('token', user.token);
   }
 }

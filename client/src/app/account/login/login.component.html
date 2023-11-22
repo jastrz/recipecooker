@@ -1,17 +1,59 @@
 <div class="mt-4" [formGroup]="loginForm">
-    <div class="row">
-        <div class="col-lg-6 form-group" style="float:none; margin:auto; margin-top: 50px">
-            <h4>Login:</h4>
-            <mat-form-field class="field">
-            <input matInput placeholder="Email" type="email" name="email" formControlName="email">
-            </mat-form-field>
+  <div class="row">
+    <div
+      class="col-lg-6 form-group"
+      style="float: none; margin: auto; margin-top: 50px"
+    >
+      <h4>Login:</h4>
+      <mat-form-field class="field">
+        <input
+          matInput
+          placeholder="Email"
+          type="email"
+          name="email"
+          formControlName="email"
+        />
+      </mat-form-field>
 
-            <mat-form-field class="field">
-            <input matInput placeholder="Password" type="password" name="password" formControlName="password">
-            </mat-form-field>
+      <mat-form-field class="field">
+        <input
+          matInput
+          placeholder="Password"
+          type="password"
+          name="password"
+          formControlName="password"
+        />
+      </mat-form-field>
 
-            <button (click)="login()" class="btn btn-primary" style="float: right;">Login</button>
+      <asl-google-signin-button
+        type="standard"
+        size="large"
+      ></asl-google-signin-button>
 
-        </div>
+      <!-- left temporarily -->
+      <!-- <button (click)="login()" class="btn btn-primary" style="float: right"></button>
+
+      <div type="icon" size="medium">
+        <div
+          id="g_id_onload"
+          data-client_id="937726901144-b6tcn349q44ra5an0jbbef8oqd8gips7.apps.googleusercontent.com"
+          data-context="signup"
+          data-ux_mode="popup"
+          data-auto_prompt="false"
+          data-callback="handleCredentialResponse"
+          data-itp-support="true"
+        ></div>
+
+        <div
+          class="g_id_signin"
+          data-type="standard"
+          data-shape="pill"
+          data-theme="outline"
+          data-text="signin_with"
+          data-size="large"
+          data-logo_alignment="left"
+        ></div> -->
+      <!-- </div> -->
     </div>
+  </div>
 </div>
