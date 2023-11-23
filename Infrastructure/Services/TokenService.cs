@@ -57,9 +57,8 @@ namespace Infrastructure.Services
                 return payload;
 
             }
-            catch (Exception ex)
+            catch
             {
-                //log an exception
                 return null;
             }
         }
