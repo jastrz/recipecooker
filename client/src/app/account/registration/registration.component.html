@@ -1,21 +1,45 @@
 <div class="mt-4" [formGroup]="registerForm">
-    <div class="row">
-        <div class="col-lg-6 form-group" style="float:none; margin:auto; margin-top: 50px">
-            <h4>Register:</h4>
-            <mat-form-field class="field">
-            <input matInput placeholder="Display Name" name="displayName" formControlName="displayName">
-            </mat-form-field>
+  <div class="row">
+    <div class="col-lg-6 form-group" style="float: none; margin: auto">
+      <div class="panel">
+        <h2>Register:</h2>
+        <mat-form-field class="field">
+          <input
+            matInput
+            placeholder="Display Name"
+            name="displayName"
+            formControlName="displayName"
+          />
+        </mat-form-field>
 
-            <mat-form-field class="field">
-            <input matInput placeholder="Email" type="email" name="email" formControlName="email">
-            </mat-form-field>
+        <mat-form-field class="field">
+          <input
+            matInput
+            placeholder="Email"
+            type="email"
+            name="email"
+            formControlName="email"
+          />
+        </mat-form-field>
 
-            <mat-form-field class="field">
-            <input matInput placeholder="Password" type="password" name="password" formControlName="password">
-            </mat-form-field>
+        <mat-form-field class="field">
+          <input
+            matInput
+            placeholder="Password"
+            type="password"
+            name="password"
+            formControlName="password"
+          />
+        </mat-form-field>
 
-            <button (click)="register()" class="btn btn-primary" style="float: right;">Register</button>
-
-        </div>
+        <button
+          (click)="register()"
+          class="btn btn-primary"
+          style="align-self: flex-end"
+        >
+          Register
+        </button>
+      </div>
     </div>
+  </div>
 </div>

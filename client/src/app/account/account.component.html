@@ -3,8 +3,22 @@
   *ngIf="!(accountService.user$ | async)"
   [@openClose]="'open'"
 >
-  <app-login></app-login>
-  <app-registration></app-registration>
+  <div class="row">
+    <div class="col-md-8">
+      <app-login></app-login>
+      <app-registration></app-registration>
+    </div>
+    <div class="col-md-4">
+      <div style="margin-top: 300px">
+        <h1>Sign in using Google:</h1>
+
+        <asl-google-signin-button
+          type="standard"
+          size="large"
+        ></asl-google-signin-button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="container" *ngIf="accountService.user$ | async as user">

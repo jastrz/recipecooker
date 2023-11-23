@@ -1,15 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { AccountService } from 'src/app/account/account.service';
-import {
-  GoogleSigninButtonModule,
-  SocialAuthService,
-  SocialUser,
-} from '@abacritt/angularx-social-login';
-import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
-import { AppModule } from 'src/app/app.module';
 
 @Component({
   selector: 'app-login',
@@ -19,8 +12,7 @@ import { AppModule } from 'src/app/app.module';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatInputModule,
-    GoogleSigninButtonModule,
+    MatInputModule
   ],
 })
 export class LoginComponent implements OnInit {

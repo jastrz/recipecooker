@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { SharedAnimationsModule } from '../common/animations/shared-animations.module';
 import { RouterModule } from '@angular/router';
 import { BreadcrumbService } from 'xng-breadcrumb';
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-account',
@@ -18,6 +19,7 @@ import { BreadcrumbService } from 'xng-breadcrumb';
     RegistrationComponent,
     SharedAnimationsModule,
     RouterModule,
+    GoogleSigninButtonModule,
   ],
   animations: [SharedAnimationsModule.openCloseAnimation],
 })

@@ -4,34 +4,39 @@
       class="col-lg-6 form-group"
       style="float: none; margin: auto; margin-top: 50px"
     >
-      <h4>Login:</h4>
-      <mat-form-field class="field">
-        <input
-          matInput
-          placeholder="Email"
-          type="email"
-          name="email"
-          formControlName="email"
-        />
-      </mat-form-field>
+      <div class="panel">
+        <h2>Login:</h2>
 
-      <mat-form-field class="field">
-        <input
-          matInput
-          placeholder="Password"
-          type="password"
-          name="password"
-          formControlName="password"
-        />
-      </mat-form-field>
+        <mat-form-field class="field">
+          <input
+            matInput
+            placeholder="Email"
+            type="email"
+            name="email"
+            formControlName="email"
+          />
+        </mat-form-field>
 
-      <asl-google-signin-button
-        type="standard"
-        size="large"
-      ></asl-google-signin-button>
+        <mat-form-field class="field">
+          <input
+            matInput
+            placeholder="Password"
+            type="password"
+            name="password"
+            formControlName="password"
+          />
+        </mat-form-field>
 
-      <!-- left temporarily -->
-      <!-- <button (click)="login()" class="btn btn-primary" style="float: right"></button>
+        <button
+          (click)="login()"
+          class="btn btn-primary"
+          style="align-self: flex-end"
+        >
+          Login
+        </button>
+      </div>
+
+      <!-- left temporarily 
 
       <div type="icon" size="medium">
         <div
