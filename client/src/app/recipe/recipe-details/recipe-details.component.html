@@ -21,31 +21,45 @@
         class="col-4"
         style="text-align: right; display: flex; justify-content: flex-end"
       >
-        <select
-          class="form-control"
-          [(ngModel)]="recipe.status"
-          style="margin-right: 10px; max-height: 35px"
-          (change)="onStatusChange()"
-        >
-          <option value="Unverified">Unverified</option>
-          <option value="Verified">Verified</option>
-          <option value="Archived">Archived</option>
-        </select>
+        <!-- <app-privalages-wrapper [roles]="['Administrator', 'User']">
+          problem: doesnt inherit parent styles
+        </app-privalages-wrapper> -->
 
-        <button
-          class="btn btn-primary"
-          style="margin-right: 10px"
-          (click)="onClickEditButton()"
-        >
-          <mat-icon>edit</mat-icon>Edit
-        </button>
-        <button
-          class="btn btn-danger"
-          style="margin-right: 10px"
-          (click)="onClickDeleteButton()"
-        >
-          <mat-icon>delete</mat-icon>Delete
-        </button>
+        <ng-container *ngIf="user | async as user">
+          <ng-container
+            *ngIf="
+              user.roles?.includes('Administrator') ||
+              user.roles?.includes('SuperUser')
+            "
+          >
+            <select
+              class="form-control"
+              [(ngModel)]="recipe.status"
+              style="margin-right: 10px; max-height: 35px"
+              (change)="onStatusChange()"
+            >
+              <option value="Unverified">Unverified</option>
+              <option value="Verified">Verified</option>
+              <option value="Archived">Archived</option>
+            </select>
+
+            <button
+              class="btn btn-primary"
+              style="margin-right: 10px"
+              (click)="onClickEditButton()"
+            >
+              <mat-icon>edit</mat-icon>Edit
+            </button>
+            <button
+              class="btn btn-danger"
+              style="margin-right: 10px"
+              (click)="onClickDeleteButton()"
+            >
+              <mat-icon>delete</mat-icon>Delete
+            </button>
+          </ng-container>
+        </ng-container>
+
         <button class="btn btn-primary" (click)="onClickSaveButton()">
           <ng-container *ngIf="isRecipeSaved"
             ><mat-icon>check_circle_outline</mat-icon>Saved</ng-container

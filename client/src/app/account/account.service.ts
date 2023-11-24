@@ -119,6 +119,15 @@ export class AccountService {
       );
   }
 
+  deleteUser() {
+    this.http.post<boolean>(this.hostUrl + 'user/delete', {}).subscribe({
+      next: (removed) => {
+        if (removed) this.logout();
+      },
+      error: (error) => console.log(error),
+    });
+  }
+
   private setUser(user: User) {
     this.userSource.next(user);
     localStorage.setItem('token', user.token);

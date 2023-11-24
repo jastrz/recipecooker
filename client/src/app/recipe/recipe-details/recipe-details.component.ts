@@ -17,6 +17,9 @@ import {
   ConfirmationDialog,
   ConfirmationDialogData,
 } from 'src/app/common/confirmation-dialog/confirmation-dialog';
+import { User } from 'src/app/models/user';
+import { Observable } from 'rxjs';
+import { PrivilegesWrapperComponent } from 'src/app/common/privileges-wrapper/privileges-wrapper.component';
 
 @Component({
   selector: 'app-recipe-details',
@@ -31,6 +34,7 @@ import {
     MatIconModule,
     MatSelectModule,
     FormsModule,
+    PrivilegesWrapperComponent,
   ],
   animations: [SharedAnimationsModule.openCloseAnimation],
 })
@@ -48,6 +52,10 @@ export class RecipeDetailsComponent implements OnInit {
     public dialog: MatDialog
   ) {
     this.breadcrumbService.set('@recipe', ' ');
+  }
+
+  get user(): Observable<User | null> {
+    return this.accountService.user$;
   }
 
   get rate(): number {

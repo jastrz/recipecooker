@@ -3,4 +3,5 @@ export interface User {
   email: string;
   token: string;
   savedRecipeIds?: string[];
+  roles?: string[];
 }

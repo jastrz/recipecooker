@@ -34,19 +34,34 @@
       >
         Saved Recipes
       </button>
-      <button
-        routerLink="/account/verification"
-        type="button"
-        class="btn btn-primary mt-3"
+      <ng-container
+        *ngIf="
+          user.roles?.includes('Administrator') ||
+          user.roles?.includes('SuperUser')
+        "
       >
-        Verify Recipes
-      </button>
+        <button
+          routerLink="/account/verification"
+          type="button"
+          class="btn btn-primary mt-3"
+        >
+          Verify Recipes
+        </button>
+      </ng-container>
+
       <button
         type="button"
         class="btn btn-danger mt-3"
         (click)="accountService.logout()"
       >
         Logout
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger mt-3"
+        (click)="accountService.deleteUser()"
+      >
+        Delete Account
       </button>
     </div>
   </div>

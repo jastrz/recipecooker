@@ -6,5 +6,6 @@ namespace Core.Interfaces
     {
         Task SetRecipeSaved(AppUser user, int recipeId, bool saved);
         Task<List<string>> GetRolesForUserAsync(AppUser user);
+        Task<bool> DeleteUser(AppUser user);
     }
 }

@@ -24,10 +24,9 @@ namespace API.Controllers
         private readonly IRecipeRepository _recipeRepository;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _config;
 
         public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService,
-        IRecipeRepository recipeRepository, IUserService userService, IMapper mapper, IConfiguration config)
+        IRecipeRepository recipeRepository, IUserService userService, IMapper mapper)
         {
             _userService = userService;
             _userManager = userManager;
@@ -35,7 +34,6 @@ namespace API.Controllers
             _tokenService = tokenService;
             _recipeRepository = recipeRepository;
             _mapper = mapper;
-            _config = config;
         }
 
         [HttpGet("emailexists")]
@@ -52,12 +50,7 @@ namespace API.Controllers
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if (!result.Succeeded) return Unauthorized(new ApiResponse(401));
 
-            return new UserDto
-            {
-                Email = user.Email,
-                Token = _tokenService.CreateToken(user),
-                DisplayName = user.UserName
-            };
+            return await GetUserDto(user);
         }
 
         [HttpPost("google")]
@@ -88,15 +81,12 @@ namespace API.Controllers
                     Email = email,
                     UserName = email
                 };
+
                 var result = await _userManager.CreateAsync(user, request.IdToken);
+                await _userManager.AddToRoleAsync(user, "User");
                 if (!result.Succeeded) return BadRequest(new ApiResponse(400));
 
-                return new UserDto
-                {
-                    Email = user.Email,
-                    Token = _tokenService.CreateToken(user),
-                    DisplayName = user.DisplayName
-                };
+                return await GetUserDto(user);
             }
         }
 
@@ -121,15 +111,12 @@ namespace API.Controllers
                 UserName = registerDto.Email
             };
 
+
             var result = await _userManager.CreateAsync(user, registerDto.Password);
+            await _userManager.AddToRoleAsync(user, "User");
             if (!result.Succeeded) return BadRequest(new ApiResponse(400));
 
-            return new UserDto
-            {
-                Email = user.Email,
-                Token = _tokenService.CreateToken(user),
-                DisplayName = user.UserName
-            };
+            return await GetUserDto(user);
         }
 
         [Authorize]
@@ -139,17 +126,7 @@ namespace API.Controllers
             var user = await _userManager.Users
                 .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
 
-            var roles = await _userService.GetRolesForUserAsync(user);
-
-            return new UserDto
-            {
-                Email = user.Email,
-                Token = _tokenService.CreateToken(user),
-                DisplayName = user.DisplayName,
-                UserId = user.Id,
-                SavedRecipeIds = user.SavedRecipeIds,
-                Roles = roles
-            };
+            return await GetUserDto(user);
         }
 
         [Authorize]
@@ -182,6 +159,37 @@ namespace API.Controllers
             var data = _mapper.Map<IReadOnlyList<Recipe>, IReadOnlyList<RecipeDto>>(recipes);
 
             return data;
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("delete")]
+        public async Task<ActionResult<bool>> DeleteUser()
+        {
+            var user = await _userManager.Users
+                .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+
+            var removed = await _userService.DeleteUser(user);
+
+            return Ok(removed);
+        }
+
+        private async Task<UserDto> GetUserDto(AppUser user)
+        {
+            var roles = await _userService.GetRolesForUserAsync(user);
+            var token = _tokenService.CreateToken(user);
+
+            var userDto = new UserDto
+            {
+                Email = user.Email,
+                DisplayName = user.DisplayName,
+                UserId = user.Id,
+                SavedRecipeIds = user.SavedRecipeIds,
+                Token = token,
+                Roles = roles
+            };
+
+            return userDto;
         }
     }
 }

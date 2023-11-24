@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Core.Entities.Identity;
 using Core.Interfaces;
 using Infrastructure.Identity;
@@ -14,6 +15,14 @@ namespace Infrastructure.Services
         {
             _userManager = userManager;
             _context = context;
+        }
+
+        public async Task<bool> DeleteUser(AppUser user)
+        {
+            var result = await _userManager.DeleteAsync(user);
+
+            if (result.Succeeded) return true;
+            else return false;
         }
 
         public async Task<List<string>> GetRolesForUserAsync(AppUser user)
