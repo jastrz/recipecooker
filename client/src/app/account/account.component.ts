@@ -7,6 +7,11 @@ import { SharedAnimationsModule } from '../common/animations/shared-animations.m
 import { RouterModule } from '@angular/router';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  ConfirmationDialog,
+  ConfirmationDialogData,
+} from '../common/confirmation-dialog/confirmation-dialog';
 
 @Component({
   selector: 'app-account',
@@ -28,8 +33,17 @@ export class AccountComponent {
 
   constructor(
     public accountService: AccountService,
-    private bcService: BreadcrumbService
+    private bcService: BreadcrumbService,
+    public dialog: MatDialog
   ) {
     this.bcService.set('account/', 'Menu');
+  }
+
+  onClickDeleteButton() {
+    this.dialog.open(ConfirmationDialog, {
+      data: {
+        confirmationCallback: () => this.accountService.deleteUser(),
+      } as ConfirmationDialogData,
+    });
   }
 }

@@ -74,7 +74,6 @@ export class RecipeDetailsComponent implements OnInit {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (!id) return;
     this.getRecipe(+id);
-    this.accountService.getSavedRecipesIds().subscribe();
   }
 
   onClickBackButton() {
@@ -97,10 +96,13 @@ export class RecipeDetailsComponent implements OnInit {
   }
 
   onClickSaveButton() {
-    console.log(this.accountService.savedRecipeIds);
     if (this.recipe?.id) {
       const id = this.recipe?.id.toString();
-      this.accountService.saveRecipe(id, !this.isRecipeSaved).subscribe();
+      this.accountService.saveRecipe(id, !this.isRecipeSaved).subscribe({
+        next: () => {
+          console.log(this.accountService.savedRecipeIds);
+        },
+      });
     }
   }
 
@@ -131,11 +133,15 @@ export class RecipeDetailsComponent implements OnInit {
   }
 
   private getRecipe(id: number, cached: boolean = true) {
-    console.log('getting recipe');
     this.recipeService.getRecipe(id, cached).subscribe({
       next: (data) => {
         this.recipe = data;
         this.breadcrumbService.set('@recipe', this.recipe.name);
+        this.accountService.getSavedRecipesIds().subscribe({
+          next: () => {
+            console.log(this.accountService.savedRecipeIds);
+          },
+        });
       },
     });
   }

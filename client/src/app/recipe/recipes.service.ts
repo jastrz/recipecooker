@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Recipe } from '../models/recipe';
-import { map, of } from 'rxjs';
+import { map, of, tap } from 'rxjs';
 import { ITag } from '../models/tag';
 import { RecipeStep } from '../models/recipeStep';
 import { FileService } from '../services/file.service';
@@ -45,13 +45,9 @@ export class RecipesService {
   public getRecipesForOverview(tags?: ITag[]) {
     const params = this.getTagParams(tags);
     console.log(params);
-    return this.http
-      .get<Recipe[]>(this.hostUrl + 'recipes/overview', { params })
-      .pipe(
-        map((response) => {
-          return response;
-        })
-      );
+    return this.http.get<Recipe[]>(this.hostUrl + 'recipes/overview', {
+      params,
+    });
   }
 
   public setRecipeStatus(recipeId: number, status: string) {
@@ -72,25 +68,26 @@ export class RecipesService {
     }
 
     return this.http.get<Recipe>(this.hostUrl + 'recipes/' + recipeId).pipe(
-      map((response: Recipe) => {
-        if (!this.recipesCache.some((r) => r.id === response.id)) {
-          this.recipesCache.push(response);
-        } else if (!useCache) {
-          this.recipesCache = this.recipesCache.filter(
-            (r) => r.id != response.id
-          );
-          this.recipesCache.push(response);
-        }
-        return response;
+      tap({
+        next: (response) => {
+          if (!this.recipesCache.some((r) => r.id === response.id)) {
+            this.recipesCache.push(response);
+          } else if (!useCache) {
+            this.recipesCache = this.recipesCache.filter(
+              (r) => r.id != response.id
+            );
+            this.recipesCache.push(response);
+          }
+        },
+        error: (error) => console.log(error),
       })
     );
   }
 
   public getTags() {
     return this.http.get<ITag[]>(this.hostUrl + 'recipes/tags').pipe(
-      map((response) => {
+      tap((response) => {
         this.tags = response;
-        return this.tags;
       })
     );
   }
@@ -99,9 +96,8 @@ export class RecipesService {
     return this.http
       .get<RecipeStep[]>(this.hostUrl + 'recipes/steps/' + recipeId)
       .pipe(
-        map((response) => {
+        tap((response) => {
           this.steps = response;
-          return this.steps;
         })
       );
   }

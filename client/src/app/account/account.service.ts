@@ -1,7 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { Observable, ReplaySubject, firstValueFrom, map, of } from 'rxjs';
+import {
+  Observable,
+  ReplaySubject,
+  firstValueFrom,
+  map,
+  of,
+} from 'rxjs';
 import { Recipe } from '../models/recipe';
 import { environment } from 'src/environments/environment';
 import { GoogleLoginRequest } from '../models/google-login-request';
@@ -14,6 +20,7 @@ export class AccountService {
   private hostUrl = environment.apiUrl;
   private userSource = new ReplaySubject<User | null>(1);
   user$ = this.userSource.asObservable();
+  private currentUser: User | null = null;
 
   savedRecipeIds: string[] = [];
 
@@ -42,6 +49,7 @@ export class AccountService {
       map((user) => {
         if (user) {
           this.setUser(user);
+          this.currentUser = user;
           return user;
         } else {
           return null;
@@ -105,6 +113,7 @@ export class AccountService {
   logout() {
     localStorage.removeItem('token');
     this.userSource.next(null);
+    this.currentUser = null;
   }
 
   saveRecipe(recipeId: string, saved: boolean) {
@@ -114,6 +123,8 @@ export class AccountService {
       .pipe(
         map((savedRecipes) => {
           this.savedRecipeIds = savedRecipes;
+          if (this.currentUser)
+            this.currentUser.savedRecipeIds = this.savedRecipeIds;
           return this.savedRecipeIds;
         })
       );
