@@ -8,27 +8,21 @@
     style="margin: auto; vertical-align: top"
     formArrayName="ingredients"
   >
-    <mat-card
+    <div class="panel"
       *ngFor="let ingredientForm of ingredients.controls; let i = index"
       [formGroupName]="i"
       [@add]="'added'"
     >
-      <div class="content">
+      <button (click)="removeIngredient(i)" class="btn btn-danger removeButton">
+        X
+      </button>
+
+      <div class="form-content">
         <div class="row">
-          <div class="col-8">
-            <mat-form-field class="field mt-4">
-              <mat-label>Ingredient</mat-label>
-              <input matInput placeholder="..." formControlName="name" />
-            </mat-form-field>
-          </div>
-          <div class="col-4" style="display: flex; align-items: center">
-            <button
-              (click)="removeIngredient(i)"
-              class="btn btn-danger removeButton"
-            >
-              X
-            </button>
-          </div>
+          <mat-form-field class="field mt-4">
+            <mat-label>Ingredient</mat-label>
+            <input matInput placeholder="..." formControlName="name" />
+          </mat-form-field>
         </div>
 
         <div class="row">
@@ -58,7 +52,7 @@
           <mat-error>You must fill all fields.</mat-error>
         </div>
       </div>
-    </mat-card>
+    </div>
 
     <button
       (click)="addIngredient()"

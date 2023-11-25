@@ -3,8 +3,8 @@
     class="col-lg-10 form-group"
     style="float: none; margin: auto; margin-top: 50px"
   >
-    <mat-card>
-      <div class="content">
+    <div class="panel">
+      <div class="form-content">
         <mat-form-field class="field mt-4">
           <mat-label>Recipe name</mat-label>
           <input matInput placeholder="..." formControlName="name" />
@@ -54,7 +54,7 @@
 
         <app-image-loader [pictureUrls]="pictureUrls"></app-image-loader>
       </div>
-    </mat-card>
+    </div>
 
     <button
       (click)="onSubmit()"

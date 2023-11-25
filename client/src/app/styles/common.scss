@@ -1,6 +1,5 @@
 .panel {
   height: auto;
-  width: 400px;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -8,10 +7,30 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   flex-direction: column;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .field {
   width: 100%;
   margin-bottom: 15px;
+}
+
+.form-content {
+  width: 80%;
+  margin-top: 20px;
+}
+
+.removeButton {
+  display: block;
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  border: 3px solid #ddd;
+  border-radius: 12px;
+}
+
+.description-field {
+  width: 100%;
+  min-height: 200px;
+  height: auto;
 }
