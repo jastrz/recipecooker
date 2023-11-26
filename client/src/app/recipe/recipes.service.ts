@@ -37,6 +37,16 @@ export class RecipesService {
     );
   }
 
+  public getAIGeneratedRecipe() {
+    return this.http.get<Recipe>(this.hostUrl + 'recipes/ai-generated').pipe(
+      map((response) => {
+        response.id = 9999;
+        this.recipesCache.push(response);
+        return response;
+      })
+    );
+  }
+
   public getRecipeCount(tags?: ITag[]) {
     const params = this.getTagParams(tags);
     return this.http.get<number>(this.hostUrl + 'recipes/count', { params });

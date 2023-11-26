@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shared.Dtos;
+using System.Text.Json;
 
 namespace API.Controllers
 {
@@ -22,9 +23,10 @@ namespace API.Controllers
         private readonly IFileService _fileService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IConfiguration _config;
+        private readonly IChatService _chatService;
 
         public RecipesController(IRecipeRepository recipeRepo, IMapper mapper, ILogger<RecipesController> logger,
-         IRecipeService recipeService, IFileService fileUploadService, UserManager<AppUser> userManager, IConfiguration config)
+         IRecipeService recipeService, IFileService fileUploadService, UserManager<AppUser> userManager, IConfiguration config, IChatService chatService)
         {
             _userManager = userManager;
             _fileService = fileUploadService;
@@ -33,6 +35,7 @@ namespace API.Controllers
             _recipeRepo = recipeRepo;
             _mapper = mapper;
             _config = config;
+            _chatService = chatService;
         }
 
         [HttpGet]
@@ -182,6 +185,15 @@ namespace API.Controllers
             var recipe = await _recipeRepo.GetRecipe(id);
             bool success = await _recipeService.UpdateRecipeStatus(recipe, status);
             return Ok(success);
+        }
+
+        [HttpGet]
+        [Route("ai-generated")]
+        public async Task<ActionResult<RecipeDto>> GetAIGeneratedRecipe()
+        {
+            var recipe = await _chatService.GetRandomRecipe();
+
+            return Ok(recipe);
         }
     }
 }

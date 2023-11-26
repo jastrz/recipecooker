@@ -28,6 +28,7 @@ builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<CookerContextSeed>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -75,6 +76,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         ValidateAudience = false
                     };
                 });
+// .AddGoogle("google", options =>
+// {
+//     var googleAuthConfig = builder.Configuration.GetSection("GoogleAuthentication");
+//     options.ClientId = googleAuthConfig["ClientId"];
+//     options.ClientSecret = googleAuthConfig["ClientSecret"];
+//     options.SignInScheme = IdentityConstants.ExternalScheme;
+//     options.CallbackPath = ""
+// });
 
 builder.Services.AddSwaggerDocumentation();
 

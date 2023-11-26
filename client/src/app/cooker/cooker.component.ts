@@ -6,6 +6,8 @@ import { MatAccordion } from '@angular/material/expansion';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { CookerService } from './cooker.service';
 import { SharedAnimationsModule } from '../common/animations/shared-animations.module';
+import { RecipesService } from '../recipe/recipes.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cooker',
@@ -23,7 +25,9 @@ export class CookerComponent implements OnInit {
 
   constructor(
     private bcService: BreadcrumbService,
-    private cookerService: CookerService
+    private cookerService: CookerService,
+    private recipeService: RecipesService,
+    private router: Router
   ) {
     bcService.set('cook/', 'find recipe');
   }
@@ -41,6 +45,13 @@ export class CookerComponent implements OnInit {
 
   onCookerOpened() {
     this.showRecipes = false;
+  }
+
+  onGenerateRecipeClicked() {
+    this.recipeService.getAIGeneratedRecipe().subscribe({
+      next: () => this.router.navigateByUrl('cook/recipe/9999'),
+      error: (error) => console.log(error),
+    });
   }
 
   public get groupedTags(): Map<string, Tag[]> {
