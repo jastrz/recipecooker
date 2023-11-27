@@ -23,10 +23,10 @@ namespace API.Controllers
         private readonly IFileService _fileService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IConfiguration _config;
-        private readonly IChatService _chatService;
+        private readonly IRecipeGeneratorService _recipeGenerator;
 
         public RecipesController(IRecipeRepository recipeRepo, IMapper mapper, ILogger<RecipesController> logger,
-         IRecipeService recipeService, IFileService fileUploadService, UserManager<AppUser> userManager, IConfiguration config, IChatService chatService)
+         IRecipeService recipeService, IFileService fileUploadService, UserManager<AppUser> userManager, IConfiguration config, IRecipeGeneratorService chatService)
         {
             _userManager = userManager;
             _fileService = fileUploadService;
@@ -35,7 +35,7 @@ namespace API.Controllers
             _recipeRepo = recipeRepo;
             _mapper = mapper;
             _config = config;
-            _chatService = chatService;
+            _recipeGenerator = chatService;
         }
 
         [HttpGet]
@@ -187,11 +187,19 @@ namespace API.Controllers
             return Ok(success);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("ai-generated")]
-        public async Task<ActionResult<RecipeDto>> GetAIGeneratedRecipe()
+        public async Task<ActionResult<RecipeDto>> GetAIGeneratedRecipe([FromBody] RecipeGeneratorRequest request)
         {
-            var recipe = await _chatService.GetRandomRecipe();
+            RecipeDto recipe;
+            if (request.Description != null)
+            {
+                recipe = await _recipeGenerator.GenerateRecipeFromRequest(request);
+            }
+            else
+            {
+                recipe = await _recipeGenerator.GetRandomRecipe();
+            }
 
             return Ok(recipe);
         }

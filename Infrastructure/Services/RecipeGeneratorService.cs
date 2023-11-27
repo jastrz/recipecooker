@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using Core.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
@@ -9,46 +9,70 @@ using Shared.Dtos;
 
 namespace Infrastructure.Services
 {
-    public class ChatService : IChatService
+    public class RecipeGeneratorService : IRecipeGeneratorService
     {
-        private readonly ILogger<ChatService> _logger;
+        private readonly ILogger<RecipeGeneratorService> _logger;
         private readonly IConfiguration _config;
+        private readonly IChatGPTService _chatGPTService;
 
-        public ChatService(ILogger<ChatService> logger, IConfiguration config)
+        private readonly string descripiton = "random";
+        private readonly string formattingPrompt = @"Formatting using: name, summary, descripiton. 
+            Also give steps in format: id, name, description. 
+            To the response add ingredients in format: name, quantity (number, e.g. don't write 1/4 - use 0.25 instead), unit (use EU measures))
+            Return everything in json format, without comments or explainaitions.
+            Never ignore any field, never return null, all fields must be filled. Don't add new fields.
+            Act like master cook, recipes doesn't need to be simple. Return response as JSON.";
+
+        private string key;
+        private string endpoint;
+        private int maxTokens;
+
+        public RecipeGeneratorService(ILogger<RecipeGeneratorService> logger, IConfiguration config, IChatGPTService chatGPTService)
         {
+            _chatGPTService = chatGPTService;
             _config = config;
             _logger = logger;
+
+            key = _config["OpenAI:Secret"];
+            endpoint = _config["OpenAI:Endpoint"];
+            maxTokens = 2000;
         }
-
-        public async Task<string> GetChatGPTResponse(string apiKey, string endpoint, string prompt, int maxTokens)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
-                string requestData = $"{{\"model\": \"gpt-3.5-turbo\", \"messages\": [{{\"role\": \"system\", \"content\": \"You are a helpful assistant.\"}}, {{\"role\": \"user\", \"content\": \"{prompt}\"}}], \"max_tokens\": {maxTokens}}}";
-                StringContent content = new StringContent(requestData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(endpoint, content);
-                string responseString = await response.Content.ReadAsStringAsync();
-                var jsonObject = JObject.Parse(responseString);
-                this._logger.LogInformation(responseString);
-                string responseContent = jsonObject["choices"][0]["message"]["content"].ToString();
-
-                return responseContent;
-            }
-        }
-
 
         public async Task<RecipeDto> GetRandomRecipe()
         {
-            var key = _config["OpenAI:Secret"];
-            string endpoint = _config["OpenAI:Endpoint"];
-            string prompt = this.prompt.Replace("\n", "").Replace("\r", "");
-            int maxTokens = 1000;
-
-            var response = await GetChatGPTResponse(key, endpoint, prompt, maxTokens);
-
+            string prompt = GetPrompt();
+            var response = await _chatGPTService.GetChatGPTResponse(key, endpoint, prompt, maxTokens);
             _logger.LogInformation(response);
+            var dto = GetRecipeFromResponse(response);
 
+            return dto;
+        }
+
+        public async Task<RecipeDto> GenerateRecipeFromRequest(RecipeGeneratorRequest request)
+        {
+            string prompt = GetPrompt(request);
+            var response = await _chatGPTService.GetChatGPTResponse(key, endpoint, prompt, maxTokens);
+            _logger.LogInformation(response);
+            var dto = GetRecipeFromResponse(response);
+
+            return dto;
+        }
+
+        private string GetPrompt(RecipeGeneratorRequest? request = null)
+        {
+            string descripiton = this.descripiton;
+            if (request.Description != null && request.Description.Length > 0)
+            {
+                descripiton = request.Description;
+            }
+
+            string prompt = @$"write {descripiton} recipe." + formattingPrompt;
+
+            return prompt.Replace("\n", "").Replace("\r", "");
+        }
+
+        private RecipeDto GetRecipeFromResponse(string response)
+        {
             var dto = JsonSerializer.Deserialize<RecipeDto>(response, new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -60,16 +84,14 @@ namespace Infrastructure.Services
             return dto;
         }
 
-        string prompt = @"write nice chicken stock based recipe 
-            formatting using: name, summary, descripiton. 
-            Also give steps in format: id, name, description. 
-            To the response add ingredients in format: name, quantity (number, e.g. don't write 1/4 - use 0.25 instead), unit (use EU measures))
-            Return everything in json format, without comments or explanaitions.
-            Never ignore any field, never return null, all fields must be filled. Don't add new fields.
-            Act like master cook, recipes doesnt need to be simple.";
+
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////
+
 
         public string JsonRecipe() => jsonRecipe;
-
         public string jsonRecipe = @"{
     ""name"": ""Asian-Style Beef with Soy Sauce"",
     ""summary"": ""A flavorful and tender beef dish with an Asian twist, cooked in a rich soy sauce marinade."",

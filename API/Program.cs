@@ -28,7 +28,8 @@ builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddScoped<IChatGPTService, ChatGPTService>();
+builder.Services.AddScoped<IRecipeGeneratorService, RecipeGeneratorService>();
 builder.Services.AddScoped<CookerContextSeed>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

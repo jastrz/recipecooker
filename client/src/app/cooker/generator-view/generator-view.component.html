@@ -1,0 +1,22 @@
+<div class="panel" style="width: 600px; margin-top: 50px">
+  <h4>Generate recipe</h4>
+  <div class="form-content" [formGroup]="generatorForm">
+    <mat-form-field class="description-field">
+      <mat-label>Recipe description</mat-label>
+      <textarea
+        matInput
+        cdkTextareaAutosize
+        placeholder="..."
+        type="text"
+        formControlName="description"
+      ></textarea>
+    </mat-form-field>
+  </div>
+  <button
+    class="btn btn-primary"
+    (click)="onGenerateRecipeClicked()"
+    style="align-self: center; margin-top: 20px; margin-bottom: 20px"
+  >
+    Generate Recipe
+  </button>
+</div>

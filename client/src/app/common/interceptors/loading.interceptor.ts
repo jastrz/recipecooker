@@ -18,7 +18,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    if (request.method === 'POST' || request.method === 'DELETE') {
+    if (request.method === 'DELETE') {
       return next.handle(request);
     }
 

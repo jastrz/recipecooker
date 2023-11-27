@@ -6,6 +6,7 @@ import { ITag } from '../models/tag';
 import { RecipeStep } from '../models/recipeStep';
 import { FileService } from '../services/file.service';
 import { environment } from 'src/environments/environment';
+import { GeneratorRequest } from '../models/generator-request';
 
 @Injectable({
   providedIn: 'root',
@@ -37,8 +38,8 @@ export class RecipesService {
     );
   }
 
-  public getAIGeneratedRecipe() {
-    return this.http.get<Recipe>(this.hostUrl + 'recipes/ai-generated').pipe(
+  public getAIGeneratedRecipe(request: GeneratorRequest) {
+    return this.http.post<Recipe>(this.hostUrl + 'recipes/ai-generated', request).pipe(
       map((response) => {
         response.id = 9999;
         this.recipesCache.push(response);

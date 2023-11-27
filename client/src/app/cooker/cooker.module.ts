@@ -8,6 +8,7 @@ import { RecipeOverviewComponent } from '../recipe/recipe-overview/recipe-overvi
 import { RecipeDetailsComponent } from '../recipe/recipe-details/recipe-details.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { GeneratorViewComponent } from './generator-view/generator-view.component';
 
 @NgModule({
   declarations: [CookerComponent],
@@ -20,6 +21,7 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     RecipeDetailsComponent,
     MatExpansionModule,
     NgbPaginationModule,
+    GeneratorViewComponent
   ],
 })
 export class CookerModule {}

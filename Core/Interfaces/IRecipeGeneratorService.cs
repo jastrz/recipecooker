@@ -3,10 +3,11 @@ using Shared.Dtos;
 
 namespace Core.Interfaces
 {
-    public interface IChatService
+    public interface IRecipeGeneratorService
     {
         Task<RecipeDto> GetRandomRecipe();
-        Task<string> GetChatGPTResponse(string apiKey, string endpoint, string prompt, int maxTokens);
+        Task<RecipeDto> GenerateRecipeFromRequest(RecipeGeneratorRequest request);
+        
         string JsonRecipe();
     }
 }
