@@ -3,22 +3,25 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Ingredient } from 'src/app/models/ingredient';
 import { Recipe } from 'src/app/models/recipe';
 import { RecipeStep } from 'src/app/models/recipeStep';
-import { FileService } from 'src/app/services/file.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipeAddService {
   loadedRecipe?: Recipe | null;
-  recipeForm = this.fb.group({
+
+  private basics = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
     summary: ['', Validators.required],
     ingredientTags: ['', Validators.required],
     originTags: ['', Validators.required],
     characterTags: ['', Validators.required],
-    files: this.fb.array([]),
     pictureUrls: this.fb.array([]),
+  });
+
+  recipeForm = this.fb.group({
+    basics: this.basics,
     ingredients: this.fb.array([this.createIngredientForm()]),
     recipeSteps: this.fb.array([this.createStepsForm()]),
   });
@@ -27,6 +30,10 @@ export class RecipeAddService {
 
   addIngredient() {
     this.ingredients.push(this.createIngredientForm());
+  }
+
+  get recipeBasics() {
+    return this.recipeForm.get('basics') as FormGroup;
   }
 
   get ingredients() {
@@ -38,7 +45,7 @@ export class RecipeAddService {
   }
 
   get pictureUrls() {
-    return this.recipeForm.get('pictureUrls') as FormArray;
+    return this.recipeBasics.get('pictureUrls') as FormArray;
   }
 
   addRecipeStep() {
@@ -69,24 +76,23 @@ export class RecipeAddService {
     });
   }
 
+  private getTags(recipe: Recipe, category: string) {
+    return recipe.tags
+      ?.filter((tag) => tag.category === category)
+      ?.map((tag) => tag.name)
+      ?.join(',');
+  }
+
   loadRecipe(recipe: Recipe) {
     this.loadedRecipe = recipe;
-    this.recipeForm.patchValue({
+
+    this.basics.patchValue({
       name: recipe.name,
       description: recipe.description,
       summary: recipe.summary,
-      ingredientTags: recipe.tags
-        .filter((tag) => tag.category === 'mainIngredient')
-        .map((tag) => tag.name)
-        .join(','),
-      originTags: recipe.tags
-        .filter((tag) => tag.category === 'origin')
-        .map((tag) => tag.name)
-        .join(','),
-      characterTags: recipe.tags
-        .filter((tag) => tag.category === 'character')
-        .map((tag) => tag.name)
-        .join(','),
+      ingredientTags: this.getTags(recipe, 'mainIngredient') || '',
+      originTags: this.getTags(recipe, 'origin') || '',
+      characterTags: this.getTags(recipe, 'character') || '',
     });
 
     this.ingredients.clear();
@@ -94,9 +100,11 @@ export class RecipeAddService {
     this.pictureUrls.clear();
 
     // Add recipe pictures
-    recipe.pictureUrls.forEach((url) => {
-      this.pictureUrls.push(this.fb.control(url));
-    });
+    if (recipe.pictureUrls) {
+      recipe.pictureUrls.forEach((url) => {
+        this.pictureUrls.push(this.fb.control(url));
+      });
+    }
 
     // Add new ingredients
     recipe.ingredients?.forEach((ingredient) => {
@@ -127,8 +135,8 @@ export class RecipeAddService {
     console.log(this.recipeForm);
   }
 
-  getRecipe(): Recipe {
-    const formValue = this.recipeForm.value;
+  getRecipeFromForm(): Recipe {
+    const formValue = this.basics.value;
     const recipeSteps = this.getRecipeSteps();
     const ingredients = this.getIngredients();
 
@@ -147,7 +155,10 @@ export class RecipeAddService {
     if (formValue.ingredientTags) {
       const ingredients = formValue.ingredientTags
         .split(',')
-        .map((tag) => ({ name: tag.trim(), category: 'mainIngredient' }));
+        .map((tag: string) => ({
+          name: tag.trim(),
+          category: 'mainIngredient',
+        }));
       recipe.tags.push(...ingredients);
     }
 
@@ -155,7 +166,7 @@ export class RecipeAddService {
     if (formValue.originTags) {
       const origins = formValue.originTags
         .split(',')
-        .map((tag) => ({ name: tag.trim(), category: 'origin' }));
+        .map((tag: string) => ({ name: tag.trim(), category: 'origin' }));
       recipe.tags.push(...origins);
     }
 
@@ -163,18 +174,17 @@ export class RecipeAddService {
     if (formValue.characterTags) {
       const characters = formValue.characterTags
         .split(',')
-        .map((tag) => ({ name: tag.trim(), category: 'character' }));
+        .map((tag: string) => ({ name: tag.trim(), category: 'character' }));
       recipe.tags.push(...characters);
     }
 
-    console.log(recipe);
     return recipe;
   }
 
   getValidationInfo(): string[] {
     const errors: string[] = [];
 
-    if (this.recipeForm.invalid) errors.push('recipe basics');
+    if (this.basics.invalid) errors.push('recipe basics');
 
     if (this.recipeSteps.invalid || this.recipeSteps.length == 0)
       errors.push('recipe steps');
@@ -187,6 +197,7 @@ export class RecipeAddService {
 
   reset() {
     this.recipeForm.reset();
+    this.pictureUrls.clear();
     this.ingredients.clear();
     this.ingredients.push(this.createIngredientForm());
     this.recipeSteps.clear();

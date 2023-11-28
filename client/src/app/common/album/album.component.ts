@@ -25,7 +25,7 @@ export class AlbumComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.generateAlbums();
+    if (this.pictureUrls) this.generateAlbums();
   }
 
   open(index: number): void {

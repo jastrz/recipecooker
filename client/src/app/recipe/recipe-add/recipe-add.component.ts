@@ -74,7 +74,7 @@ export class RecipeAddComponent {
     console.log(`Authenticated: ${authenticated}`);
     if (!authenticated) this.router.navigateByUrl('account');
 
-    const recipe = this.recipeAddService.getRecipe();
+    const recipe = this.recipeAddService.getRecipeFromForm();
 
     console.log(recipe);
 

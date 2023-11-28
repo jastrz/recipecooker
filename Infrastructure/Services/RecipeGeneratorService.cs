@@ -1,10 +1,7 @@
-using System.Text;
 using System.Text.Json;
 using Core.Interfaces;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 using Shared.Dtos;
 
 namespace Infrastructure.Services
@@ -14,18 +11,18 @@ namespace Infrastructure.Services
         private readonly ILogger<RecipeGeneratorService> _logger;
         private readonly IConfiguration _config;
         private readonly IChatGPTService _chatGPTService;
-
-        private readonly string descripiton = "random";
-        private readonly string formattingPrompt = @"Formatting using: name, summary, descripiton. 
-            Also give steps in format: id, name, description. 
-            To the response add ingredients in format: name, quantity (number, e.g. don't write 1/4 - use 0.25 instead), unit (use EU measures))
-            Return everything in json format, without comments or explainaitions.
-            Never ignore any field, never return null, all fields must be filled. Don't add new fields.
-            Act like master cook, recipes doesn't need to be simple. Return response as JSON.";
-
         private string key;
         private string endpoint;
         private int maxTokens;
+        private readonly string descripiton = "random";
+        private readonly string formattingPrompt = @"Formatting using: name, summary, descripiton. 
+            Also give steps in format: id, name, description. 
+            To the response add ingredients in format: name, quantity (number, e.g. don't write 1/4 - use 0.25 instead), unit (use EU measures)).
+            Also add tags based on generated recipe. Tags are contained in tags array, each tag has name and category. 
+            Available categories: mainIngredient, origin, character - all must be filled.
+            Return everything in json format, without comments or explainaitions.
+            Never ignore any field, never return null, all fields must be filled. Don't add new fields.
+            Act like master cook, recipes doesn't need to be simple.";
 
         public RecipeGeneratorService(ILogger<RecipeGeneratorService> logger, IConfiguration config, IChatGPTService chatGPTService)
         {

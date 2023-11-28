@@ -21,7 +21,7 @@ import { MatCardModule } from '@angular/material/card';
     MatInputModule,
     MatSelectModule,
     ImageLoaderComponent,
-    MatCardModule
+    MatCardModule,
   ],
 })
 export class RecipeAddBasicsComponent implements OnInit {
@@ -30,7 +30,7 @@ export class RecipeAddBasicsComponent implements OnInit {
 
   constructor(private recipeAddService: RecipeAddService) {}
   async ngOnInit(): Promise<void> {
-    this.recipeForm = this.recipeAddService.recipeForm;
+    this.recipeForm = this.recipeAddService.recipeBasics;
   }
 
   get pictures() {
