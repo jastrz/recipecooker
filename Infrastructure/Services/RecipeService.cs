@@ -1,6 +1,7 @@
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services
 {
@@ -136,7 +137,17 @@ namespace Infrastructure.Services
 
         public async Task RemoveRecipe(Recipe recipe)
         {
+            foreach (var recipeTag in recipe.RecipeTags)
+            {
+                int existingTagCount = await _context.RecipeTag.CountAsync(x => x.Tag == recipeTag.Tag);
+                if (existingTagCount <= 1)
+                {
+                    _context.Tags.Remove(recipeTag.Tag);
+                }
+            }
+
             _context.Recipes.Remove(recipe);
+
             await _context.SaveChangesAsync();
         }
 
@@ -145,6 +156,16 @@ namespace Infrastructure.Services
             _context.Entry(from).CurrentValues.SetValues(to);
             from.Pictures = to.Pictures;
             from.Steps = to.Steps;
+
+            if (from.RecipeTags != to.RecipeTags)
+            {
+                // can leave tags in _context.Tags without references which will be removed on app startup
+                // should correct this later, but it won't break anything
+                _context.RecipeTag.RemoveRange(from.RecipeTags);
+                foreach (var tag in to.RecipeTags) HandleTag(tag);
+
+                from.RecipeTags = to.RecipeTags;
+            }
 
             await _context.SaveChangesAsync();
         }

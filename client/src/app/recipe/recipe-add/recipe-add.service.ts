@@ -60,18 +60,21 @@ export class RecipeAddService {
     this.recipeSteps.removeAt(index);
   }
 
-  createIngredientForm(): FormGroup {
+  createIngredientForm(ingredient?: Ingredient): FormGroup {
     return this.fb.group({
-      name: ['', Validators.required],
-      quantity: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-      unit: ['', Validators.required],
+      name: [ingredient?.name ?? '', Validators.required],
+      quantity: [
+        ingredient?.quantity ?? '',
+        [Validators.required, Validators.pattern('^[0-9]+(.[0-9]+)?$')],
+      ],
+      unit: [ingredient?.unit ?? '', Validators.required],
     });
   }
 
-  createStepsForm(): FormGroup {
+  createStepsForm(step? : RecipeStep): FormGroup {
     return this.fb.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
+      name: [step?.name ?? '', Validators.required],
+      description: [step?.description ?? '', Validators.required],
       pictureUrls: this.fb.array([]),
     });
   }
@@ -108,23 +111,13 @@ export class RecipeAddService {
 
     // Add new ingredients
     recipe.ingredients?.forEach((ingredient) => {
-      this.ingredients.push(
-        this.fb.group({
-          name: [ingredient.name, Validators.required],
-          quantity: [
-            ingredient.quantity,
-            [Validators.required, Validators.pattern('^[0-9]*$')],
-          ],
-          unit: [ingredient.unit, Validators.required],
-        })
-      );
+      const ingredientFb = this.createIngredientForm(ingredient);
+      this.ingredients.push(ingredientFb);
     });
 
     // Add steps
     recipe.steps.forEach((step) => {
-      const stepGroup = this.createStepsForm();
-      stepGroup.get('name')?.setValue(step.name);
-      stepGroup.get('description')?.setValue(step.description);
+      const stepGroup = this.createStepsForm(step);
       step.pictureUrls?.forEach((url) => {
         (stepGroup.get('pictureUrls') as FormArray).push(this.fb.control(url));
       });

@@ -8,7 +8,8 @@
     style="margin: auto; vertical-align: top"
     formArrayName="ingredients"
   >
-    <div class="panel"
+    <div
+      class="panel"
       *ngFor="let ingredientForm of ingredients.controls; let i = index"
       [formGroupName]="i"
       [@add]="'added'"
@@ -35,13 +36,14 @@
           <div class="col-6">
             <mat-form-field class="field mt-4">
               <mat-label>Unit</mat-label>
-              <mat-select formControlName="unit">
+              <input matInput placeholder="..." formControlName="unit" />
+              <!-- <mat-select formControlName="unit">
                 <mat-option
                   *ngFor="let unitOption of unitOptions"
                   [value]="unitOption"
                   >{{ unitOption }}</mat-option
                 >
-              </mat-select>
+              </mat-select> -->
             </mat-form-field>
           </div>
         </div>

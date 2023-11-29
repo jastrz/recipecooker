@@ -81,8 +81,17 @@ namespace Infrastructure
 
         public async Task<IReadOnlyList<Tag>> GetTags()
         {
-            var tags = await _context.Tags
-                .Include(t => t.Category)
+            // var tags = await _context.Tags
+            //     .Include(t => t.Category)
+            //     .ToListAsync();
+
+            var tags = await _context.Recipes
+                .Include(r => r.RecipeTags)
+                    .ThenInclude(r => r.Tag)
+                        .ThenInclude(c => c.Category)
+                .SelectMany(rt => rt.RecipeTags)
+                .Select(t => t.Tag)
+                .Distinct()
                 .ToListAsync();
 
             var sortedTags = tags.AsEnumerable()

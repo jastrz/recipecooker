@@ -200,7 +200,14 @@ namespace API.Controllers
                 recipe = await _recipeGenerator.GetRandomRecipe();
             }
 
-            return Ok(recipe);
+            // Temporarily adding generated recipes to db
+            // TODO: store them in e.g. redis
+
+            var recipeToAdd = _mapper.Map<RecipeDto, Recipe>(recipe);
+            var addedRecipe = await _recipeService.AddRecipeAsync(recipeToAdd);
+            var recipeDto = _mapper.Map<Recipe, RecipeDto>(addedRecipe);
+
+            return Ok(recipeDto);
         }
     }
 }

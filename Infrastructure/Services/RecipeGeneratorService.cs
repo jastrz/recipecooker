@@ -32,7 +32,7 @@ namespace Infrastructure.Services
 
             key = _config["OpenAI:Secret"];
             endpoint = _config["OpenAI:Endpoint"];
-            maxTokens = 2000;
+            maxTokens = _config.GetValue<int>("OpenAI:MaxTokens");
         }
 
         public async Task<RecipeDto> GetRandomRecipe()
@@ -48,6 +48,7 @@ namespace Infrastructure.Services
         public async Task<RecipeDto> GenerateRecipeFromRequest(RecipeGeneratorRequest request)
         {
             string prompt = GetPrompt(request);
+            _logger.LogInformation($"Max tokens: {maxTokens}");
             var response = await _chatGPTService.GetChatGPTResponse(key, endpoint, prompt, maxTokens);
             _logger.LogInformation(response);
             var dto = GetRecipeFromResponse(response);

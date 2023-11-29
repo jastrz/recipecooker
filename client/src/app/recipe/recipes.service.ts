@@ -39,13 +39,14 @@ export class RecipesService {
   }
 
   public getAIGeneratedRecipe(request: GeneratorRequest) {
-    return this.http.post<Recipe>(this.hostUrl + 'recipes/ai-generated', request).pipe(
-      map((response) => {
-        response.id = 9999;
-        this.recipesCache.push(response);
-        return response;
-      })
-    );
+    return this.http
+      .post<Recipe>(this.hostUrl + 'recipes/ai-generated', request)
+      .pipe(
+        map((response) => {
+          this.recipesCache.push(response);
+          return response;
+        })
+      );
   }
 
   public getRecipeCount(tags?: ITag[]) {
@@ -156,16 +157,16 @@ export class RecipesService {
     return this.http.patch(this.hostUrl + `recipes/${id}/rating/${rating}`, {});
   }
 
-  private createStepsHttpObservable(
-    recipeId: number,
-    stepId: number,
-    files: File[]
-  ) {
-    return this.fileUploadService.uploadFiles(
-      files,
-      `recipes/${recipeId}/${stepId}/images`
-    );
-  }
+  // private createStepsHttpObservable(
+  //   recipeId: number,
+  //   stepId: number,
+  //   files: File[]
+  // ) {
+  //   return this.fileUploadService.uploadFiles(
+  //     files,
+  //     `recipes/${recipeId}/${stepId}/images`
+  //   );
+  // }
 
   private getTagParams(tags?: ITag[]) {
     let params = new HttpParams();

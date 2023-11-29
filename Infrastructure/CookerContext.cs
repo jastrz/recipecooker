@@ -11,6 +11,7 @@ namespace Infrastructure
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<RecipeStep> Steps { get; set; }
+        public DbSet<RecipeTag> RecipeTag { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
 
         public CookerContext(DbContextOptions<CookerContext> options) : base(options) { }

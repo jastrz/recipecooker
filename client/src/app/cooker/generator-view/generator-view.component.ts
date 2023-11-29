@@ -41,7 +41,10 @@ export class GeneratorViewComponent {
     const request = { description };
     console.log(request);
     this.recipeService.getAIGeneratedRecipe(request).subscribe({
-      next: () => this.router.navigateByUrl('cook/recipe/9999'),
+      next: (response) => {
+        console.log(response.id);
+        this.router.navigateByUrl(`cook/recipe/${response.id}`);
+      },
       error: (error) => console.log(error),
     });
   }
