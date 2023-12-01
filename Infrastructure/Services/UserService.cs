@@ -1,4 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
 using Core.Entities.Identity;
 using Core.Interfaces;
 using Infrastructure.Identity;

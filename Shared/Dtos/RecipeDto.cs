@@ -7,7 +7,7 @@ namespace Shared.Dtos
         public string Summary { get; set; }
         public string Description { get; set; }
         public string Status { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public double Rating { get; set; }
         public List<string> PictureUrls { get; set; }
         public List<TagDto> Tags { get; set; }

@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
@@ -14,7 +15,7 @@ namespace Infrastructure.Services
             _context = context;
         }
 
-        public async Task<Recipe> AddRecipeAsync(Recipe recipe)
+        public async Task<Recipe> AddRecipeAsync(Recipe recipe, string userId = null)
         {
             foreach (var recipeTag in recipe.RecipeTags)
             {
@@ -26,6 +27,11 @@ namespace Infrastructure.Services
             {
                 HandleIngredient(recipeIngredient);
             }
+
+            recipe.AddedDate = DateTime.UtcNow;
+            recipe.EditedDate = DateTime.UtcNow;
+
+            if (userId != null) recipe.UserId = userId;
 
             await _context.Recipes.AddAsync(recipe);
             await _context.SaveChangesAsync();
@@ -73,6 +79,11 @@ namespace Infrastructure.Services
             if (Enum.TryParse(@params.Status, out status))
             {
                 recipes = recipes.Where(recipe => recipe.Status == status).ToList();
+            }
+
+            if (@params.UserId != null)
+            {
+                recipes = recipes.Where(recipe => recipe.UserId == @params.UserId).ToList();
             }
 
             return recipes;
@@ -153,7 +164,10 @@ namespace Infrastructure.Services
 
         public async Task UpdateRecipe(Recipe from, Recipe to)
         {
-            _context.Entry(from).CurrentValues.SetValues(to);
+            from.Description = to.Description;
+            from.Name = to.Name;
+            from.Summary = to.Summary;
+            from.RecipeIngredients = to.RecipeIngredients;
             from.Pictures = to.Pictures;
             from.Steps = to.Steps;
 
@@ -166,6 +180,8 @@ namespace Infrastructure.Services
 
                 from.RecipeTags = to.RecipeTags;
             }
+
+            from.EditedDate = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
         }

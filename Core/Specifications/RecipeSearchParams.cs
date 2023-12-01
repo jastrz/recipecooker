@@ -7,6 +7,8 @@ namespace Core.Specifications
         public string? Origin { get; set; }
         public string? Character { get; set; }
         public string? Status { get; set; }
+        public string? UserId { get; set; }
     }
+    
 #nullable disable
 }

@@ -26,10 +26,16 @@
 
   <div class="d-flex justify-content-center" [@openClose]="'open'">
     <div class="btn-group-vertical" role="group">
-      <button type="button" class="btn btn-primary">My Recipes</button>
+      <button
+        routerLink="/account/added-recipes"
+        type="button"
+        class="btn btn-primary"
+      >
+        My Recipes
+      </button>
       <button
         type="button"
-        routerLink="/account/recipes"
+        routerLink="/account/saved-recipes"
         class="btn btn-primary mt-3"
       >
         Saved Recipes

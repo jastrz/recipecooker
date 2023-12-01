@@ -14,7 +14,9 @@ namespace Core.Entities
         public string Name { get; set; }
         public string Summary { get; set; }
         public string Description { get; set; }
-        public int UserId { get; set; } = 0;
+        public string UserId { get; set; } = string.Empty;
+        public DateTime AddedDate { get; set; }
+        public DateTime EditedDate { get; set; }
         public RecipeStatus Status { get; set; } = RecipeStatus.Unverified;
         public List<Picture> Pictures { get; set; } = new();
         public List<RecipeTag> RecipeTags { get; set; } = new();

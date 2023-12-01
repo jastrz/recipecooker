@@ -38,6 +38,11 @@ export class RecipesService {
     );
   }
 
+  // Might change this so user is albe to get other users' recipes if needed
+  public getRecipesForUser(status?: string) {
+    return this.http.get<Recipe[]>(this.hostUrl + 'recipes/user');
+  }
+
   public getAIGeneratedRecipe(request: GeneratorRequest) {
     return this.http
       .post<Recipe>(this.hostUrl + 'recipes/ai-generated', request)
@@ -56,7 +61,6 @@ export class RecipesService {
 
   public getRecipesForOverview(tags?: ITag[]) {
     const params = this.getTagParams(tags);
-    console.log(params);
     return this.http.get<Recipe[]>(this.hostUrl + 'recipes/overview', {
       params,
     });

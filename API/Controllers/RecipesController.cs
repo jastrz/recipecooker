@@ -90,6 +90,19 @@ namespace API.Controllers
         }
 
         [Authorize]
+        [Route("user")]
+        [HttpGet]
+        public async Task<ActionResult<IReadOnlyList<RecipeDto>>> GetUserRecipes()
+        {
+            var user = await _userManager.Users
+                .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+
+            var recipes = await GetRecipesOverview(new RecipeSearchParams { UserId = user.Id });
+
+            return Ok(recipes);
+        }
+
+        [Authorize]
         [HttpPost]
         [Route("{id}/images")]
         public async Task<IActionResult> PostRecipeImages([FromRoute] int id, [FromForm] List<IFormFile> files)
@@ -132,8 +145,11 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostRecipe([FromBody] RecipeDto recipeDto)
         {
+            var user = await _userManager.Users
+                .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+
             var recipe = _mapper.Map<RecipeDto, Recipe>(recipeDto);
-            var savedRecipe = await _recipeService.AddRecipeAsync(recipe);
+            var savedRecipe = await _recipeService.AddRecipeAsync(recipe, user.Id);
 
             return Ok(savedRecipe.Id);
         }

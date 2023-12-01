@@ -13,4 +13,5 @@ export interface Recipe {
   ingredients?: Ingredient[];
   rating?: number;
   status?: string;
+  userId?: string;
 }
