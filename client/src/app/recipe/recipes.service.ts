@@ -4,7 +4,6 @@ import { Recipe } from '../models/recipe';
 import { map, of, tap } from 'rxjs';
 import { ITag } from '../models/tag';
 import { RecipeStep } from '../models/recipeStep';
-import { FileService } from '../services/file.service';
 import { environment } from 'src/environments/environment';
 import { GeneratorRequest } from '../models/generator-request';
 
@@ -18,10 +17,7 @@ export class RecipesService {
   tags: ITag[] = [];
   steps: RecipeStep[] = [];
 
-  constructor(
-    private http: HttpClient,
-    private fileUploadService: FileService
-  ) {}
+  constructor(private http: HttpClient) {}
 
   public getRecipes(tags?: ITag[], status?: string) {
     let params = this.getTagParams(tags);
@@ -126,32 +122,6 @@ export class RecipesService {
     return this.http.put<number>(this.hostUrl + `recipes/${recipe.id}`, recipe);
   }
 
-  // public uploadRecipe(recipe: Recipe) {
-  //   return this.postRecipe(recipe);
-  //   // var stepsObservables: Observable<any>[] = [];
-
-  //   // return this.postRecipe(recipe).pipe(
-  //   //   mergeMap((id) => {
-  //   //     recipe.id = id;
-  //   //     recipe.steps.map((step) => {
-  //   //       if (step.pictures && step.pictures.length > 0) {
-  //   //         stepsObservables.push(
-  //   //           this.createStepsHttpObservable(recipe.id!, step.id, step.pictures)
-  //   //         );
-  //   //       }
-  //   //     });
-
-  //   //     return this.fileUploadService.uploadFiles(
-  //   //       recipeImages,
-  //   //       `recipes/${id}/images`
-  //   //     );
-  //   //   }),
-  //   //   mergeMap(() => {
-  //   //     return forkJoin(stepsObservables);
-  //   //   })
-  //   // );
-  // }
-
   public postRecipe(recipe: Recipe) {
     return this.http.post<any>(this.hostUrl + 'recipes', recipe);
   }
@@ -160,17 +130,6 @@ export class RecipesService {
     console.log(`recipes/${id}/rating/${rating}`);
     return this.http.patch(this.hostUrl + `recipes/${id}/rating/${rating}`, {});
   }
-
-  // private createStepsHttpObservable(
-  //   recipeId: number,
-  //   stepId: number,
-  //   files: File[]
-  // ) {
-  //   return this.fileUploadService.uploadFiles(
-  //     files,
-  //     `recipes/${recipeId}/${stepId}/images`
-  //   );
-  // }
 
   private getTagParams(tags?: ITag[]) {
     let params = new HttpParams();

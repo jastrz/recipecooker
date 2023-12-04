@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ITag, Tag } from '../models/tag';
 import { Recipe } from '../models/recipe';
 import { RecipesService } from '../recipe/recipes.service';
-import { map, of, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,23 +13,15 @@ export class CookerService {
 
   constructor(private recipesService: RecipesService) {}
 
-  // todo: reset or add tag / tags after recipe additiion
-  initialize() {
-    if (this.groupedTags.size == 0) {
-      return this.recipesService.getTags().subscribe({
-        next: (result) => {
-          this.updateGroupedTags(result);
-          if (this.tagsSelectedForSearch.length > 0) {
-            this.updateRecipes();
-          }
-        },
-      });
-    } else {
-      if (this.tagsSelectedForSearch.length > 0) {
-        this.updateRecipes();
-      }
-      return of(undefined);
-    }
+  setTags() {
+    this.recipesService.getTags().subscribe({
+      next: (result) => {
+        this.updateGroupedTags(result);
+        if (this.tagsSelectedForSearch.length > 0) {
+          this.updateRecipes();
+        }
+      },
+    });
   }
 
   selectTag(tag: Tag) {

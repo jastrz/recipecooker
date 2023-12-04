@@ -29,7 +29,7 @@ export class CookerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cookerService.initialize();
+    this.cookerService.setTags();
   }
 
   toggleRecipes() {
