@@ -216,6 +216,7 @@ namespace API.Controllers
                 recipe = await _recipeGenerator.GetRandomRecipe();
             }
 
+
             // Temporarily adding generated recipes to db
             // TODO: store them in e.g. redis
 
@@ -224,6 +225,19 @@ namespace API.Controllers
             var recipeDto = _mapper.Map<Recipe, RecipeDto>(addedRecipe);
 
             return Ok(recipeDto);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("backup-recipes")]
+        public async Task<ActionResult> BackupRecipes()
+        {
+            var recipes = await _recipeRepo.GetRecipes();
+            var recipesDtos = _mapper.Map<IReadOnlyList<Recipe>, IReadOnlyList<RecipeDto>>(recipes);
+            var fileName = DateTime.UtcNow.ToString("MM-dd-yyyy HH-mm-ss") + ".json";
+            await _fileService.BackupRecipes(recipesDtos, "backup/recipes", fileName);
+
+            return Ok();
         }
     }
 }

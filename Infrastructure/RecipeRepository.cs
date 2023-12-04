@@ -89,6 +89,7 @@ namespace Infrastructure
                 .Include(r => r.RecipeTags)
                     .ThenInclude(r => r.Tag)
                         .ThenInclude(c => c.Category)
+                .Where(r => r.Status == RecipeStatus.Verified)
                 .SelectMany(rt => rt.RecipeTags)
                 .Select(t => t.Tag)
                 .Distinct()
@@ -107,7 +108,5 @@ namespace Infrastructure
 
             return sortedTags;
         }
-
-
     }
 }

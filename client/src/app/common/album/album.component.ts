@@ -22,6 +22,7 @@ export class AlbumComponent implements OnInit {
     lightboxConfig.fitImageInViewPort = true;
     lightboxConfig.centerVertically = true;
     lightboxConfig.disableScrolling = true;
+    lightboxConfig.showImageNumberLabel = false;
   }
 
   ngOnInit(): void {
@@ -36,7 +37,7 @@ export class AlbumComponent implements OnInit {
     this.pictureUrls.forEach((src, index) => {
       const album = {
         src: src,
-        caption: 'Image ' + (index + 1),
+        // caption: 'Image ' + (index + 1),
         thumb: src,
       };
 

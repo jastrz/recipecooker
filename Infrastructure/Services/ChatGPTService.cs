@@ -19,7 +19,7 @@ namespace Infrastructure.Services
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
-                string requestData = $"{{\"model\": \"gpt-3.5-turbo\", \"messages\": [{{\"role\": \"system\", \"content\": \"You are a helpful assistant.\"}}, {{\"role\": \"user\", \"content\": \"{prompt}\"}}], \"max_tokens\": {maxTokens}}}";
+                string requestData = $"{{\"model\": \"gpt-3.5-turbo\", \"messages\": [{{\"role\": \"user\", \"content\": \"{prompt}\"}}], \"max_tokens\": {maxTokens}}}";
                 StringContent content = new StringContent(requestData, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync(endpoint, content);
                 string responseString = await response.Content.ReadAsStringAsync();

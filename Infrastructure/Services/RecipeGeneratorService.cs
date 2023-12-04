@@ -17,12 +17,13 @@ namespace Infrastructure.Services
         private readonly string descripiton = "random";
         private readonly string formattingPrompt = @"Formatting using: name, summary, descripiton. 
             Also give steps in format: id, name, description. 
-            To the response add ingredients in format: name, quantity (number, e.g. don't write 1/4 - use 0.25 instead), unit (use EU measures)).
-            Also add tags based on generated recipe. Tags are contained in tags array, each tag has name and category. 
+            Add ingredients in format: name, quantity (number, e.g. don't write 1/4 - use 0.25 instead), unit (use EU measures)).
+            Add tags based on generated recipe. Tags are contained in tags array, each tag has name and category. 
             Available categories: mainIngredient, origin, character - all must be filled.
             Return everything in json format, without comments or explainaitions.
             Never ignore any field, never return null, all fields must be filled. Don't add new fields.
-            Act like master cook, recipes doesn't need to be simple.";
+            Watch for interpunction to keep JSON format correct.
+            Act like master cook, recipe doesn't need to be simple.";
 
         public RecipeGeneratorService(ILogger<RecipeGeneratorService> logger, IConfiguration config, IChatGPTService chatGPTService)
         {
@@ -48,7 +49,6 @@ namespace Infrastructure.Services
         public async Task<RecipeDto> GenerateRecipeFromRequest(RecipeGeneratorRequest request)
         {
             string prompt = GetPrompt(request);
-            _logger.LogInformation($"Max tokens: {maxTokens}");
             var response = await _chatGPTService.GetChatGPTResponse(key, endpoint, prompt, maxTokens);
             _logger.LogInformation(response);
             var dto = GetRecipeFromResponse(response);
@@ -71,17 +71,23 @@ namespace Infrastructure.Services
 
         private RecipeDto GetRecipeFromResponse(string response)
         {
-            var dto = JsonSerializer.Deserialize<RecipeDto>(response, new JsonSerializerOptions
+            try
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                DefaultBufferSize = 8192,
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                WriteIndented = true
-            });
+                var dto = JsonSerializer.Deserialize<RecipeDto>(response, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    DefaultBufferSize = 8192,
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                    WriteIndented = true
+                });
 
-            return dto;
+                return dto;
+            }
+            catch
+            {
+                throw new Exception("Error occurred while converting gpt response to recipe.");
+            }
         }
-
 
 
 

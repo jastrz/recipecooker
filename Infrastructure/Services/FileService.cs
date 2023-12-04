@@ -1,6 +1,8 @@
+using System.Text.Json;
 using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Shared.Dtos;
 
 namespace Infrastructure.Services
 {
@@ -8,9 +10,12 @@ namespace Infrastructure.Services
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
 
+        private readonly string path;
+
         public FileService(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
+            path = _webHostEnvironment.ContentRootPath;
         }
 
         public async Task<List<string>> SaveFiles(List<IFormFile> files, string relativePath)
@@ -26,7 +31,6 @@ namespace Infrastructure.Services
             {
                 if (file.Length > 0)
                 {
-                    var path = _webHostEnvironment.ContentRootPath;
                     var filePath = Path.Combine(path + @"/Content/" + @relativePath, file.FileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
@@ -39,6 +43,26 @@ namespace Infrastructure.Services
             }
 
             return fileUrls;
+        }
+
+        public async Task BackupRecipes(IReadOnlyList<RecipeDto> recipes, string relativePath, string fileName)
+        {
+            var json = JsonSerializer.Serialize(recipes,
+                new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
+
+            var directoryPath = path + @"/Backup/" + @relativePath;
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            var filePath = Path.Combine(directoryPath, fileName);
+            await File.WriteAllTextAsync(filePath, json);
         }
     }
 }
