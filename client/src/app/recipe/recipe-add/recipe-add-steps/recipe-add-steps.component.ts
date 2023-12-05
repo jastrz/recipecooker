@@ -4,7 +4,6 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { RecipeStepsListComponent } from './recipe-steps-list/recipe-steps-list.component';
 import { ImageLoaderComponent } from 'src/app/common/image-loader/image-loader.component';
 import { RecipeAddService } from '../recipe-add.service';
 import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
@@ -23,7 +22,6 @@ import { MatCardModule } from '@angular/material/card';
     CommonModule,
     MatInputModule,
     MatSelectModule,
-    RecipeStepsListComponent,
     SharedAnimationsModule,
     MatCardModule,
   ],

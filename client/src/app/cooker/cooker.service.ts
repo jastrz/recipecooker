@@ -16,7 +16,7 @@ export class CookerService {
   setTags() {
     this.recipesService.getTags().subscribe({
       next: (result) => {
-        this.updateGroupedTags(result);
+        this.setGroupedTags(result);
         if (this.tagsSelectedForSearch.length > 0) {
           this.updateRecipes();
         }
@@ -25,7 +25,7 @@ export class CookerService {
   }
 
   selectTag(tag: Tag) {
-    if (tag.active) {
+    if (tag.selected) {
       this.tagsSelectedForSearch.push(tag);
     } else {
       this.tagsSelectedForSearch = this.tagsSelectedForSearch.filter(
@@ -36,13 +36,18 @@ export class CookerService {
     this.updateRecipes();
   }
 
-  private updateGroupedTags(result: ITag[]) {
+  private setGroupedTags(result: ITag[]) {
     const tags = result.map((tag) => new Tag(tag, true));
     this.groupedTags = tags.reduce((grouped, tag) => {
       if (!grouped.has(tag.category)) {
         grouped.set(tag.category, []);
       }
-      if (tag.name) grouped.get(tag.category)?.push(tag);
+
+      if (this.tagsSelectedForSearch.some((t) => t.name === tag.name)) {
+        tag.selected = true;
+      }
+      grouped.get(tag.category)?.push(tag);
+
       return grouped;
     }, new Map<string, Tag[]>());
   }

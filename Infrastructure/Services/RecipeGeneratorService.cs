@@ -11,15 +11,15 @@ namespace Infrastructure.Services
         private readonly ILogger<RecipeGeneratorService> _logger;
         private readonly IConfiguration _config;
         private readonly IChatGPTService _chatGPTService;
+        private int maxTokens;
         private string key;
         private string endpoint;
-        private int maxTokens;
         private readonly string descripiton = "random";
         private readonly string formattingPrompt = @"Formatting using: name, summary, descripiton. 
             Also give steps in format: id, name, description. 
             Add ingredients in format: name, quantity (number, e.g. don't write 1/4 - use 0.25 instead), unit (use EU measures)).
             Add tags based on generated recipe. Tags are contained in tags array, each tag has name and category. 
-            Available categories: mainIngredient, origin, character - all must be filled.
+            Available categories: mainIngredient, origin, character.
             Return everything in json format, without comments or explainaitions.
             Never ignore any field, never return null, all fields must be filled. Don't add new fields.
             Watch for interpunction to keep JSON format correct.

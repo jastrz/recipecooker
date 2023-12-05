@@ -37,7 +37,6 @@ export class AlbumComponent implements OnInit {
     this.pictureUrls.forEach((src, index) => {
       const album = {
         src: src,
-        // caption: 'Image ' + (index + 1),
         thumb: src,
       };
 

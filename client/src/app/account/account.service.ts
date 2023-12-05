@@ -1,17 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-import {
-  Observable,
-  ReplaySubject,
-  firstValueFrom,
-  map,
-  of,
-} from 'rxjs';
+import { Observable, ReplaySubject, firstValueFrom, map, of } from 'rxjs';
 import { Recipe } from '../models/recipe';
 import { environment } from 'src/environments/environment';
 import { GoogleLoginRequest } from '../models/google-login-request';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -24,9 +19,13 @@ export class AccountService {
 
   savedRecipeIds: string[] = [];
 
+  returnUrl: string = '';
+
   constructor(
     private http: HttpClient,
-    private authService: SocialAuthService
+    private authService: SocialAuthService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
     this.authService.authState.subscribe((user) => {
       this.loginWithGoogle(user.idToken).subscribe({
@@ -48,7 +47,7 @@ export class AccountService {
     return this.http.get<User>(this.hostUrl + 'user', { headers }).pipe(
       map((user) => {
         if (user) {
-          this.setUser(user);
+          this.handleUserAuth(user);
           this.currentUser = user;
           return user;
         } else {
@@ -84,7 +83,7 @@ export class AccountService {
   register(values: any) {
     return this.http.post<User>(this.hostUrl + 'user/register', values).pipe(
       map((user) => {
-        this.setUser(user);
+        this.handleUserAuth(user);
         return user;
       })
     );
@@ -93,7 +92,7 @@ export class AccountService {
   login(values: any) {
     return this.http.post<User>(this.hostUrl + 'user/login', values).pipe(
       map((user) => {
-        this.setUser(user);
+        this.handleUserAuth(user);
         return user;
       })
     );
@@ -104,7 +103,7 @@ export class AccountService {
     request.idToken = credential;
     return this.http.post<User>(this.hostUrl + 'user/google', request).pipe(
       map((user) => {
-        this.setUser(user);
+        this.handleUserAuth(user);
         return user;
       })
     );
@@ -139,8 +138,11 @@ export class AccountService {
     });
   }
 
-  private setUser(user: User) {
+  private handleUserAuth(user: User) {
     this.userSource.next(user);
     localStorage.setItem('token', user.token);
+    this.returnUrl =
+      this.activatedRoute.snapshot.queryParams['returnUrl'] || '/cook';
+    this.router.navigateByUrl(this.returnUrl);
   }
 }

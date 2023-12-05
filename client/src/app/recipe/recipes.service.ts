@@ -104,16 +104,6 @@ export class RecipesService {
     );
   }
 
-  public getRecipeSteps(recipeId: number) {
-    return this.http
-      .get<RecipeStep[]>(this.hostUrl + 'recipes/steps/' + recipeId)
-      .pipe(
-        tap((response) => {
-          this.steps = response;
-        })
-      );
-  }
-
   public deleteRecipe(recipeId: number) {
     return this.http.delete(this.hostUrl + `recipes/${recipeId}`);
   }

@@ -24,18 +24,8 @@ namespace Infrastructure
             if (!context.Recipes.Any())
             {
                 var recipesData = File.ReadAllText(path + @"/Data/SeedData/recipes.json");
-                var recipes = JsonSerializer.Deserialize<List<RecipeDto>>(recipesData, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-
-                // recipes.ForEach(async r => 
-                // {
-                //     await _recipeService.AddRecipeAsync(r);
-                //     await context.SaveChangesAsync();
-                // });
-                // var recipes = new List<Recipe>
-                // {
-                //     GetRecipe("some", "yummy"),
-                //     GetRecipe("other", "yummy too!")
-                // };
+                var recipes = JsonSerializer.Deserialize<List<RecipeDto>>(recipesData,
+                    new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
                 foreach (var recipeDto in recipes)
                 {
@@ -46,35 +36,6 @@ namespace Infrastructure
 
             if (context.ChangeTracker.HasChanges())
                 await context.SaveChangesAsync();
-        }
-
-        private Recipe GetRecipe(string name, string description)
-        {
-            Recipe recipe = new Recipe();
-            recipe.Pictures.Add(new Picture() { Url = "someurl" });
-            recipe.Name = "somename";
-            recipe.Description = "somedescription";
-            recipe.RecipeTags = new List<RecipeTag>
-                {
-                    new RecipeTag
-                    {
-                        Tag = new Tag()
-                        {
-                            Name = "tag",
-                            //Type = "type"
-                        }
-                    },
-                    new RecipeTag
-                    {
-                        Tag = new Tag()
-                        {
-                            Name = "tag2",
-                            //Type = "type2"
-                        }
-                    }
-                };
-
-            return recipe;
         }
     }
 }

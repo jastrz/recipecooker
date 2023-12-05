@@ -3,7 +3,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { IngredientListComponent } from './ingredient-list/ingredient-list.component';
 import { RecipeAddService } from '../recipe-add.service';
 import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
 import { MatCardModule } from '@angular/material/card';
@@ -18,7 +17,6 @@ import { MatCardModule } from '@angular/material/card';
     CommonModule,
     MatInputModule,
     MatSelectModule,
-    IngredientListComponent,
     SharedAnimationsModule,
     FormsModule,
     MatCardModule,

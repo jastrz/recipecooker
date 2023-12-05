@@ -6,10 +6,8 @@ import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { RecipeAddBasicsComponent } from './recipe-add-basics/recipe-add-basics.component';
 import { RecipeAddStepsComponent } from './recipe-add-steps/recipe-add-steps.component';
 import { RecipeDetailsComponent } from '../recipe-details/recipe-details.component';
-import { RecipeStepsListComponent } from './recipe-add-steps/recipe-steps-list/recipe-steps-list.component';
 import { RecipesService } from 'src/app/recipe/recipes.service';
 import { RecipeAddIngredientsComponent } from './recipe-add-ingredients/recipe-add-ingredients.component';
-import { IngredientListComponent } from './recipe-add-ingredients/ingredient-list/ingredient-list.component';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/account/account.service';
@@ -23,7 +21,6 @@ import { Observable } from 'rxjs';
   styleUrls: ['./recipe-add.component.scss'],
   standalone: true,
   imports: [
-    RecipeStepsListComponent,
     RecipeDetailsComponent,
     CommonModule,
     FormsModule,
@@ -33,7 +30,6 @@ import { Observable } from 'rxjs';
     RecipeAddBasicsComponent,
     RecipeAddStepsComponent,
     RecipeAddIngredientsComponent,
-    IngredientListComponent,
     SharedAnimationsModule,
   ],
   animations: [SharedAnimationsModule.openCloseAnimation],

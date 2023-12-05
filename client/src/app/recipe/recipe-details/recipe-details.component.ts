@@ -95,13 +95,20 @@ export class RecipeDetailsComponent implements OnInit {
     }
   }
 
-  onClickSaveButton() {
-    if (this.recipe?.id) {
-      const id = this.recipe?.id.toString();
-      this.accountService.saveRecipe(id, !this.isRecipeSaved).subscribe({
-        next: () => {
-          console.log(this.accountService.savedRecipeIds);
-        },
+  async onClickSaveButton() {
+    const authenticated = await this.accountService.isAuthenticated();
+    if (authenticated) {
+      if (this.recipe?.id) {
+        const id = this.recipe?.id.toString();
+        this.accountService.saveRecipe(id, !this.isRecipeSaved).subscribe({
+          next: () => {
+            console.log(this.accountService.savedRecipeIds);
+          },
+        });
+      }
+    } else {
+      this.router.navigate(['/account'], {
+        queryParams: { returnUrl: this.router.url },
       });
     }
   }
@@ -114,12 +121,19 @@ export class RecipeDetailsComponent implements OnInit {
     }
   }
 
-  onRateChange(value: number) {
-    if (this.recipe?.id) {
-      const id = this.recipe?.id;
-      this.recipeService.rateRecipe(id, value).subscribe({
-        next: () => this.getRecipe(id, false),
-        error: (error) => console.log(error),
+  async onRateChange(value: number) {
+    const authenticated = await this.accountService.isAuthenticated();
+    if (authenticated) {
+      if (this.recipe?.id) {
+        const id = this.recipe?.id;
+        this.recipeService.rateRecipe(id, value).subscribe({
+          next: () => this.getRecipe(id, false),
+          error: (error) => console.log(error),
+        });
+      }
+    } else {
+      this.router.navigate(['/account'], {
+        queryParams: { returnUrl: this.router.url },
       });
     }
   }

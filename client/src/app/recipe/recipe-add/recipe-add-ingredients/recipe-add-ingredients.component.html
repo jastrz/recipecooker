@@ -1,8 +1,4 @@
 <div class="row" style="margin-top: 50px" [formGroup]="recipeForm">
-  <!-- todo: LISTS can be used for different editor view -->
-  <!-- <div class="col-lg-6" *ngIf="ingredients.length > 0">
-    <app-ingredient-list [ingredients]="ingredients"></app-ingredient-list>
-  </div> -->
   <div
     class="col-lg-6 form-group"
     style="margin: auto; vertical-align: top"
@@ -14,7 +10,10 @@
       [formGroupName]="i"
       [@add]="'added'"
     >
-      <button (click)="removeIngredient(i)" class="btn btn-danger removeButton">
+      <button
+        (click)="removeIngredient(i)"
+        class="btn btn-danger remove-button"
+      >
         X
       </button>
 

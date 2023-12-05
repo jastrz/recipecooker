@@ -6,7 +6,6 @@ using Core.Interfaces;
 using Google.Apis.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Shared.Dtos;
 
 namespace Infrastructure.Services
 {

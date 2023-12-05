@@ -9,6 +9,7 @@
     (click)="selectTag(tag)"
     *ngFor="let tag of tags"
     [disabled]="!tag.active"
+    [selected]="tag.selected"
     >{{ tag.name }}</mat-chip-option
   >
 </mat-chip-listbox>
