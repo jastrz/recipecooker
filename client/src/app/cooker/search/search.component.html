@@ -1,0 +1,20 @@
+<div
+  style="width: 300px; text-align: end; margin-left: auto; margin-bottom: 50px"
+>
+  <div class="row justify-content-end">
+    <div class="col-8">
+      <input
+        id="typeahead-basic"
+        type="text"
+        class="form-control"
+        [ngbTypeahead]="search"
+        [(ngModel)]="searchTerm"
+      />
+    </div>
+    <div class="col-4">
+      <button class="btn btn-primary" (click)="onClickSearch()">Search</button>
+    </div>
+  </div>
+
+  <!-- <hr /> -->
+</div>

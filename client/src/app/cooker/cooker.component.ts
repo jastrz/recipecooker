@@ -43,6 +43,11 @@ export class CookerComponent implements OnInit {
     this.showRecipes = false;
   }
 
+  async showRecipesContaining(name: string) {
+    await this.cookerService.getRecipesContaining(name);
+    if (!this.showRecipes) this.toggleRecipes();
+  }
+
   public get groupedTags(): Map<string, Tag[]> {
     return this.cookerService.groupedTags;
   }

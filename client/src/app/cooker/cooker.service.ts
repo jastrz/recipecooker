@@ -36,6 +36,18 @@ export class CookerService {
     this.updateRecipes();
   }
 
+  async getRecipesContaining(name: string) {
+    await this.recipesService.getRecipesForOverview().subscribe({
+      next: (result) => {
+        this.recipes = result.filter((r) =>
+          r.name.toLowerCase().includes(name.toLowerCase())
+        );
+        console.log(this.recipes);
+      },
+      error: (error) => console.log(error),
+    });
+  }
+
   private setGroupedTags(result: ITag[]) {
     const tags = result.map((tag) => new Tag(tag, true));
     this.groupedTags = tags.reduce((grouped, tag) => {

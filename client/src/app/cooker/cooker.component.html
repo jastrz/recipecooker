@@ -1,4 +1,5 @@
 <div class="container mt-5" [@openClose]="'open'">
+  <app-search (onClickSearchEvent)="showRecipesContaining($event)"></app-search>
   <mat-accordion class="example-headers-align" *ngIf="groupedTags.size > 0">
     <mat-expansion-panel
       expanded="true"
