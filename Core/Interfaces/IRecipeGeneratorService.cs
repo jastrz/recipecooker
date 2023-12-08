@@ -1,4 +1,3 @@
-using Core.Entities;
 using Shared.Dtos;
 
 namespace Core.Interfaces
@@ -7,7 +6,5 @@ namespace Core.Interfaces
     {
         Task<RecipeDto> GetRandomRecipe();
         Task<RecipeDto> GenerateRecipeFromRequest(RecipeGeneratorRequest request);
-        
-        string JsonRecipe();
     }
 }

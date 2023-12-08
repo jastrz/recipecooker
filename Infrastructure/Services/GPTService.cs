@@ -5,16 +5,16 @@ using Newtonsoft.Json.Linq;
 
 namespace Infrastructure.Services
 {
-    public class ChatGPTService : IChatGPTService
+    public class GPTService : IGPTService
     {
-        private readonly ILogger<ChatGPTService> _logger;
+        private readonly ILogger<GPTService> _logger;
 
-        public ChatGPTService(ILogger<ChatGPTService> logger)
+        public GPTService(ILogger<GPTService> logger)
         {
             _logger = logger;
         }
 
-        public async Task<string> GetChatGPTResponse(string apiKey, string endpoint, string prompt, int maxTokens)
+        public async Task<string> GetGPTResponse(string apiKey, string endpoint, string prompt, int maxTokens)
         {
             using (HttpClient client = new HttpClient())
             {

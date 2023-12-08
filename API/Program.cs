@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Text;
 using API.Errors;
 using API.Extensions;
@@ -29,7 +28,8 @@ builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IChatGPTService, ChatGPTService>();
+builder.Services.AddScoped<IGPTService, GPTService>();
+builder.Services.AddScoped<IGoogleService, GoogleService>();
 builder.Services.AddScoped<IRecipeGeneratorService, RecipeGeneratorService>();
 builder.Services.AddScoped<CookerContextSeed>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -78,14 +78,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         ValidateAudience = false
                     };
                 });
-// .AddGoogle("google", options =>
-// {
-//     var googleAuthConfig = builder.Configuration.GetSection("GoogleAuthentication");
-//     options.ClientId = googleAuthConfig["ClientId"];
-//     options.ClientSecret = googleAuthConfig["ClientSecret"];
-//     options.SignInScheme = IdentityConstants.ExternalScheme;
-//     options.CallbackPath = ""
-// });
 
 builder.Services.AddSwaggerDocumentation();
 
@@ -155,7 +147,6 @@ app.Run();
 
 async Task RemoveNonExistentTags()
 {
-
     using (var scope = app.Services.CreateScope())
     {
         var services = scope.ServiceProvider;

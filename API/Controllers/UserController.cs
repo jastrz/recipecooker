@@ -1,12 +1,10 @@
 using System.Security.Claims;
-using System.Text.Json;
 using API.Dtos;
 using API.Errors;
 using AutoMapper;
 using Core.Entities;
 using Core.Entities.Identity;
 using Core.Interfaces;
-using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +13,6 @@ using Shared.Dtos;
 
 namespace API.Controllers
 {
-
     public class UserController : BaseApiController
     {
         private readonly UserManager<AppUser> _userManager;
@@ -24,9 +21,10 @@ namespace API.Controllers
         private readonly IRecipeRepository _recipeRepository;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly IGoogleService _googleService;
 
         public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService,
-        IRecipeRepository recipeRepository, IUserService userService, IMapper mapper)
+        IRecipeRepository recipeRepository, IUserService userService, IMapper mapper, IGoogleService googleService)
         {
             _userService = userService;
             _userManager = userManager;
@@ -34,6 +32,7 @@ namespace API.Controllers
             _tokenService = tokenService;
             _recipeRepository = recipeRepository;
             _mapper = mapper;
+            _googleService = googleService;
         }
 
         [HttpGet("emailexists")]
@@ -56,7 +55,7 @@ namespace API.Controllers
         [HttpPost("google")]
         public async Task<ActionResult<UserDto>> LoginWithGoogle([FromBody] GoogleLoginRequest request)
         {
-            var payload = await _tokenService.VerifyGoogleToken(request.IdToken);
+            var payload = await _googleService.VerifyGoogleToken(request.IdToken);
 
             if (payload == null) return BadRequest("Couldn't get data from Google");
 
@@ -110,7 +109,6 @@ namespace API.Controllers
                 Email = registerDto.Email,
                 UserName = registerDto.Email
             };
-
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             await _userManager.AddToRoleAsync(user, "User");
