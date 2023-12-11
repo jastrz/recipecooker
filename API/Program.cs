@@ -1,84 +1,18 @@
-using System.Text;
-using API.Errors;
 using API.Extensions;
+using API.Helpers;
 using API.MiddleWare;
 using Core.Entities.Identity;
-using Core.Interfaces;
 using Infrastructure;
 using Infrastructure.Identity;
-using Infrastructure.Interfaces;
-using Infrastructure.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<CookerContext>(opt =>
-{
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
-builder.Services.AddScoped<IRecipeService, RecipeService>();
-builder.Services.AddScoped<IFileService, FileService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IGPTService, GPTService>();
-builder.Services.AddScoped<IGoogleService, GoogleService>();
-builder.Services.AddScoped<IRecipeGeneratorService, RecipeGeneratorService>();
-builder.Services.AddScoped<CookerContextSeed>();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-// Flatten validation error response
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-    options.InvalidModelStateResponseFactory = actionContext =>
-    {
-        var errors = actionContext.ModelState.Where(e => e.Value.Errors.Count > 0)
-            .SelectMany(x => x.Value.Errors)
-            .Select(x => x.ErrorMessage).ToArray();
-
-        var errorResponse = new ApiValidationErrorResponse
-        {
-            Errors = errors
-        };
-
-        return new BadRequestObjectResult(errorResponse);
-    };
-});
-
-// Identity
-builder.Services.AddDbContext<AppIdentityDbContext>(opt =>
-{
-    opt.UseSqlite(builder.Configuration.GetConnectionString("IdentityConnection"));
-});
-
-builder.Services.AddIdentityCore<AppUser>(opt =>
-{
-    // add identity options here
-})
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<AppIdentityDbContext>()
-    .AddSignInManager<SignInManager<AppUser>>();
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:Key"])),
-                        ValidIssuer = builder.Configuration["Token:Issuer"],
-                        ValidateIssuer = true,
-                        ValidateAudience = false
-                    };
-                });
-
+builder.Services.AddAppServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddSwaggerDocumentation();
 
 var app = builder.Build();
@@ -141,48 +75,9 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-await RemoveNonExistentTags();
+using (var scope = app.Services.CreateScope())
+{
+    await Utils.RemoveNonExistentTags(scope);
+}
 
 app.Run();
-
-async Task RemoveNonExistentTags()
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        var cookerContext = services.GetRequiredService<CookerContext>();
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogWarning("Removing nonexistent tags.");
-
-        var recipes = cookerContext.Recipes;
-        var allTagsInRecipes = recipes
-                .Include(r => r.RecipeTags)
-                    .ThenInclude(r => r.Tag)
-            .SelectMany(x => x.RecipeTags)
-            .Select(y => y.Tag.Name).Distinct().ToList();
-
-        var recipeTags = cookerContext.RecipeTag
-            .Include(t => t.Tag).ToList();
-
-        for (int i = recipeTags.Count() - 1; i >= 0; i--)
-        {
-            if (!allTagsInRecipes.Contains(recipeTags[i].Tag.Name))
-            {
-                logger.LogError(recipeTags[i].Tag.Name);
-                cookerContext.Tags.Remove(recipeTags[i].Tag);
-            }
-        }
-
-        var tags = cookerContext.Tags.ToList();
-
-        for (int i = tags.Count() - 1; i >= 0; i--)
-        {
-            if (!allTagsInRecipes.Contains(tags[i].Name))
-            {
-                cookerContext.Remove(tags[i]);
-            }
-        }
-
-        await cookerContext.SaveChangesAsync();
-    }
-}
