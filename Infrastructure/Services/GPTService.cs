@@ -23,8 +23,8 @@ namespace Infrastructure.Services
                 StringContent content = new StringContent(requestData, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync(endpoint, content);
                 string responseString = await response.Content.ReadAsStringAsync();
-                var jsonObject = JObject.Parse(responseString);
                 _logger.LogInformation(responseString);
+                var jsonObject = JObject.Parse(responseString);
                 string responseContent = jsonObject["choices"][0]["message"]["content"].ToString();
 
                 return responseContent;

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Core.Interfaces;
+using Infrastructure.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Shared.Dtos;
@@ -14,7 +15,7 @@ namespace Infrastructure.Services
         private int maxTokens;
         private string key;
         private string endpoint;
-        private readonly string descripiton = "random";
+        private readonly string randomRecipeDescription = "random";
         private readonly string formattingPrompt = @"Formatting using: name, summary, descripiton. 
             Also give steps in format: id, name, description. 
             Add ingredients in format: name, quantity (number, e.g. don't write 1/4 - use 0.25 instead), unit (use EU measures)).
@@ -22,8 +23,10 @@ namespace Infrastructure.Services
             Available categories: mainIngredient, origin, character.
             Return everything in json format, without comments or explainaitions.
             Never ignore any field, never return null, all fields must be filled. Don't add new fields.
-            Watch for interpunction to keep JSON format correct.
+            Watch for interpunction and commas after each fields that need it to keep JSON format correct.
             Act like master cook, recipe doesn't need to be simple.";
+
+        private readonly int maxTries = 2;
 
         public RecipeGeneratorService(ILogger<RecipeGeneratorService> logger, IConfiguration config, IGPTService chatGPTService)
         {
@@ -36,29 +39,37 @@ namespace Infrastructure.Services
             maxTokens = _config.GetValue<int>("OpenAI:MaxTokens");
         }
 
-        public async Task<RecipeDto> GetRandomRecipe()
-        {
-            string prompt = GetPrompt();
-            var response = await _chatGPTService.GetGPTResponse(key, endpoint, prompt, maxTokens);
-            _logger.LogInformation(response);
-            var dto = GetRecipeFromResponse(response);
-
-            return dto;
-        }
-
         public async Task<RecipeDto> GenerateRecipeFromRequest(RecipeGeneratorRequest request)
         {
             string prompt = GetPrompt(request);
-            var response = await _chatGPTService.GetGPTResponse(key, endpoint, prompt, maxTokens);
-            _logger.LogInformation(response);
-            var dto = GetRecipeFromResponse(response);
+            int numTries = maxTries;
 
-            return dto;
+            while (numTries > 0)
+            {
+                try
+                {
+                    var response = await _chatGPTService.GetGPTResponse(key, endpoint, prompt, maxTokens);
+                    var dto = await GetRecipeFromResponse(response);
+                    return dto;
+                }
+                catch
+                {
+                    numTries--;
+                    _logger.LogInformation($"Getting recipe failed. Tries remaining: {numTries}");
+                }
+            }
+
+            throw new Exception("Couldn't generate recipe");
+        }
+
+        public async Task<RecipeDto> GetRandomRecipe()
+        {
+            return await GenerateRecipeFromRequest(new RecipeGeneratorRequest { Description = this.randomRecipeDescription });
         }
 
         private string GetPrompt(RecipeGeneratorRequest? request = null)
         {
-            string descripiton = this.descripiton;
+            string descripiton = this.randomRecipeDescription;
             if (request.Description != null && request.Description.Length > 0)
             {
                 descripiton = request.Description;
@@ -69,7 +80,29 @@ namespace Infrastructure.Services
             return prompt.Replace("\n", "").Replace("\r", "");
         }
 
-        private RecipeDto GetRecipeFromResponse(string response)
+        private async Task<RecipeDto> GetRecipeFromResponse(string response)
+        {
+            RecipeDto dto;
+
+            try
+            {
+                if (!Utils.IsValidJson(response))
+                {
+                    _logger.LogError("Invalid json!");
+                    response = await GetCorrectedResponse(response);
+                }
+
+                dto = MapResponseToRecipe(response);
+
+                return dto;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private RecipeDto MapResponseToRecipe(string response)
         {
             try
             {
@@ -87,6 +120,13 @@ namespace Infrastructure.Services
             {
                 throw new Exception("Error occurred while converting gpt response to recipe.");
             }
+        }
+
+        private async Task<string> GetCorrectedResponse(string response)
+        {
+            // :) todo: fix possible json mistakes or get response in another format from gpt
+
+            return response;
         }
     }
 }
