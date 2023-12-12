@@ -3,31 +3,35 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Infrastructure.Data
+namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CookerContext))]
-    [Migration("20231028115617_AddedIngredients")]
-    partial class AddedIngredients
+    partial class CookerContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.10");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Core.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -38,13 +42,15 @@ namespace Infrastructure.Data
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Unit")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -55,32 +61,84 @@ namespace Infrastructure.Data
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("RecipeId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("RecipeStepId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("RecipeStepRecipeId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Url")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RecipeId");
 
+                    b.HasIndex("RecipeStepRecipeId", "RecipeStepId");
+
                     b.ToTable("Picture");
+                });
+
+            modelBuilder.Entity("Core.Entities.Rating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("Rating");
                 });
 
             modelBuilder.Entity("Core.Entities.Recipe", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AddedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("EditedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Summary")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -90,13 +148,13 @@ namespace Infrastructure.Data
             modelBuilder.Entity("Core.Entities.RecipeIngredient", b =>
                 {
                     b.Property<int>("RecipeId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<int>("IngredientId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
-                    b.Property<double>("Quantity")
-                        .HasColumnType("REAL");
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric");
 
                     b.HasKey("RecipeId", "IngredientId");
 
@@ -108,18 +166,18 @@ namespace Infrastructure.Data
             modelBuilder.Entity("Core.Entities.RecipeStep", b =>
                 {
                     b.Property<int>("RecipeId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
-                    b.Property<int>("Sequence")
-                        .HasColumnType("INTEGER");
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
-                    b.HasKey("RecipeId", "Sequence");
+                    b.HasKey("RecipeId", "Id");
 
                     b.ToTable("Steps");
                 });
@@ -127,10 +185,10 @@ namespace Infrastructure.Data
             modelBuilder.Entity("Core.Entities.RecipeTag", b =>
                 {
                     b.Property<int>("RecipeId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<int>("TagId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.HasKey("RecipeId", "TagId");
 
@@ -143,13 +201,15 @@ namespace Infrastructure.Data
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CategoryId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -161,7 +221,18 @@ namespace Infrastructure.Data
             modelBuilder.Entity("Core.Entities.Picture", b =>
                 {
                     b.HasOne("Core.Entities.Recipe", null)
-                        .WithMany("PictureUrls")
+                        .WithMany("Pictures")
+                        .HasForeignKey("RecipeId");
+
+                    b.HasOne("Core.Entities.RecipeStep", null)
+                        .WithMany("Pictures")
+                        .HasForeignKey("RecipeStepRecipeId", "RecipeStepId");
+                });
+
+            modelBuilder.Entity("Core.Entities.Rating", b =>
+                {
+                    b.HasOne("Core.Entities.Recipe", null)
+                        .WithMany("Ratings")
                         .HasForeignKey("RecipeId");
                 });
 
@@ -228,13 +299,20 @@ namespace Infrastructure.Data
 
             modelBuilder.Entity("Core.Entities.Recipe", b =>
                 {
-                    b.Navigation("PictureUrls");
+                    b.Navigation("Pictures");
+
+                    b.Navigation("Ratings");
 
                     b.Navigation("RecipeIngredients");
 
                     b.Navigation("RecipeTags");
 
                     b.Navigation("Steps");
+                });
+
+            modelBuilder.Entity("Core.Entities.RecipeStep", b =>
+                {
+                    b.Navigation("Pictures");
                 });
 
             modelBuilder.Entity("Core.Entities.Tag", b =>

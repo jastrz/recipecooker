@@ -11,12 +11,12 @@ namespace Infrastructure.Identity
             {
                 var user = new AppUser
                 {
-                    DisplayName = "Bob",
-                    Email = "bob@test.com",
-                    UserName = "bob@test.com"
+                    DisplayName = "Admin",
+                    Email = "admin@admin.com",
+                    UserName = "admin@admin.com"
                 };
 
-                await userManager.CreateAsync(user, "P@$$w0rd");
+                await userManager.CreateAsync(user, "CH@ngeme123");
                 await userManager.AddToRoleAsync(user, "Administrator");
             }
         }

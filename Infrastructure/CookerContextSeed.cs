@@ -11,6 +11,7 @@ namespace Infrastructure
     {
         private readonly IRecipeService _recipeService;
         private readonly IMapper _mapper;
+
         public CookerContextSeed(IRecipeService recipeService, IMapper mapper)
         {
             _mapper = mapper;
