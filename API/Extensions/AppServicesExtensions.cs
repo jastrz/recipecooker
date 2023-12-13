@@ -21,9 +21,9 @@ namespace API.Extensions
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IGPTService, GPTService>();
+            services.AddSingleton<IGPTService, GPTService>();
             services.AddScoped<IGoogleService, GoogleService>();
-            services.AddScoped<IRecipeGeneratorService, RecipeGeneratorService>();
+            services.AddSingleton<IRecipeGeneratorService, RecipeGeneratorService>();
             services.AddScoped<CookerContextSeed>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

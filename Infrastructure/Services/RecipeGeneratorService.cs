@@ -26,7 +26,10 @@ namespace Infrastructure.Services
             Watch for interpunction and commas after each fields that need it to keep JSON format correct.
             Act like master cook, recipe doesn't need to be simple.";
 
-        private readonly int maxTries = 2;
+        private readonly int maxTries;
+        private readonly int maxRecipesGenerated;
+        private int generated = 0;
+        private DateTime lastResetDate;
 
         public RecipeGeneratorService(ILogger<RecipeGeneratorService> logger, IConfiguration config, IGPTService chatGPTService)
         {
@@ -37,10 +40,23 @@ namespace Infrastructure.Services
             key = _config["OpenAI:Secret"];
             endpoint = _config["OpenAI:Endpoint"];
             maxTokens = _config.GetValue<int>("OpenAI:MaxTokens");
+            maxRecipesGenerated = _config.GetValue<int>("Generator:MaxGenerated");
+            maxTries = _config.GetValue<int>("Generator:MaxTries");
+            lastResetDate = DateTime.UtcNow;
         }
 
         public async Task<RecipeDto> GenerateRecipeFromRequest(RecipeGeneratorRequest request)
         {
+            // Could move to separate service later if needed
+            if ((DateTime.UtcNow - lastResetDate).TotalHours > 24)
+            {
+                generated = 0;
+                lastResetDate = DateTime.UtcNow;
+            }
+
+            if (generated >= maxRecipesGenerated)
+                throw new Exception("Max generated recipes reached!");
+
             string prompt = GetPrompt(request);
             int numTries = maxTries;
 
@@ -50,6 +66,8 @@ namespace Infrastructure.Services
                 {
                     var response = await _chatGPTService.GetGPTResponse(key, endpoint, prompt, maxTokens);
                     var dto = await GetRecipeFromResponse(response);
+                    Interlocked.Increment(ref generated);
+                    _logger.LogInformation($"Daily generated recipes: {generated}");
                     return dto;
                 }
                 catch
