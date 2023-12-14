@@ -5,16 +5,16 @@ import { RecipeDetailsComponent } from '../recipe/recipe-details/recipe-details.
 
 const routes: Routes = [
   { path: '', component: CookerComponent },
-  { path: 'recipe/:id', component: RecipeDetailsComponent, data: { breadcrumb: { alias: 'recipe'} }}
+  {
+    path: 'recipe/:id',
+    component: RecipeDetailsComponent,
+    data: { breadcrumb: { alias: 'recipe' } },
+  },
 ];
 
 @NgModule({
   declarations: [],
-  imports: [
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class CookerRoutingModule { }
+export class CookerRoutingModule {}

@@ -83,7 +83,7 @@ export class AccountService {
   register(values: any) {
     return this.http.post<User>(this.hostUrl + 'user/register', values).pipe(
       map((user) => {
-        this.handleUserAuth(user);
+        this.handleUserAuth(user, true);
         return user;
       })
     );
@@ -92,7 +92,7 @@ export class AccountService {
   login(values: any) {
     return this.http.post<User>(this.hostUrl + 'user/login', values).pipe(
       map((user) => {
-        this.handleUserAuth(user);
+        this.handleUserAuth(user, true);
         return user;
       })
     );
@@ -103,7 +103,7 @@ export class AccountService {
     request.idToken = credential;
     return this.http.post<User>(this.hostUrl + 'user/google', request).pipe(
       map((user) => {
-        this.handleUserAuth(user);
+        this.handleUserAuth(user, true);
         return user;
       })
     );
@@ -138,11 +138,13 @@ export class AccountService {
     });
   }
 
-  private handleUserAuth(user: User) {
+  private handleUserAuth(user: User, redirect: boolean = false) {
     this.userSource.next(user);
     localStorage.setItem('token', user.token);
-    this.returnUrl =
-      this.activatedRoute.snapshot.queryParams['returnUrl'] || '/cook';
-    this.router.navigateByUrl(this.returnUrl);
+    if (redirect) {
+      this.returnUrl =
+        this.activatedRoute.snapshot.queryParams['returnUrl'] || '/cook';
+      this.router.navigateByUrl(this.returnUrl);
+    }
   }
 }

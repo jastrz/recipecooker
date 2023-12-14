@@ -39,12 +39,8 @@
   </mat-accordion>
 </div>
 
-<div
-  class="container"
-  *ngIf="!showRecipes"
-  style="text-align: center; margin-top: 50px"
->
-  <h1>or</h1>
+<div *ngIf="!showRecipes" style="text-align: center; margin-top: 50px">
+  <h1 style="margin-bottom: 50px">or</h1>
   <app-generator-view></app-generator-view>
 </div>
 
