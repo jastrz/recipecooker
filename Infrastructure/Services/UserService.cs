@@ -41,5 +41,12 @@ namespace Infrastructure.Services
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateTokenCount(AppUser user, int value = -1)
+        {
+            user.TokenCount += value;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

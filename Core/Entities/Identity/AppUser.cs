@@ -7,6 +7,7 @@ namespace Core.Entities.Identity
     {
         public string DisplayName { get; set; }
         public string SavedRecipes { get; set; }
+        public int TokenCount { get; set; } = 5;
 
         [NotMapped]
         public List<string> SavedRecipeIds

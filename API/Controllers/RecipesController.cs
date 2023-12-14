@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using API.Errors;
 using AutoMapper;
 using Core.Entities;
 using Core.Entities.Identity;
@@ -23,9 +24,11 @@ namespace API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IConfiguration _config;
         private readonly IRecipeGeneratorService _recipeGenerator;
+        private readonly IUserService _userService;
 
         public RecipesController(IRecipeRepository recipeRepo, IMapper mapper, ILogger<RecipesController> logger,
-         IRecipeService recipeService, IFileService fileUploadService, UserManager<AppUser> userManager, IConfiguration config, IRecipeGeneratorService chatService)
+         IRecipeService recipeService, IFileService fileUploadService, UserManager<AppUser> userManager, IConfiguration config,
+         IRecipeGeneratorService chatService, IUserService userService)
         {
             _userManager = userManager;
             _fileService = fileUploadService;
@@ -35,6 +38,7 @@ namespace API.Controllers
             _mapper = mapper;
             _config = config;
             _recipeGenerator = chatService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -202,10 +206,35 @@ namespace API.Controllers
             return Ok(success);
         }
 
+        // [Authorize]
         [HttpPost]
         [Route("ai-generated")]
         public async Task<ActionResult<RecipeDto>> GetAIGeneratedRecipe([FromBody] RecipeGeneratorRequest request)
         {
+            bool isAuthRequired = _config.GetValue<bool>("Generator:RequireAuth");
+            if (isAuthRequired)
+            {
+                var user = await _userManager.Users
+                    .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+
+                if (user != null)
+                {
+                    int tokenPrice = _config.GetValue<int>("Generator:TokenPrice");
+                    if (user.TokenCount >= tokenPrice)
+                    {
+                        await _userService.UpdateTokenCount(user, -tokenPrice);
+                    }
+                    else
+                    {
+                        return Unauthorized(new ApiResponse(401, "Insufficent token count"));
+                    }
+                }
+                else
+                {
+                    return Unauthorized(new ApiResponse(401, "You have to login first."));
+                }
+            }
+
             RecipeDto recipe;
             if (request.Description != null)
             {
@@ -216,10 +245,8 @@ namespace API.Controllers
                 recipe = await _recipeGenerator.GetRandomRecipe();
             }
 
-
             // Temporarily adding generated recipes to db
             // TODO: store them in e.g. redis
-
             var recipeToAdd = _mapper.Map<RecipeDto, Recipe>(recipe);
             var addedRecipe = await _recipeService.AddRecipeAsync(recipeToAdd);
             var recipeDto = _mapper.Map<Recipe, RecipeDto>(addedRecipe);
