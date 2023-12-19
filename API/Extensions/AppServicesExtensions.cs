@@ -1,5 +1,6 @@
 using API.Errors;
 using Core.Interfaces;
+using Core.Services;
 using Infrastructure;
 using Infrastructure.Interfaces;
 using Infrastructure.Services;
@@ -24,6 +25,7 @@ namespace API.Extensions
             services.AddSingleton<IGPTService, GPTService>();
             services.AddScoped<IGoogleService, GoogleService>();
             services.AddSingleton<IRecipeGeneratorService, RecipeGeneratorService>();
+            services.AddScoped<IRecipeRequestHandler, RecipeRequestHandler>();
             services.AddScoped<CookerContextSeed>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

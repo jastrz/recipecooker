@@ -1,11 +1,11 @@
 using System.Text.Json;
 using Core.Interfaces;
-using Infrastructure.Helpers;
+using Core.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Shared.Dtos;
 
-namespace Infrastructure.Services
+namespace Core.Services
 {
     public class RecipeGeneratorService : IRecipeGeneratorService
     {
@@ -142,7 +142,7 @@ namespace Infrastructure.Services
 
         private async Task<string> GetCorrectedResponse(string response)
         {
-            // :) todo: fix possible json mistakes or get response in another format from gpt
+            // :) todo: fix possible json mistakes or get response in other format from gpt
 
             return response;
         }

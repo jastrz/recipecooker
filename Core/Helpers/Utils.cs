@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Infrastructure.Helpers
+namespace Core.Helpers
 {
     public static class Utils
     {

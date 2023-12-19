@@ -23,13 +23,13 @@ namespace API.Controllers
         private readonly IFileService _fileService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IConfiguration _config;
-        private readonly IRecipeGeneratorService _recipeGenerator;
-        private readonly IUserService _userService;
+        private readonly IRecipeRequestHandler _recipeRequestHandler;
 
         public RecipesController(IRecipeRepository recipeRepo, IMapper mapper, ILogger<RecipesController> logger,
          IRecipeService recipeService, IFileService fileUploadService, UserManager<AppUser> userManager, IConfiguration config,
-         IRecipeGeneratorService chatService, IUserService userService)
+         IRecipeRequestHandler recipeRequestHandler)
         {
+            _recipeRequestHandler = recipeRequestHandler;
             _userManager = userManager;
             _fileService = fileUploadService;
             _recipeService = recipeService;
@@ -37,8 +37,6 @@ namespace API.Controllers
             _recipeRepo = recipeRepo;
             _mapper = mapper;
             _config = config;
-            _recipeGenerator = chatService;
-            _userService = userService;
         }
 
         [HttpGet]
@@ -206,52 +204,29 @@ namespace API.Controllers
             return Ok(success);
         }
 
-        // [Authorize]
         [HttpPost]
         [Route("ai-generated")]
         public async Task<ActionResult<RecipeDto>> GetAIGeneratedRecipe([FromBody] RecipeGeneratorRequest request)
         {
             bool isAuthRequired = _config.GetValue<bool>("Generator:RequireAuth");
+            RecipeRequestHandlerResult result;
             if (isAuthRequired)
             {
                 var user = await _userManager.Users
                     .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
 
-                if (user != null)
-                {
-                    int tokenPrice = _config.GetValue<int>("Generator:TokenPrice");
-                    if (user.TokenCount >= tokenPrice)
-                    {
-                        await _userService.UpdateTokenCount(user, -tokenPrice);
-                    }
-                    else
-                    {
-                        return Unauthorized(new ApiResponse(401, "Insufficent token count"));
-                    }
-                }
-                else
-                {
-                    return Unauthorized(new ApiResponse(401, "You have to login first."));
-                }
-            }
-
-            RecipeDto recipe;
-            if (request.Description != null)
-            {
-                recipe = await _recipeGenerator.GenerateRecipeFromRequest(request);
+                int tokenPrice = _config.GetValue<int>("Generator:TokenPrice");
+                result = await _recipeRequestHandler.GenerateRecipeForUser(request, user, tokenPrice);
             }
             else
             {
-                recipe = await _recipeGenerator.GetRandomRecipe();
+                result = await _recipeRequestHandler.GenerateRecipe(request);
             }
 
-            // Temporarily adding generated recipes to db
-            // TODO: store them in e.g. redis
-            var recipeToAdd = _mapper.Map<RecipeDto, Recipe>(recipe);
-            var addedRecipe = await _recipeService.AddRecipeAsync(recipeToAdd);
-            var recipeDto = _mapper.Map<Recipe, RecipeDto>(addedRecipe);
-
-            return Ok(recipeDto);
+            if (result.Status == ResponseStatus.Success)
+                return Ok(result.Data);
+            else
+                return Unauthorized(new ApiResponse(401, result.Status.ToString()));
         }
 
         [Authorize]
