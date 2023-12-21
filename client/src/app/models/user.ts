@@ -4,4 +4,5 @@ export interface User {
   token: string;
   savedRecipeIds?: string[];
   roles?: string[];
+  tokenCount: number;
 }

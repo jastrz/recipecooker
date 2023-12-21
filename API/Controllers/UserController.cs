@@ -184,7 +184,8 @@ namespace API.Controllers
                 UserId = user.Id,
                 SavedRecipeIds = user.SavedRecipeIds,
                 Token = token,
-                Roles = roles
+                Roles = roles,
+                TokenCount = user.TokenCount
             };
 
             return userDto;

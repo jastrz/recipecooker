@@ -8,5 +8,6 @@ namespace Shared.Dtos
         public string UserId { get; set; }
         public List<string> Roles { get; set; }
         public List<string> SavedRecipeIds { get; set; } = new();
+        public int TokenCount { get; set; }
     }
 }

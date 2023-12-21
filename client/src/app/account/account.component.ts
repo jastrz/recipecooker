@@ -12,6 +12,7 @@ import {
   ConfirmationDialog,
   ConfirmationDialogData,
 } from '../common/confirmation-dialog/confirmation-dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-account',
@@ -25,6 +26,7 @@ import {
     SharedAnimationsModule,
     RouterModule,
     GoogleSigninButtonModule,
+    MatIconModule,
   ],
   animations: [SharedAnimationsModule.openCloseAnimation],
 })
