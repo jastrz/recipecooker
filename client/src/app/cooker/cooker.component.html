@@ -1,12 +1,14 @@
-<div class="container mt-5" [@openClose]="'open'">
+<div class="container mt-5" [@openClose]="'open'" >
   <app-search (onClickSearchEvent)="showRecipesContaining($event)"></app-search>
-  <mat-accordion class="example-headers-align" *ngIf="groupedTags.size > 0">
+  <mat-accordion *ngIf="groupedTags.size > 0">
     <mat-expansion-panel
       expanded="true"
       (opened)="onCookerOpened()"
       [hideToggle]="!showRecipes"
     >
-      <mat-expansion-panel-header>
+      <mat-expansion-panel-header #header
+        [ngClass]="showRecipes ? 'default' : 'no-events'"
+      >
         <mat-panel-title> Find recipes </mat-panel-title>
 
         <mat-panel-description> </mat-panel-description>
@@ -23,13 +25,20 @@
 
       <div class="row">
         <div class="col-6 justify-content-start">
-          <p style="position: absolute; bottom: 0" *ngIf="recipes.length > 0">
+          <p
+            style="position: absolute; bottom: 0"
+            *ngIf="selectedTags.length > 0"
+          >
             {{ recipes.length }} entries found
           </p>
         </div>
         <div class="col-6">
           <div class="d-flex justify-content-end">
-            <button class="btn btn-primary" (click)="toggleRecipes()">
+            <button
+              class="btn btn-primary"
+              (click)="toggleRecipes()"
+              [disabled]="selectedTags.length === 0 || recipes.length === 0"
+            >
               Cook
             </button>
           </div>

@@ -1,0 +1,12 @@
+.mat-expansion-panel-header:focus,
+.mat-expansion-panel-header:hover {
+  background: transparent !important;
+}
+
+.no-events {
+  pointer-events: none;
+}
+
+.default {
+  pointer-events: auto;
+}

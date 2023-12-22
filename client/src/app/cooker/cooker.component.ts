@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatChipListbox } from '@angular/material/chips';
 import { Recipe } from '../models/recipe';
 import { Tag } from '../models/tag';
 import { MatAccordion } from '@angular/material/expansion';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { CookerService } from './cooker.service';
 import { SharedAnimationsModule } from '../common/animations/shared-animations.module';
+import { FocusMonitor } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-cooker',
@@ -14,7 +14,6 @@ import { SharedAnimationsModule } from '../common/animations/shared-animations.m
   animations: [SharedAnimationsModule.openCloseAnimation],
 })
 export class CookerComponent implements OnInit {
-  @ViewChild('meatList') meatList?: MatChipListbox;
   @ViewChild(MatAccordion) accordion?: MatAccordion;
 
   showRecipes: boolean = false;
@@ -31,7 +30,6 @@ export class CookerComponent implements OnInit {
   ngOnInit(): void {
     this.cookerService.setTags();
   }
-
   toggleRecipes() {
     this.showRecipes = !this.showRecipes;
 
@@ -54,6 +52,10 @@ export class CookerComponent implements OnInit {
 
   public get recipes(): Recipe[] {
     return this.cookerService.recipes;
+  }
+
+  public get selectedTags() {
+    return this.cookerService.tagsSelectedForSearch;
   }
 
   getCurrentPageRecipes(): Recipe[] {
