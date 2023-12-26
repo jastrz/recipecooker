@@ -1,0 +1,89 @@
+<ng-container *ngIf="user">
+  <div class="mb-4 mt-4" [@openClose]="'open'">
+    <h2 class="text-center">Hello {{ user.displayName }}!</h2>
+    <div class="d-flex justify-content-center">
+      <div class="d-flex" style="align-items: center">
+        <mat-icon inline="true"> monetization_on</mat-icon>
+        Tokens: {{ user.tokenCount }}
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-outline-primary btn-sm"
+        style="margin-left: 10px"
+      >
+        +
+      </button>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center" [@openClose]="'open'">
+    <div class="btn-group-vertical" role="group">
+      <button
+        routerLink="/account/added-recipes"
+        type="button"
+        class="btn btn-primary"
+      >
+        My Recipes
+      </button>
+      <button
+        type="button"
+        routerLink="/account/saved-recipes"
+        class="btn btn-primary mt-3"
+      >
+        Saved Recipes
+      </button>
+      <ng-container
+        *ngIf="
+          user.roles?.includes('Administrator') ||
+          user.roles?.includes('SuperUser')
+        "
+      >
+        <button
+          routerLink="/account/verification"
+          type="button"
+          class="btn btn-primary mt-3"
+        >
+          Verify Recipes
+        </button>
+        <button
+          (click)="onClickBackupRecipes()"
+          type="button"
+          class="btn btn-primary mt-3"
+        >
+          Backup
+        </button>
+        <button
+          (click)="hiddenfileinput.click()"
+          type="button"
+          class="btn btn-primary mt-3"
+        >
+          Upload
+        </button>
+        <input
+          type="file"
+          class="form-control-file"
+          style="display: none"
+          accept=".json"
+          (change)="onRecipesFileSelected($event)"
+          #hiddenfileinput
+        />
+      </ng-container>
+
+      <button
+        type="button"
+        class="btn btn-outline-primary mt-3"
+        (click)="accountService.logout()"
+      >
+        Logout
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger mt-3"
+        (click)="onClickDeleteButton()"
+      >
+        Delete Account
+      </button>
+    </div>
+  </div>
+</ng-container>

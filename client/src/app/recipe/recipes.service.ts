@@ -117,8 +117,11 @@ export class RecipesService {
   }
 
   public rateRecipe(id: number, rating: number) {
-    console.log(`recipes/${id}/rating/${rating}`);
     return this.http.patch(this.hostUrl + `recipes/${id}/rating/${rating}`, {});
+  }
+
+  public backupRecipes() {
+    return this.http.get(this.hostUrl + 'recipes/backup-recipes');
   }
 
   private getTagParams(tags?: ITag[]) {

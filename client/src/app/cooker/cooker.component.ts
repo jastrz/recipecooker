@@ -5,7 +5,6 @@ import { MatAccordion } from '@angular/material/expansion';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { CookerService } from './cooker.service';
 import { SharedAnimationsModule } from '../common/animations/shared-animations.module';
-import { FocusMonitor } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-cooker',

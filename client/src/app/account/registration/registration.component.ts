@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/account/account.service';
 
 @Component({
@@ -16,17 +17,26 @@ export class RegistrationComponent {
     displayName: ['', Validators.required],
     email: ['', Validators.required],
     password: ['', Validators.required],
+    passwordRepeat: ['', Validators.required],
   });
 
   constructor(
     private fb: FormBuilder,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private toastr: ToastrService
   ) {}
 
   register() {
-    this.accountService.register(this.registerForm.value).subscribe({
-      next: (user) => console.log(user),
-      error: (error) => console.log(error),
-    });
+    if (
+      this.registerForm.get('password')?.value ===
+      this.registerForm.get('passwordRepeat')?.value
+    ) {
+      this.accountService.register(this.registerForm.value).subscribe({
+        next: (user) => this.toastr.success('Registered!'),
+        error: (error) => console.log(error),
+      });
+    } else {
+      this.toastr.error('Passwords must be the same!');
+    }
   }
 }
