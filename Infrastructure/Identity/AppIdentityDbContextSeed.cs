@@ -1,4 +1,5 @@
 using Core.Entities.Identity;
+using Core.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Identity
@@ -17,7 +18,7 @@ namespace Infrastructure.Identity
                 };
 
                 await userManager.CreateAsync(user, "CH@ngeme123");
-                await userManager.AddToRoleAsync(user, "Administrator");
+                await userManager.AddToRoleAsync(user, UserRole.Administrator.ToString());
             }
         }
     }

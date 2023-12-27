@@ -1,12 +1,7 @@
 using API.Extensions;
-using API.Helpers;
 using API.MiddleWare;
-using Core.Entities.Identity;
-using Infrastructure;
-using Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using static API.Helpers.InitializationUtils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,44 +35,6 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapFallbackToController("Index", "Fallback");
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var cookerContext = services.GetRequiredService<CookerContext>();
-    var identityContext = services.GetRequiredService<AppIdentityDbContext>();
-    var userManager = services.GetRequiredService<UserManager<AppUser>>();
-
-    var logger = services.GetRequiredService<ILogger<Program>>();
-
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var roles = new[] { "Administrator", "SuperUser", "User" };
-
-    try
-    {
-        await cookerContext.Database.MigrateAsync();
-        if (cookerContext.Recipes.Count() == 0)
-        {
-            var cookerContextSeed = services.GetRequiredService<CookerContextSeed>();
-            await cookerContextSeed.SeedAsync(cookerContext);
-        }
-
-        await identityContext.Database.MigrateAsync();
-        foreach (var role in roles)
-        {
-            if (!await roleManager.RoleExistsAsync(role))
-                await roleManager.CreateAsync(new IdentityRole(role));
-        }
-        await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(ex, "Error during migration.");
-    }
-}
-
-using (var scope = app.Services.CreateScope())
-{
-    await Utils.RemoveNonExistentTags(scope);
-}
+await app.Initialize();
 
 app.Run();

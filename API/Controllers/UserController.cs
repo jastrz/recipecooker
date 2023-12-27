@@ -4,6 +4,7 @@ using API.Errors;
 using AutoMapper;
 using Core.Entities;
 using Core.Entities.Identity;
+using Core.Enums;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -82,7 +83,7 @@ namespace API.Controllers
                 };
 
                 var result = await _userManager.CreateAsync(user, request.IdToken);
-                await _userManager.AddToRoleAsync(user, "User");
+                await _userManager.AddToRoleAsync(user, UserRole.User.ToString());
                 if (!result.Succeeded) return BadRequest(new ApiResponse(400));
 
                 return await GetUserDto(user);

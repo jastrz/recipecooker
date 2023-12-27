@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using System.Reflection;
+using Core.Enums;
 
 namespace Infrastructure
 {

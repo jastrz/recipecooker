@@ -4,6 +4,7 @@ using Core.Entities.Identity;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Shared.Dtos;
+using Shared.Enums;
 
 namespace Infrastructure.Services
 {

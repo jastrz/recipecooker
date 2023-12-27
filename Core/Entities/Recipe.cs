@@ -1,14 +1,8 @@
+using Core.Enums;
 using Core.Interfaces;
 
 namespace Core.Entities
 {
-    public enum RecipeStatus
-    {
-        Unverified,
-        Verified,
-        Archived
-    }
-
     public class Recipe : BaseEntity, IEntityWithPictures
     {
         public string Name { get; set; }
