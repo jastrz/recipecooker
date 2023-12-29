@@ -1,4 +1,5 @@
-.sized {
+.image-container,
+.icon-container {
   height: 200px;
   width: 100%;
   object-fit: cover;
@@ -10,4 +11,28 @@
   &:hover {
     background-color: rgb(252, 252, 252);
   }
+}
+
+mat-card-header {
+  min-height: 120px;
+}
+
+mat-card-title {
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+mat-card-subtitle {
+  margin-bottom: 10px;
+}
+
+.mat-icon {
+  transform: scale(6);
+}
+
+.icon-container {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
 }

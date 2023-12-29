@@ -5,13 +5,14 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-recipe-overview',
   templateUrl: './recipe-overview.component.html',
   styleUrls: ['./recipe-overview.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule],
   animations: [
     trigger('pictureAnimation', [
       transition('void => *', [

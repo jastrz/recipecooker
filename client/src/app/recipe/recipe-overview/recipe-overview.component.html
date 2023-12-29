@@ -1,27 +1,32 @@
 <ng-container *ngIf="recipe">
   <mat-card class="card">
-    <mat-card-header style="min-height: 100px">
-      <mat-card-title (click)="viewDetailsClicked()" style="cursor: pointer">{{
+    <mat-card-header>
+      <mat-card-title (click)="viewDetailsClicked()">{{
         recipe.name
       }}</mat-card-title>
       <mat-card-subtitle>{{ recipe.summary }}</mat-card-subtitle>
     </mat-card-header>
 
-    <img
-      mat-card-image
-      [src]="recipe.pictureUrls[0]"
-      [alt]="recipe.name"
-      class="sized"
-      (click)="viewDetailsClicked()"
-      [@pictureAnimation]
-      style="cursor: pointer"
-    />
+    <ng-container *ngIf="recipe.pictureUrls[0]">
+      <img
+        mat-card-image
+        [src]="recipe.pictureUrls[0]"
+        [alt]="recipe.name"
+        class="image-container"
+        (click)="viewDetailsClicked()"
+        [@pictureAnimation]
+        style="cursor: pointer"
+      />
+    </ng-container>
+    <ng-container *ngIf="recipe.pictureUrls.length === 0">
+      <div class="icon-container" (click)="viewDetailsClicked()">
+        <mat-icon>fastfood</mat-icon>
+      </div>
+    </ng-container>
 
     <mat-card-content style="margin-top: 40px; min-height: 200px">
       <p>
-        The Shiba Inu is the smallest of the six original and distinct spitz
-        breeds of dog from Japan. A small, agile dog that copes very well with
-        mountainous terrain, the Shiba Inu was originally bred for hunting.
+        {{ recipe.description }}
       </p>
     </mat-card-content>
     <mat-card-actions style="justify-content: end; margin-top: 20px">
