@@ -14,6 +14,7 @@ import { AccountService } from 'src/app/account/account.service';
 import { RecipeAddService } from './recipe-add.service';
 import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
 import { Observable } from 'rxjs';
+import { UserInventoryService } from 'src/app/services/user-inventory.service';
 
 @Component({
   selector: 'app-recipe-add',
@@ -42,7 +43,8 @@ export class RecipeAddComponent {
     private router: Router,
     private toastr: ToastrService,
     private accountService: AccountService,
-    private recipeAddService: RecipeAddService
+    private recipeAddService: RecipeAddService,
+    private userInventory: UserInventoryService
   ) {}
 
   onBasicsStepSubmit() {
@@ -85,6 +87,7 @@ export class RecipeAddComponent {
       next: (id) => {
         recipe.id = id;
         this.toastr.success('Recipe published!');
+        this.userInventory.refresh();
         this.recipeService.getRecipe(recipe.id, false).subscribe({
           next: () => {
             this.router.navigateByUrl('cook/recipe/' + recipe.id);

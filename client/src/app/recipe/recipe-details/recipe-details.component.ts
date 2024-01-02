@@ -20,6 +20,7 @@ import {
 import { User } from 'src/app/models/user';
 import { Observable } from 'rxjs';
 import { PrivilegesWrapperComponent } from 'src/app/common/privileges-wrapper/privileges-wrapper.component';
+import { UserInventoryService } from 'src/app/services/user-inventory.service';
 
 @Component({
   selector: 'app-recipe-details',
@@ -49,7 +50,8 @@ export class RecipeDetailsComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     private accountService: AccountService,
     private recipeAddService: RecipeAddService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private userInventory: UserInventoryService
   ) {
     this.breadcrumbService.set('@recipe', ' ');
   }
@@ -70,7 +72,22 @@ export class RecipeDetailsComponent implements OnInit {
     return false;
   }
 
-  ngOnInit(): void {
+  public isEliglibleForEdit(user: User) {
+    if (!user) return false;
+
+    if (user.roles?.includes('Administrator')) return true;
+
+    return this.userInventory.userRecipes.some(
+      (recipe: Recipe) => recipe.id === this.recipe?.id
+    );
+  }
+
+  isEliglibleForVerification(user: User) {
+    const roles: string[] = ['Administrator', 'SuperUser'];
+    return user.roles?.some((role) => roles.includes(role));
+  }
+
+  ngOnInit() {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (!id) return;
     this.getRecipe(+id);

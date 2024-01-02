@@ -27,10 +27,7 @@
 
         <ng-container *ngIf="user | async as user">
           <ng-container
-            *ngIf="
-              user.roles?.includes('Administrator') ||
-              user.roles?.includes('SuperUser')
-            "
+            *ngIf="isEliglibleForVerification(user)"
           >
             <select
               class="form-control"
@@ -42,7 +39,8 @@
               <option value="Verified">Verified</option>
               <option value="Archived">Archived</option>
             </select>
-
+          </ng-container>
+          <ng-container *ngIf="isEliglibleForEdit(user)">
             <button
               class="btn btn-primary"
               style="margin-right: 10px"
