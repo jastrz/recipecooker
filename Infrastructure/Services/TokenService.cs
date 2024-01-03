@@ -19,7 +19,7 @@ namespace Infrastructure.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Token:Key"]));
         }
 
-        public string CreateToken(AppUser user)
+        public string CreateToken(AppUser user, IList<string> userRoles)
         {
             var claims = new List<Claim>
             {
@@ -27,11 +27,14 @@ namespace Infrastructure.Services
                 new Claim(ClaimTypes.GivenName, user.DisplayName)
             };
 
+            var claimsWithRoles = userRoles.Select(role => new Claim(ClaimTypes.Role, role));
+            var allClaims = claims.Concat(claimsWithRoles);
+
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(claims),
+                Subject = new ClaimsIdentity(allClaims),
                 Expires = DateTime.Now.AddDays(7),
                 SigningCredentials = creds,
                 Issuer = _config["Token:Issuer"]

@@ -4,7 +4,6 @@ using API.Errors;
 using AutoMapper;
 using Core.Entities;
 using Core.Entities.Identity;
-using Core.Enums;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,10 +22,12 @@ namespace API.Controllers
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly IGoogleService _googleService;
+        private readonly ILogger<UserController> _logger;
 
         public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService,
-        IRecipeRepository recipeRepository, IUserService userService, IMapper mapper, IGoogleService googleService)
+        IRecipeRepository recipeRepository, IUserService userService, IMapper mapper, IGoogleService googleService, ILogger<UserController> logger)
         {
+            _logger = logger;
             _userService = userService;
             _userManager = userManager;
             _signInManager = signInManager;
@@ -37,7 +38,7 @@ namespace API.Controllers
         }
 
         [HttpGet("emailexists")]
-        public async Task<ActionResult<Boolean>> CheckEmailExistsAsync([FromQuery] string email)
+        public async Task<ActionResult<bool>> CheckEmailExistsAsync([FromQuery] string email)
         {
             return await _userManager.FindByEmailAsync(email) != null;
         }
@@ -65,26 +66,12 @@ namespace API.Controllers
 
             if (existingUser != null)
             {
-                return new UserDto
-                {
-                    Email = existingUser.Email,
-                    Token = _tokenService.CreateToken(existingUser),
-                    DisplayName = existingUser.DisplayName
-                };
+                return await GetUserDto(existingUser);
             }
             else
             {
-                var displayName = payload.GivenName;
-                var user = new AppUser
-                {
-                    DisplayName = displayName,
-                    Email = email,
-                    UserName = email
-                };
-
-                var result = await _userManager.CreateAsync(user, request.IdToken);
-                await _userManager.AddToRoleAsync(user, UserRole.User.ToString());
-                if (!result.Succeeded) return BadRequest(new ApiResponse(400));
+                var user = await _userService.CreateUser(payload.GivenName, email);
+                if (user == null) return BadRequest(new ApiResponse(400));
 
                 return await GetUserDto(user);
             }
@@ -104,16 +91,8 @@ namespace API.Controllers
                 });
             }
 
-            var user = new AppUser
-            {
-                DisplayName = registerDto.DisplayName,
-                Email = registerDto.Email,
-                UserName = registerDto.Email
-            };
-
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
-            await _userManager.AddToRoleAsync(user, "User");
-            if (!result.Succeeded) return BadRequest(new ApiResponse(400));
+            var user = await _userService.CreateUser(registerDto.DisplayName, registerDto.Email, registerDto.Email);
+            if (user == null) return BadRequest(new ApiResponse(400));
 
             return await GetUserDto(user);
         }
@@ -176,7 +155,7 @@ namespace API.Controllers
         private async Task<UserDto> GetUserDto(AppUser user)
         {
             var roles = await _userService.GetRolesForUserAsync(user);
-            var token = _tokenService.CreateToken(user);
+            var token = _tokenService.CreateToken(user, roles);
 
             var userDto = new UserDto
             {

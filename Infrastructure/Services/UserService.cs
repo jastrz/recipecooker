@@ -1,7 +1,9 @@
 using Core.Entities.Identity;
+using Core.Enums;
 using Core.Interfaces;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using PasswordGenerator;
 
 namespace Infrastructure.Services
 {
@@ -9,11 +11,30 @@ namespace Infrastructure.Services
     {
         private readonly AppIdentityDbContext _context;
         private readonly UserManager<AppUser> _userManager;
+        private readonly Password password;
 
         public UserService(AppIdentityDbContext context, UserManager<AppUser> userManager)
         {
             _userManager = userManager;
             _context = context;
+            password = new Password(16);
+        }
+
+        public async Task<AppUser> CreateUser(string displayName, string email, string password = null, UserRole role = UserRole.User)
+        {
+            if (password == null) password = this.password.Next();
+
+            var user = new AppUser
+            {
+                DisplayName = displayName,
+                Email = email,
+                UserName = email
+            };
+
+            var result = await _userManager.CreateAsync(user, password);
+            if (!result.Succeeded) return null;
+            await _userManager.AddToRoleAsync(user, role.ToString());
+            return user;
         }
 
         public async Task<bool> DeleteUser(AppUser user)
