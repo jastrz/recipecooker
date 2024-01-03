@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Recipe } from '../models/recipe';
 import { map, of, tap } from 'rxjs';
 import { ITag } from '../models/tag';
-import { RecipeStep } from '../models/recipeStep';
+import { recipeStep } from '../models/recipe-step';
 import { environment } from 'src/environments/environment';
 import { GeneratorRequest } from '../models/generator-request';
 
@@ -15,7 +15,7 @@ export class RecipesService {
 
   recipesCache: Recipe[] = [];
   tags: ITag[] = [];
-  steps: RecipeStep[] = [];
+  steps: recipeStep[] = [];
 
   constructor(private http: HttpClient) {}
 

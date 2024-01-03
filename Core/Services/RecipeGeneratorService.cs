@@ -9,9 +9,17 @@ namespace Core.Services
 {
     public class RecipeGeneratorService : IRecipeGeneratorService
     {
+        public int MaxRecipesGenerated { get; private set; }
+        private int _numGenerated = 0;
+        public int NumRecipesGenerated
+        {
+            get => _numGenerated;
+            private set => _numGenerated = value;
+        }
+
         private readonly ILogger<RecipeGeneratorService> _logger;
         private readonly IConfiguration _config;
-        private readonly IGPTService _chatGPTService;
+        private readonly IGPTService _gptService;
         private int maxTokens;
         private string key;
         private string endpoint;
@@ -27,20 +35,18 @@ namespace Core.Services
             Act like master cook, recipe doesn't need to be simple.";
 
         private readonly int maxTries;
-        private readonly int maxRecipesGenerated;
-        private int generated = 0;
         private DateTime lastResetDate;
 
         public RecipeGeneratorService(ILogger<RecipeGeneratorService> logger, IConfiguration config, IGPTService chatGPTService)
         {
-            _chatGPTService = chatGPTService;
+            _gptService = chatGPTService;
             _config = config;
             _logger = logger;
 
+            MaxRecipesGenerated = _config.GetValue<int>("Generator:MaxGenerated");
             key = _config["OpenAI:Secret"];
             endpoint = _config["OpenAI:Endpoint"];
             maxTokens = _config.GetValue<int>("OpenAI:MaxTokens");
-            maxRecipesGenerated = _config.GetValue<int>("Generator:MaxGenerated");
             maxTries = _config.GetValue<int>("Generator:MaxTries");
             lastResetDate = DateTime.UtcNow;
         }
@@ -50,11 +56,11 @@ namespace Core.Services
             // Could move to separate service later if needed
             if ((DateTime.UtcNow - lastResetDate).TotalHours > 24)
             {
-                generated = 0;
+                NumRecipesGenerated = 0;
                 lastResetDate = DateTime.UtcNow;
             }
 
-            if (generated >= maxRecipesGenerated)
+            if (NumRecipesGenerated >= MaxRecipesGenerated)
                 throw new Exception("Max generated recipes reached!");
 
             string prompt = GetPrompt(request);
@@ -64,10 +70,10 @@ namespace Core.Services
             {
                 try
                 {
-                    var response = await _chatGPTService.GetGPTResponse(key, endpoint, prompt, maxTokens);
+                    var response = await _gptService.GetGPTResponse(key, endpoint, prompt, maxTokens);
                     var dto = await GetRecipeFromResponse(response);
-                    Interlocked.Increment(ref generated);
-                    _logger.LogInformation($"Daily generated recipes: {generated}");
+                    Interlocked.Increment(ref _numGenerated);
+                    _logger.LogInformation($"Daily generated recipes: {NumRecipesGenerated}");
                     return dto;
                 }
                 catch

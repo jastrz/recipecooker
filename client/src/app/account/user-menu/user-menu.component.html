@@ -86,4 +86,13 @@
       </button>
     </div>
   </div>
+  <div
+    class="d-flex justify-content-center"
+    [@openClose]="'open'"
+    style="margin-top: 50px"
+  >
+    <ng-container *ngIf="user.roles?.includes('Administrator')">
+      <app-server-status></app-server-status>
+    </ng-container>
+  </div>
 </ng-container>

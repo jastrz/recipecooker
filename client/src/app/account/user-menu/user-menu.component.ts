@@ -13,13 +13,14 @@ import { CommonModule } from '@angular/common';
 import { User } from 'src/app/models/user';
 import { RouterModule } from '@angular/router';
 import { SharedAnimationsModule } from 'src/app/common/animations/shared-animations.module';
+import { ServerStatusComponent } from 'src/app/server-status/server-status.component';
 
 @Component({
   selector: 'app-user-menu',
   templateUrl: './user-menu.component.html',
   styleUrls: ['./user-menu.component.scss'],
   standalone: true,
-  imports: [MatIconModule, CommonModule, RouterModule, SharedAnimationsModule],
+  imports: [MatIconModule, CommonModule, RouterModule, SharedAnimationsModule, ServerStatusComponent],
   animations: [SharedAnimationsModule.openCloseAnimation],
 })
 export class UserMenuComponent {

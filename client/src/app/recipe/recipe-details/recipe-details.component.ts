@@ -72,7 +72,13 @@ export class RecipeDetailsComponent implements OnInit {
     return false;
   }
 
-  public isEliglibleForEdit(user: User) {
+  ngOnInit() {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (!id) return;
+    this.getRecipe(+id);
+  }
+
+  isEliglibleForEdit(user: User) {
     if (!user) return false;
 
     if (user.roles?.includes('Administrator')) return true;
@@ -85,12 +91,6 @@ export class RecipeDetailsComponent implements OnInit {
   isEliglibleForVerification(user: User) {
     const roles: string[] = ['Administrator', 'SuperUser'];
     return user.roles?.some((role) => roles.includes(role));
-  }
-
-  ngOnInit() {
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    if (!id) return;
-    this.getRecipe(+id);
   }
 
   onClickBackButton() {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Ingredient } from 'src/app/models/ingredient';
 import { Recipe } from 'src/app/models/recipe';
-import { RecipeStep } from 'src/app/models/recipeStep';
+import { recipeStep } from 'src/app/models/recipe-step';
 
 @Injectable({
   providedIn: 'root',
@@ -71,7 +71,7 @@ export class RecipeAddService {
     });
   }
 
-  createStepsForm(step? : RecipeStep): FormGroup {
+  createStepsForm(step?: recipeStep): FormGroup {
     return this.fb.group({
       name: [step?.name ?? '', Validators.required],
       description: [step?.description ?? '', Validators.required],
@@ -213,11 +213,11 @@ export class RecipeAddService {
     return ingredients;
   }
 
-  private getRecipeSteps(): RecipeStep[] {
-    const recipeSteps: RecipeStep[] = [];
+  private getRecipeSteps(): recipeStep[] {
+    const recipeSteps: recipeStep[] = [];
 
     this.recipeSteps.controls.forEach((stepForm, index) => {
-      const recipeStep: RecipeStep = {
+      const recipeStep: recipeStep = {
         id: index,
         name: stepForm.get('name')?.value,
         description: stepForm.get('description')?.value,

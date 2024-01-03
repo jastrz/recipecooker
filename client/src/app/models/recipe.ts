@@ -1,5 +1,5 @@
 import { Ingredient } from './ingredient';
-import { RecipeStep } from './recipeStep';
+import { recipeStep } from './recipe-step';
 import { ITag } from './tag';
 
 export interface Recipe {
@@ -8,7 +8,7 @@ export interface Recipe {
   summary: string;
   description: string;
   pictureUrls: string[];
-  steps: RecipeStep[];
+  steps: recipeStep[];
   tags: ITag[];
   ingredients?: Ingredient[];
   rating?: number;
