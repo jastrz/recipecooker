@@ -26,9 +26,7 @@
         </app-privalages-wrapper> -->
 
         <ng-container *ngIf="user | async as user">
-          <ng-container
-            *ngIf="isEliglibleForVerification(user)"
-          >
+          <ng-container *ngIf="isEliglibleForVerification(user)">
             <select
               class="form-control"
               [(ngModel)]="recipe.status"
@@ -73,7 +71,9 @@
       <div class="row">
         <div class="col-8">
           <h3 class="mb-0 fs-2">{{ recipe.name }}</h3>
-          <small>{{ recipe.status }}</small>
+          <small *ngIf="ownerDisplayName" style="margin-right: 10px"
+            >added by: {{ ownerDisplayName }}<br /></small
+          ><small style="font-style: italic">{{ recipe.status }}</small>
           <p class="card-text mt-4 fs-6">{{ recipe.summary }}</p>
           <p class="card-text mt-4 fs-6">{{ recipe.description }}</p>
         </div>

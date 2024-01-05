@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { Observable, ReplaySubject, firstValueFrom, map, of } from 'rxjs';
@@ -69,6 +69,15 @@ export class AccountService {
 
   getDisplayName(): Observable<string | null> {
     return this.user$.pipe(map((user) => (user ? user.displayName : null)));
+  }
+
+  getDisplayNameForUserId(userId: string) {
+    let params = new HttpParams();
+    params = params.append('userId', userId);
+    return this.http.get(this.hostUrl + 'user/username', {
+      params,
+      responseType: 'text',
+    });
   }
 
   getSavedRecipes() {

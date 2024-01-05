@@ -175,10 +175,23 @@ namespace API.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteRecipe([FromRoute] int id)
         {
-            var recipe = await _recipeRepo.GetRecipe(id);
-            await _recipeService.RemoveRecipe(recipe);
+            var user = await _userManager.Users
+                .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
 
-            return Ok();
+            var userRecipes = await GetRecipesOverview(new RecipeSearchParams { UserId = user.Id });
+            var roles = await _userManager.GetRolesAsync(user);
+
+            if (userRecipes.Any(r => r.Id == id) || roles.Contains("Administrator"))
+            {
+                var recipe = await _recipeRepo.GetRecipe(id);
+                await _recipeService.RemoveRecipe(recipe);
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized("User doesn't own this recipe!");
+            }
+
         }
 
         [Authorize]
@@ -230,7 +243,7 @@ namespace API.Controllers
                 return Unauthorized(new ApiResponse(401, result.Status.ToString()));
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         [Route("backup-recipes")]
         public async Task<ActionResult> BackupRecipes()

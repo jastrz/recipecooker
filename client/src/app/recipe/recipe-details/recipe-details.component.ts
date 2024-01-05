@@ -21,6 +21,7 @@ import { User } from 'src/app/models/user';
 import { Observable } from 'rxjs';
 import { PrivilegesWrapperComponent } from 'src/app/common/privileges-wrapper/privileges-wrapper.component';
 import { UserInventoryService } from 'src/app/services/user-inventory.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-recipe-details',
@@ -42,16 +43,18 @@ import { UserInventoryService } from 'src/app/services/user-inventory.service';
 export class RecipeDetailsComponent implements OnInit {
   active: boolean = false;
   recipe?: Recipe;
+  ownerDisplayName: string = '';
 
   constructor(
+    public dialog: MatDialog,
     private recipeService: RecipesService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private breadcrumbService: BreadcrumbService,
     private accountService: AccountService,
     private recipeAddService: RecipeAddService,
-    public dialog: MatDialog,
-    private userInventory: UserInventoryService
+    private userInventory: UserInventoryService,
+    private toastr: ToastrService
   ) {
     this.breadcrumbService.set('@recipe', ' ');
   }
@@ -158,8 +161,13 @@ export class RecipeDetailsComponent implements OnInit {
   private deleteRecipe() {
     if (this.recipe?.id)
       this.recipeService.deleteRecipe(this.recipe?.id).subscribe({
-        next: () => this.router.navigateByUrl('/cook'),
-        error: (error) => console.log(error),
+        next: () => {
+          this.toastr.success('Successfully deleted!');
+          this.router.navigateByUrl('/cook');
+        },
+        error: (error) => {
+          this.toastr.error(error), console.log(error);
+        },
       });
   }
 
@@ -173,6 +181,13 @@ export class RecipeDetailsComponent implements OnInit {
             console.log(this.accountService.savedRecipeIds);
           },
         });
+        if (data.userId)
+          this.accountService.getDisplayNameForUserId(data.userId).subscribe({
+            next: (displayName: any) => {
+              this.ownerDisplayName = displayName;
+            },
+            error: (error) => console.log(error),
+          });
       },
     });
   }

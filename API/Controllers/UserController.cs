@@ -43,6 +43,20 @@ namespace API.Controllers
             return await _userManager.FindByEmailAsync(email) != null;
         }
 
+        [HttpGet("username")]
+        public async Task<ActionResult<string>> GetDisplayName([FromQuery] string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                return Ok(user.DisplayName);
+            }
+            else
+            {
+                return BadRequest($"Couldn't find user with {userId}");
+            }
+        }
+
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {

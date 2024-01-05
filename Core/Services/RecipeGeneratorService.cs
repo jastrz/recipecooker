@@ -37,9 +37,9 @@ namespace Core.Services
         private readonly int maxTries;
         private DateTime lastResetDate;
 
-        public RecipeGeneratorService(ILogger<RecipeGeneratorService> logger, IConfiguration config, IGPTService chatGPTService)
+        public RecipeGeneratorService(ILogger<RecipeGeneratorService> logger, IConfiguration config, IGPTService gptService)
         {
-            _gptService = chatGPTService;
+            _gptService = gptService;
             _config = config;
             _logger = logger;
 
