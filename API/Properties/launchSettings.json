@@ -6,7 +6,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": false,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:5002",
+      "applicationUrl": "https://127.0.0.1:5006/a-reci-qkr",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -12,12 +12,6 @@ builder.Services.AddSwaggerDocumentation();
 
 var app = builder.Build();
 
-app.UseCors(builder => builder
-    .AllowAnyMethod()
-    .AllowAnyHeader()
-    .AllowAnyOrigin()
-);
-
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
 app.UseSwaggerDocumentation();
@@ -29,9 +23,16 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/Content"
 });
 
-app.UseHttpsRedirection();
+app.UseCors(builder => builder
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowAnyOrigin()
+);
+
+// app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UsePathBase("/a-reci-qkr");
 app.MapControllers();
 app.MapFallbackToController("Index", "Fallback");
 

@@ -29,6 +29,7 @@ export class CookerComponent implements OnInit {
   ngOnInit(): void {
     this.cookerService.setTags();
   }
+
   toggleRecipes() {
     this.showRecipes = !this.showRecipes;
 
