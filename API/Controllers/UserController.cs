@@ -105,7 +105,7 @@ namespace API.Controllers
                 });
             }
 
-            var user = await _userService.CreateUser(registerDto.DisplayName, registerDto.Email, registerDto.Email);
+            var user = await _userService.CreateUser(registerDto.DisplayName, registerDto.Email, registerDto.Password);
             if (user == null) return BadRequest(new ApiResponse(400));
 
             return await GetUserDto(user);
