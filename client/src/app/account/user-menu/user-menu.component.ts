@@ -18,9 +18,14 @@ import { ServerStatusComponent } from 'src/app/server-status/server-status.compo
 @Component({
   selector: 'app-user-menu',
   templateUrl: './user-menu.component.html',
-  styleUrls: ['./user-menu.component.scss'],
   standalone: true,
-  imports: [MatIconModule, CommonModule, RouterModule, SharedAnimationsModule, ServerStatusComponent],
+  imports: [
+    MatIconModule,
+    CommonModule,
+    RouterModule,
+    SharedAnimationsModule,
+    ServerStatusComponent,
+  ],
   animations: [SharedAnimationsModule.openCloseAnimation],
 })
 export class UserMenuComponent {

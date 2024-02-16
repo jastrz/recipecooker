@@ -10,7 +10,6 @@ import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-recipe-add-ingredients',
   templateUrl: './recipe-add-ingredients.component.html',
-  styleUrls: ['./recipe-add-ingredients.component.scss'],
   standalone: true,
   imports: [
     ReactiveFormsModule,

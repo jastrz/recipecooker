@@ -12,7 +12,6 @@ import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-recipe-add-steps',
   templateUrl: './recipe-add-steps.component.html',
-  styleUrls: ['./recipe-add-steps.component.scss'],
   standalone: true,
   imports: [
     MatIconModule,

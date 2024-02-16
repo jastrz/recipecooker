@@ -4,7 +4,6 @@ import { SharedAnimationsModule } from '../common/animations/shared-animations.m
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',
-  styleUrls: ['./about.component.scss'],
   standalone: true,
   imports: [SharedAnimationsModule],
   animations: [SharedAnimationsModule.openCloseAnimation],

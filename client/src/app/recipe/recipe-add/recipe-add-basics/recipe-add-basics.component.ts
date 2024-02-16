@@ -11,7 +11,6 @@ import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-recipe-add-basics',
   templateUrl: './recipe-add-basics.component.html',
-  styleUrls: ['./recipe-add-basics.component.scss'],
   standalone: true,
   imports: [
     MatIconModule,

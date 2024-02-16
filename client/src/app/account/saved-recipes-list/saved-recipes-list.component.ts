@@ -8,7 +8,6 @@ import { AccountService } from 'src/app/account/account.service';
 @Component({
   selector: 'app-saved-recipes-list',
   templateUrl: './saved-recipes-list.component.html',
-  styleUrls: ['./saved-recipes-list.component.scss'],
   standalone: true,
   imports: [CommonModule, RecipeOverviewComponent],
 })
