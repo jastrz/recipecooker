@@ -1,4 +1,8 @@
-<div class="mt-4" [formGroup]="registerForm">
+<div
+  class="mt-4"
+  [formGroup]="registerForm"
+  (keydown.enter)="$event.preventDefault(); register()"
+>
   <div class="row">
     <div class="col-lg-6 form-group" style="float: none; margin: auto">
       <div class="panel">

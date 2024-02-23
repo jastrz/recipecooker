@@ -10,7 +10,6 @@ import { RecipesService } from 'src/app/recipe/recipes.service';
 @Component({
   selector: 'app-generator-view',
   templateUrl: './generator-view.component.html',
-  styleUrls: ['./generator-view.component.scss'],
   standalone: true,
   imports: [
     MatSlideToggleModule,

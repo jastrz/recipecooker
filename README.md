@@ -18,8 +18,9 @@ development:
 build:
 
 ```
+0. properly configure addresses within api and client
 1. run postgres
-2. start .NET app using .exe or .dll on port 5002
+2. start .NET app using .exe or .dll
 ```
 
 To be able to generate recipes you need to specify your OpenAI secret before running project. This can be done by adding "OpenAI:Secret" in appsettings.json or by using e.g. safe storage.
@@ -32,10 +33,10 @@ and configure credentials to run for desired addresses.
 
 # How to build
 
-Build client project first - it will be placed in wwwroot in API project, then build .NET project (API is entry point)
+Build client project first - it will be placed in wwwroot in API project, then build .NET project (API is entry point).
 
 ```
-cd client && ng build
+cd client && ng build -c production
 dotnet publish -c Release -o publish recipecooker.sln
 ```
 

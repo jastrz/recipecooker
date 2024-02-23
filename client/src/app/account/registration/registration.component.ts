@@ -8,7 +8,6 @@ import { AccountService } from 'src/app/account/account.service';
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss'],
   standalone: true,
   imports: [CommonModule, MatInputModule, ReactiveFormsModule],
 })

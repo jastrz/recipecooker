@@ -8,7 +8,6 @@ import { RecipesService } from 'src/app/recipe/recipes.service';
 @Component({
   selector: 'app-recipe-verification',
   templateUrl: './recipe-verification.component.html',
-  styleUrls: ['./recipe-verification.component.scss'],
   standalone: true,
   imports: [CommonModule, RecipeOverviewComponent],
 })

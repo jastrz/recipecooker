@@ -16,7 +16,6 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [NgbTypeaheadModule, FormsModule, CommonModule],
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
   @Output() onClickSearchEvent = new EventEmitter<string>();

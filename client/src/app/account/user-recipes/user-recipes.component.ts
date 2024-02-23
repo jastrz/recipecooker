@@ -8,7 +8,6 @@ import { RecipesService } from 'src/app/recipe/recipes.service';
 @Component({
   selector: 'app-user-recipes',
   templateUrl: './user-recipes.component.html',
-  styleUrls: ['./user-recipes.component.scss'],
   standalone: true,
   imports: [CommonModule, RecipeOverviewComponent],
 })

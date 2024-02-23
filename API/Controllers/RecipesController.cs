@@ -223,18 +223,20 @@ namespace API.Controllers
         public async Task<ActionResult<RecipeDto>> GetAIGeneratedRecipe([FromBody] RecipeGeneratorRequest request)
         {
             bool isAuthRequired = _config.GetValue<bool>("Generator:RequireAuth");
+            AppUser user = await _userManager.Users
+                .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
             RecipeRequestHandlerResult result;
             if (isAuthRequired)
             {
-                var user = await _userManager.Users
-                    .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
-
                 int tokenPrice = _config.GetValue<int>("Generator:TokenPrice");
                 result = await _recipeRequestHandler.GenerateRecipeForUser(request, user, tokenPrice);
             }
             else
             {
-                result = await _recipeRequestHandler.GenerateRecipe(request);
+                if (user != null)
+                    result = await _recipeRequestHandler.GenerateRecipeForUser(request, user, 0);
+                else
+                    result = await _recipeRequestHandler.GenerateRecipe(request);
             }
 
             if (result.Status == ResponseStatus.Success)

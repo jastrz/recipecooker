@@ -7,8 +7,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatChipListbox, MatChipsModule } from '@angular/material/chips';
-import { Tag } from '../models/tag';
-import { CookerService } from '../cooker/cooker.service';
+import { Tag } from '../../models/tag';
+import { CookerService } from '../cooker.service';
 
 @Component({
   selector: 'app-tagsholder',
