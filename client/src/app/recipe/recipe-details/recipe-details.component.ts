@@ -22,6 +22,7 @@ import { Observable } from 'rxjs';
 import { PrivilegesWrapperComponent } from 'src/app/common/privileges-wrapper/privileges-wrapper.component';
 import { UserInventoryService } from 'src/app/services/user-inventory.service';
 import { ToastrService } from 'ngx-toastr';
+import { RecipeDetailsRatingComponent } from './recipe-details-rating.component';
 
 @Component({
   selector: 'app-recipe-details',
@@ -37,6 +38,7 @@ import { ToastrService } from 'ngx-toastr';
     MatSelectModule,
     FormsModule,
     PrivilegesWrapperComponent,
+    RecipeDetailsRatingComponent
   ],
   animations: [SharedAnimationsModule.openCloseAnimation],
 })

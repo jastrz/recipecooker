@@ -5,32 +5,13 @@
     </button>
 
     <div class="row">
-      <div class="col-8">
-        <ngb-rating [rate]="rate" (rateChange)="onRateChange($event)">
-          <ng-template let-fill="fill" let-index="index">
-            <i
-              class="bi-star{{ fill === 100 ? '-fill' : '' }}"
-              [class.filled]="fill === 100"
-              [class.low]="index < rate"
-            ></i>
-          </ng-template>
-        </ngb-rating>
-        <pre>Rating: <b>{{rate | number: '1.2-2'}}</b></pre>
-      </div>
-      <div
-        class="col-4"
-        style="text-align: right; display: flex; justify-content: flex-end"
-      >
-        <!-- <app-privalages-wrapper [roles]="['Administrator', 'User']">
-          problem: doesnt inherit parent styles
-        </app-privalages-wrapper> -->
-
+      <div style="text-align: right; display: flex; justify-content: flex-end">
         <ng-container *ngIf="user | async as user">
           <ng-container *ngIf="isEliglibleForVerification(user)">
             <select
               class="form-control"
               [(ngModel)]="recipe.status"
-              style="margin-right: 10px; max-height: 35px"
+              style="margin-right: 10px; max-height: 35px; max-width: 120px"
               (change)="onStatusChange()"
             >
               <option value="Unverified">Unverified</option>
@@ -71,9 +52,17 @@
       <div class="row">
         <div class="col-8">
           <h3 class="mb-0 fs-2">{{ recipe.name }}</h3>
-          <small *ngIf="ownerDisplayName" style="margin-right: 10px"
-            >added by: {{ ownerDisplayName }}<br /></small
-          ><small style="font-style: italic">{{ recipe.status }}</small>
+          <app-rating
+            [rate]="rate"
+            (rateChange)="onRateChange($event)"
+          ></app-rating>
+          <p *ngIf="ownerDisplayName" class="mat-small mb-0">
+            owner: <b>{{ ownerDisplayName }}</b>
+          </p>
+          <p class="mat-small">
+            status: <b>{{ recipe.status }}</b>
+          </p>
+
           <p class="card-text mt-4 fs-6">{{ recipe.summary }}</p>
           <p class="card-text mt-4 fs-6">{{ recipe.description }}</p>
         </div>

@@ -1,11 +1,15 @@
-<div class="mt-4" [formGroup]="loginForm">
+<div
+  class="mt-4"
+  [formGroup]="loginForm"
+  (keydown.enter)="$event.preventDefault(); login()"
+>
   <div class="row">
     <div
       class="col-lg-6 form-group"
       style="float: none; margin: auto; margin-top: 50px"
     >
       <div class="panel">
-        <h2 style="align-self: flex-start;">Login:</h2>
+        <h2 style="align-self: flex-start">Login:</h2>
 
         <mat-form-field class="field">
           <input
@@ -35,30 +39,6 @@
           Login
         </button>
       </div>
-
-      <!-- left temporarily 
-
-      <div type="icon" size="medium">
-        <div
-          id="g_id_onload"
-          data-client_id="937726901144-b6tcn349q44ra5an0jbbef8oqd8gips7.apps.googleusercontent.com"
-          data-context="signup"
-          data-ux_mode="popup"
-          data-auto_prompt="false"
-          data-callback="handleCredentialResponse"
-          data-itp-support="true"
-        ></div>
-
-        <div
-          class="g_id_signin"
-          data-type="standard"
-          data-shape="pill"
-          data-theme="outline"
-          data-text="signin_with"
-          data-size="large"
-          data-logo_alignment="left"
-        ></div> -->
-      <!-- </div> -->
     </div>
   </div>
 </div>
