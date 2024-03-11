@@ -19,7 +19,6 @@ import { UserInventoryService } from 'src/app/services/user-inventory.service';
 @Component({
   selector: 'app-recipe-add',
   templateUrl: './recipe-add.component.html',
-  styleUrls: ['./recipe-add.component.scss'],
   standalone: true,
   imports: [
     RecipeDetailsComponent,

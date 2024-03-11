@@ -33,6 +33,13 @@
       >
         Saved Recipes
       </button>
+      <button
+        type="button"
+        routerLink="/account/change-password"
+        class="btn btn-primary mt-3"
+      >
+        Change Password
+      </button>
       <ng-container
         *ngIf="
           user.roles?.includes('Administrator') ||
