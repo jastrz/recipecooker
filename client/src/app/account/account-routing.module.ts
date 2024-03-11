@@ -5,6 +5,7 @@ import { SavedRecipesListComponent } from './saved-recipes-list/saved-recipes-li
 import { RecipeVerificationComponent } from './recipe-verification/recipe-verification.component';
 import { UserRecipesComponent } from './user-recipes/user-recipes.component';
 import { AuthGuard } from '../core/auth.guard';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
   { path: '', component: AccountComponent },
@@ -21,6 +22,11 @@ const routes: Routes = [
   {
     path: 'added-recipes',
     component: UserRecipesComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'change-password',
+    component: ChangePasswordComponent,
     canActivate: [AuthGuard],
   },
 ];

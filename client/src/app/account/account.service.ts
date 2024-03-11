@@ -108,8 +108,7 @@ export class AccountService {
   }
 
   loginWithGoogle(credential: string) {
-    const request = new GoogleLoginRequest();
-    request.idToken = credential;
+    const request = new GoogleLoginRequest(credential);
     return this.http.post<User>(this.hostUrl + 'user/google', request).pipe(
       map((user) => {
         this.handleUserAuth(user, true);
@@ -136,6 +135,13 @@ export class AccountService {
           return this.savedRecipeIds;
         })
       );
+  }
+
+  changePassword(values: any) {
+    return this.http.post<any>(
+      this.hostUrl + 'user/changePassword',
+      values
+    );
   }
 
   deleteUser() {
