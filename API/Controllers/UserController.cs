@@ -17,21 +17,19 @@ namespace API.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly ITokenService _tokenService;
         private readonly IRecipeRepository _recipeRepository;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly IGoogleService _googleService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService,
+        public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
         IRecipeRepository recipeRepository, IUserService userService, IMapper mapper, IGoogleService googleService, ILogger<UserController> logger)
         {
             _logger = logger;
             _userService = userService;
             _userManager = userManager;
             _signInManager = signInManager;
-            _tokenService = tokenService;
             _recipeRepository = recipeRepository;
             _mapper = mapper;
             _googleService = googleService;
@@ -65,7 +63,7 @@ namespace API.Controllers
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if (!result.Succeeded) return Unauthorized(new ApiResponse(401));
 
-            return await GetUserDto(user);
+            return await _userService.GetUserDto(user);
         }
 
         [HttpPost("google")]
@@ -80,14 +78,14 @@ namespace API.Controllers
 
             if (existingUser != null)
             {
-                return await GetUserDto(existingUser);
+                return await _userService.GetUserDto(existingUser);
             }
             else
             {
                 var user = await _userService.CreateUser(payload.GivenName, email);
                 if (user == null) return BadRequest(new ApiResponse(400));
 
-                return await GetUserDto(user);
+                return await _userService.GetUserDto(user);
             }
         }
 
@@ -108,7 +106,36 @@ namespace API.Controllers
             var user = await _userService.CreateUser(registerDto.DisplayName, registerDto.Email, registerDto.Password);
             if (user == null) return BadRequest(new ApiResponse(400));
 
-            return await GetUserDto(user);
+            return await _userService.GetUserDto(user);
+        }
+
+        [Authorize]
+        [HttpPost("changePassword")]
+        public async Task<ActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            var user = await _userManager.Users
+                            .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+
+            if (user == null) return NotFound();
+
+            var removeResult = await _userManager.RemovePasswordAsync(user);
+
+            if (removeResult.Succeeded)
+            {
+                var setPasswordResult = await _userManager.AddPasswordAsync(user, changePasswordDto.Password);
+                _logger.LogWarning(setPasswordResult.ToString());
+
+                if (setPasswordResult.Succeeded)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(new ApiResponse(400, setPasswordResult.ToString()));
+                }
+            }
+
+            return BadRequest(new ApiResponse(400, "An error occurred while changing the password. Please try again."));
         }
 
         [Authorize]
@@ -147,7 +174,7 @@ namespace API.Controllers
             var user = await _userManager.Users
                 .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
 
-            return await GetUserDto(user);
+            return await _userService.GetUserDto(user);
         }
 
         [Authorize]
@@ -195,23 +222,6 @@ namespace API.Controllers
             return Ok(removed);
         }
 
-        private async Task<UserDto> GetUserDto(AppUser user)
-        {
-            var roles = await _userService.GetRolesForUserAsync(user);
-            var token = _tokenService.CreateToken(user, roles);
 
-            var userDto = new UserDto
-            {
-                Email = user.Email,
-                DisplayName = user.DisplayName,
-                UserId = user.Id,
-                SavedRecipeIds = user.SavedRecipeIds,
-                Token = token,
-                Roles = roles,
-                TokenCount = user.TokenCount
-            };
-
-            return userDto;
-        }
     }
 }

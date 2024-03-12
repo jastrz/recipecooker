@@ -1,12 +1,34 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { AccountService } from './account/account.service';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { NavComponent } from './nav/nav.component';
+import { BreadcrumbModule } from 'xng-breadcrumb';
+import { FooterComponent } from './footer/footer.component';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('AppComponent', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [RouterTestingModule],
-    declarations: [AppComponent]
-  }));
+  let accountServiceSpy = jasmine.createSpyObj('AccountService', [
+    'loadCurrentUser',
+  ]);
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        NgxSpinnerModule,
+        BreadcrumbModule,
+        MatIconModule,
+      ],
+      declarations: [AppComponent, NavComponent, FooterComponent],
+      providers: [
+        {
+          provide: AccountService,
+          useValue: accountServiceSpy,
+        },
+      ],
+    })
+  );
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
@@ -18,12 +40,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('recipecooker');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('recipecooker app is running!');
   });
 });

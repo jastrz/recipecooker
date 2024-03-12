@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { FileService } from 'src/app/services/file.service';
 
 @Component({
@@ -13,7 +14,12 @@ export class ImageLoaderComponent {
   @Input() pictureUrls?: string[];
   private selectedImages: File[] = [];
 
-  constructor(private fileService: FileService) {}
+  private maxFileSize: number = 512 * 1024;
+
+  constructor(
+    private fileService: FileService,
+    private toastr: ToastrService
+  ) {}
 
   onFileSelected(event: any) {
     const fileList: FileList = event.target.files;
@@ -21,12 +27,17 @@ export class ImageLoaderComponent {
     if (fileList.length > 0) {
       for (let i = 0; i < fileList.length; i++) {
         const file: File = fileList[i];
-        this.selectedImages?.push(file);
+        if (file.size < this.maxFileSize) {
+          this.selectedImages?.push(file);
+        } else {
+          this.toastr.error(
+            `${file.name} too big. Max file size: ${this.maxFileSize / 1024} kb`
+          );
+        }
       }
     }
-    console.log(this.selectedImages);
 
-    if (this.selectedImages) {
+    if (this.selectedImages.length > 0) {
       this.fileService
         .uploadFiles(this.selectedImages, 'recipes/images')
         .subscribe({
@@ -34,9 +45,13 @@ export class ImageLoaderComponent {
             urls.forEach((url) => {
               this.pictureUrls?.push(url);
             });
-            this.selectedImages = [];
-            console.log(this.pictureUrls);
           },
+          error: (err) => {
+            this.toastr.error(err);
+          },
+        })
+        .add(() => {
+          this.selectedImages = [];
         });
     }
   }

@@ -13,7 +13,6 @@ import { CookerService } from '../cooker.service';
 @Component({
   selector: 'app-tagsholder',
   templateUrl: './tagsholder.component.html',
-  styleUrls: ['./tagsholder.component.scss'],
   standalone: true,
   imports: [MatChipsModule, CommonModule],
 })

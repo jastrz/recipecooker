@@ -79,8 +79,10 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("images")]
+        [RequestSizeLimit(1024 * 1024)] // 1mb per request
         public async Task<ActionResult<List<string>>> PostImages([FromForm] List<IFormFile> files)
         {
+            // todo: handle total file size per recipe overview and per step
             try
             {
                 var pictureUrls = await _fileService.SaveFiles(files, "images");
@@ -108,6 +110,7 @@ namespace API.Controllers
         [Authorize]
         [HttpPost]
         [Route("{id}/images")]
+        [RequestSizeLimit(1024 * 1024)]
         public async Task<IActionResult> PostRecipeImages([FromRoute] int id, [FromForm] List<IFormFile> files)
         {
             try
@@ -127,6 +130,7 @@ namespace API.Controllers
         [Authorize]
         [HttpPost]
         [Route("{id}/{stepId}/images")]
+        [RequestSizeLimit(1024 * 1024)]
         public async Task<IActionResult> PostStepImages([FromRoute] int id, [FromRoute] int stepId, [FromForm] List<IFormFile> files)
         {
             try

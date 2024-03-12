@@ -4,10 +4,10 @@
       type="file"
       class="form-control-file"
       style="display: none"
-      accept=".jpg"
-      multiple
+      accept="image/jpeg, image/png"
       (change)="onFileSelected($event)"
       #hiddenfileinput
+      multiple
     />
     <button
       (click)="hiddenfileinput.click()"

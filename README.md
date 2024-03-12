@@ -37,6 +37,7 @@ Build client project first - it will be placed in wwwroot in API project, then b
 
 ```
 cd client && ng build -c production
+cd API && dotnet build -c Release
 dotnet publish -c Release -o publish recipecooker.sln
 ```
 
