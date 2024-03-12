@@ -4,6 +4,7 @@ using Core.Interfaces;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using PasswordGenerator;
+using Shared.Dtos;
 
 namespace Infrastructure.Services
 {
@@ -11,12 +12,14 @@ namespace Infrastructure.Services
     {
         private readonly AppIdentityDbContext _context;
         private readonly UserManager<AppUser> _userManager;
+        private readonly ITokenService _tokenService;
         private readonly Password password;
 
-        public UserService(AppIdentityDbContext context, UserManager<AppUser> userManager)
+        public UserService(AppIdentityDbContext context, UserManager<AppUser> userManager, ITokenService tokenService)
         {
             _userManager = userManager;
             _context = context;
+            _tokenService = tokenService;
             password = new Password(16);
         }
 
@@ -35,6 +38,25 @@ namespace Infrastructure.Services
             if (!result.Succeeded) return null;
             await _userManager.AddToRoleAsync(user, role.ToString());
             return user;
+        }
+
+        public async Task<UserDto> GetUserDto(AppUser user)
+        {
+            var roles = await GetRolesForUserAsync(user);
+            var token = _tokenService.CreateToken(user, roles);
+
+            var userDto = new UserDto
+            {
+                Email = user.Email,
+                DisplayName = user.DisplayName,
+                UserId = user.Id,
+                SavedRecipeIds = user.SavedRecipeIds,
+                Token = token,
+                Roles = roles,
+                TokenCount = user.TokenCount
+            };
+
+            return userDto;
         }
 
         public async Task<bool> DeleteUser(AppUser user)

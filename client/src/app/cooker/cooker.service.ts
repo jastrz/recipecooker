@@ -48,6 +48,7 @@ export class CookerService {
     });
   }
 
+  // Sets tags to search ('cook' button) grouped by category
   private setGroupedTags(result: ITag[]) {
     const tags = result.map((tag) => new Tag(tag, true));
     this.groupedTags = tags.reduce((grouped, tag) => {

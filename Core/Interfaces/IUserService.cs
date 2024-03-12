@@ -1,5 +1,6 @@
 using Core.Entities.Identity;
 using Core.Enums;
+using Shared.Dtos;
 
 namespace Core.Interfaces
 {
@@ -10,6 +11,7 @@ namespace Core.Interfaces
         Task<bool> DeleteUser(AppUser user);
         Task UpdateTokenCount(AppUser user, int value = -1);
         Task<AppUser> CreateUser(string displayName, string email, string password = null, UserRole role = UserRole.User);
+        Task<UserDto> GetUserDto(AppUser user);
 
     }
 }
