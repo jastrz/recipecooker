@@ -139,35 +139,6 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpPost("changePassword")]
-        public async Task<ActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
-        {
-            var user = await _userManager.Users
-                            .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
-
-            if (user == null) return NotFound();
-
-            var removeResult = await _userManager.RemovePasswordAsync(user);
-
-            if (removeResult.Succeeded)
-            {
-                var setPasswordResult = await _userManager.AddPasswordAsync(user, changePasswordDto.Password);
-                _logger.LogWarning(setPasswordResult.ToString());
-
-                if (setPasswordResult.Succeeded)
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest(new ApiResponse(400, setPasswordResult.ToString()));
-                }
-            }
-
-            return BadRequest(new ApiResponse(400, "An error occurred while changing the password. Please try again."));
-        }
-
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
