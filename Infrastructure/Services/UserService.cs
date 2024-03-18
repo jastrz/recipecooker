@@ -35,7 +35,11 @@ namespace Infrastructure.Services
             };
 
             var result = await _userManager.CreateAsync(user, password);
-            if (!result.Succeeded) return null;
+            if (!result.Succeeded)
+            {
+                string errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                throw new InvalidOperationException($"Failed to create user: {errors}");
+            }
             await _userManager.AddToRoleAsync(user, role.ToString());
             return user;
         }

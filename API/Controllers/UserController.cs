@@ -103,15 +103,20 @@ namespace API.Controllers
                 });
             }
 
-            var user = await _userService.CreateUser(registerDto.DisplayName, registerDto.Email, registerDto.Password);
-            if (user == null) return BadRequest(new ApiResponse(400));
-
-            return await _userService.GetUserDto(user);
+            try
+            {
+                var user = await _userService.CreateUser(registerDto.DisplayName, registerDto.Email, registerDto.Password);
+                return await _userService.GetUserDto(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse(400, ex.Message.ToString()));
+            }
         }
 
         [Authorize]
         [HttpPost("changePassword")]
-        public async Task<ActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
+        public async Task<ActionResult> ChangePassword(ChangePasswordRequest changePasswordDto)
         {
             var user = await _userManager.Users
                             .SingleOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
@@ -123,7 +128,6 @@ namespace API.Controllers
             if (removeResult.Succeeded)
             {
                 var setPasswordResult = await _userManager.AddPasswordAsync(user, changePasswordDto.Password);
-                _logger.LogWarning(setPasswordResult.ToString());
 
                 if (setPasswordResult.Succeeded)
                 {
