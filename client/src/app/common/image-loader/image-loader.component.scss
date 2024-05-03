@@ -3,10 +3,20 @@
   display: inline-block;
   margin-bottom: 30px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  img {
+    max-height: 150px;
+  }
 }
 
 .selectButton {
   width: 120px;
   height: 40px;
   font-size: small;
+}
+
+@media (max-width: 768px) {
+  .image-container img {
+    max-height: 75px;
+  }
 }

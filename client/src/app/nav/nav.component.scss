@@ -43,15 +43,17 @@ ul.nav li {
   padding-top: 30px;
 }
 
-@media (min-width: 769px) {
-  .nav-buttons {
-    justify-content: center;
-  }
+.nav-buttons {
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 769px) {
   .nav-buttons {
-    flex-direction: column;
-    align-items: center;
+    scale: 0.75;
+  }
+
+  .responsive-image {
+    height: 75px;
   }
 }

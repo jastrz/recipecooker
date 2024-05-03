@@ -10,3 +10,13 @@
 .lightbox-target {
   left: 0px;
 }
+
+@media (max-width: 767px) {
+  img {
+    max-height: 100px;
+  }
+
+  div {
+    margin-top: 40px;
+  }
+}

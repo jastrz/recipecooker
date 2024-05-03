@@ -55,7 +55,7 @@
 
     <div class="card">
       <div class="row">
-        <div class="col-8">
+        <div class="col-md-8">
           <h3 class="mb-0 fs-2">{{ recipe.name }}</h3>
           <app-rating
             [rate]="rate"
@@ -71,34 +71,32 @@
           <p class="card-text mt-4 fs-6">{{ recipe.summary }}</p>
           <p class="card-text mt-4 fs-6">{{ recipe.description }}</p>
         </div>
-        <div class="col-4">
+        <div class="col-md-4">
           <app-album [pictureUrls]="recipe.pictureUrls"></app-album>
         </div>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-6 offset-6">
-        <div class="card" *ngIf="recipe">
-          <div class="card-body">
-            <h3 class="card-title text-primary">Ingredients</h3>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Quantity</th>
-                  <th>Unit</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let ingredient of recipe.ingredients">
-                  <td>{{ ingredient.name }}</td>
-                  <td>{{ ingredient.quantity }}</td>
-                  <td>{{ ingredient.unit }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+      <div class="card" *ngIf="recipe">
+        <div class="card-body">
+          <h3 class="card-title text-primary">Ingredients</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ingredient of recipe.ingredients">
+                <td>{{ ingredient.name }}</td>
+                <td>{{ ingredient.quantity }}</td>
+                <td>{{ ingredient.unit }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
