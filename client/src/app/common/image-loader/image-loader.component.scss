@@ -6,6 +6,7 @@
 
   img {
     max-height: 150px;
+    max-width: 100%;
   }
 }
 
@@ -13,10 +14,4 @@
   width: 120px;
   height: 40px;
   font-size: small;
-}
-
-@media (max-width: 768px) {
-  .image-container img {
-    max-height: 75px;
-  }
 }
