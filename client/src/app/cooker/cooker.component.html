@@ -1,4 +1,4 @@
-<div class="container mt-5" [@openClose]="'open'" >
+<div class="container mt-5" [@openClose]="'open'">
   <app-search (onClickSearchEvent)="showRecipesContaining($event)"></app-search>
   <mat-accordion *ngIf="groupedTags.size > 0">
     <mat-expansion-panel
@@ -6,7 +6,8 @@
       (opened)="onCookerOpened()"
       [hideToggle]="!showRecipes"
     >
-      <mat-expansion-panel-header #header
+      <mat-expansion-panel-header
+        #header
         [ngClass]="showRecipes ? 'default' : 'no-events'"
       >
         <mat-panel-title> Find recipes </mat-panel-title>
@@ -14,8 +15,8 @@
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <div class="row">
-        <div class="col md-4" *ngFor="let mapItem of groupedTags | keyvalue">
+      <div class="row px-4 py-4">
+        <div class="col" *ngFor="let mapItem of groupedTags | keyvalue">
           <app-tagsholder
             [type]="splitCamelCase(mapItem.key)"
             [tags]="mapItem.value"

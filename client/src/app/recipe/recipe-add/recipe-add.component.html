@@ -3,22 +3,19 @@
   <mat-stepper #stepper>
     <mat-step>
       <ng-template matStepLabel>Basic info</ng-template>
-      <app-recipe-add-basics (formSubmitted)="onBasicsStepSubmit()">
-      </app-recipe-add-basics>
+      <app-recipe-add-basics (formSubmitted)="onBasicsStepSubmit()" />
     </mat-step>
 
     <mat-step>
       <ng-template matStepLabel>Ingredient list</ng-template>
       <app-recipe-add-ingredients
         (formSubmitted)="onIngredientsStepSubmitted()"
-      >
-      </app-recipe-add-ingredients>
+      />
     </mat-step>
 
     <mat-step>
       <ng-template matStepLabel>Recipe steps</ng-template>
-      <app-recipe-add-steps (formSubmitted)="onStepsStepSubmitted()">
-      </app-recipe-add-steps>
+      <app-recipe-add-steps (formSubmitted)="onStepsStepSubmitted()" />
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Finish</ng-template>

@@ -53,75 +53,65 @@
       </div>
     </div>
 
-    <div class="card">
-      <div class="row">
-        <div class="col-8">
-          <h3 class="mb-0 fs-2">{{ recipe.name }}</h3>
-          <app-rating
-            [rate]="rate"
-            (rateChange)="onRateChange($event)"
-          ></app-rating>
-          <p *ngIf="ownerDisplayName" class="mat-small mb-0">
-            owner: <b>{{ ownerDisplayName }}</b>
-          </p>
-          <p class="mat-small">
-            status: <b>{{ recipe.status }}</b>
-          </p>
+    <div class="row recipe-main">
+      <div class="col-md-8">
+        <h3 class="title">{{ recipe.name }}</h3>
+        <app-rating
+          [rate]="rate"
+          (rateChange)="onRateChange($event)"
+        ></app-rating>
+        <p *ngIf="ownerDisplayName" class="mat-small mb-0">
+          owner: <b>{{ ownerDisplayName }}</b>
+        </p>
+        <p class="mat-small">
+          status: <b>{{ recipe.status }}</b>
+        </p>
 
-          <p class="card-text mt-4 fs-6">{{ recipe.summary }}</p>
-          <p class="card-text mt-4 fs-6">{{ recipe.description }}</p>
+        <p class="mt-4 fs-6">{{ recipe.summary }}</p>
+        <p class="mt-4 fs-6">{{ recipe.description }}</p>
+      </div>
+      <div class="col-md-4">
+        <app-album [pictureUrls]="recipe.pictureUrls"></app-album>
+      </div>
+    </div>
+
+    <div class="details-topic-container">
+      <h3 class="text-primary">Ingredients</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ingredient of recipe.ingredients">
+            <td>{{ ingredient.name }}</td>
+            <td>{{ ingredient.quantity }}</td>
+            <td>{{ ingredient.unit }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div
+      class="details-topic-container"
+      *ngIf="recipe && recipe.steps.length > 0"
+    >
+      <h3 class="text-primary">Steps</h3>
+
+      <div class="row recipe-step" *ngFor="let step of recipe.steps">
+        <div class="col-8">
+          <h2>{{ step.id }}. {{ step.name }}</h2>
+          <p>{{ step.description }}</p>
         </div>
         <div class="col-4">
-          <app-album [pictureUrls]="recipe.pictureUrls"></app-album>
+          <app-album
+            *ngIf="step.pictureUrls"
+            [pictureUrls]="step.pictureUrls"
+          ></app-album>
         </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-6 offset-6">
-        <div class="card" *ngIf="recipe">
-          <div class="card-body">
-            <h3 class="card-title text-primary">Ingredients</h3>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Quantity</th>
-                  <th>Unit</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let ingredient of recipe.ingredients">
-                  <td>{{ ingredient.name }}</td>
-                  <td>{{ ingredient.quantity }}</td>
-                  <td>{{ ingredient.unit }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-4 card" *ngIf="recipe && recipe.steps.length > 0">
-      <div class="card-body">
-        <h3 class="card-title text-primary">Steps</h3>
-        <ul class="list-group">
-          <div class="card-content" *ngFor="let step of recipe.steps">
-            <div class="row">
-              <div class="col-8">
-                <h2>{{ step.id }}. {{ step.name }}</h2>
-                <p>{{ step.description }}</p>
-              </div>
-              <div class="col-4">
-                <app-album
-                  *ngIf="step.pictureUrls"
-                  [pictureUrls]="step.pictureUrls"
-                ></app-album>
-              </div>
-            </div>
-          </div>
-        </ul>
       </div>
     </div>
   </ng-container>

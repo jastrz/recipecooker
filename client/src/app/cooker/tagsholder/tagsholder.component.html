@@ -1,15 +1,19 @@
-<p class="text-center fs-4">{{ type }}</p>
-<mat-chip-listbox
-  #chipList
-  aria-orientation="vertical"
-  multiple="false"
-  class="mat-mdc-chip-set-stacked"
->
-  <mat-chip-option
-    (click)="selectTag(tag)"
-    *ngFor="let tag of tags"
-    [disabled]="!tag.active"
-    [selected]="tag.selected"
-    >{{ tag.name }}</mat-chip-option
+<div>
+  <p class="text-center fs-6">
+    {{ type }}
+  </p>
+  <mat-chip-listbox
+    #chipList
+    aria-orientation="vertical"
+    multiple="false"
+    class=""
   >
-</mat-chip-listbox>
+    <mat-chip-option
+      (click)="selectTag(tag)"
+      *ngFor="let tag of tags"
+      [disabled]="!tag.active"
+      [selected]="tag.selected"
+      >{{ tag.name }}</mat-chip-option
+    >
+  </mat-chip-listbox>
+</div>

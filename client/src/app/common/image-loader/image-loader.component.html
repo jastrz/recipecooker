@@ -22,7 +22,7 @@
     class="col-4 image-container"
     *ngFor="let image of pictureUrls; let i = index"
   >
-    <img [src]="image" alt="Thumbnail" style="max-height: 150px; width: auto" />
+    <img [src]="image" alt="Thumbnail" style="width: auto" />
     <button (click)="removeImage(i)" class="btn btn-danger remove-button">
       X
     </button>

@@ -3,6 +3,11 @@
   display: inline-block;
   margin-bottom: 30px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  img {
+    max-height: 150px;
+    max-width: 100%;
+  }
 }
 
 .selectButton {
